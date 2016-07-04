@@ -1,4 +1,4 @@
-package com.getpoint.flightmissionmanager;
+package com.getpoint.flightmissionmanager.fragment;
 
 import android.graphics.Color;
 import android.os.Bundle;
@@ -18,15 +18,17 @@ import com.baidu.mapapi.map.BaiduMap;
 import com.baidu.mapapi.map.MapStatusUpdate;
 import com.baidu.mapapi.map.MapStatusUpdateFactory;
 import com.baidu.mapapi.map.MapView;
-import com.baidu.mapapi.map.Marker;
-import com.baidu.mapapi.map.MarkerOptions;
 import com.baidu.mapapi.map.Polyline;
 import com.baidu.mapapi.map.PolylineOptions;
 import com.baidu.mapapi.map.Text;
 import com.baidu.mapapi.map.TextOptions;
 import com.baidu.mapapi.model.LatLng;
 import com.baidu.mapapi.model.LatLngBounds;
+import com.getpoint.flightmissionmanager.FlightMissionUtils;
+import com.getpoint.flightmissionmanager.GPSInfo;
+import com.getpoint.flightmissionmanager.NativeGPSInfo;
 import com.getpoint.flightmissionmanager.R;
+import com.getpoint.flightmissionmanager.WayPointInfo;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -36,7 +38,6 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Iterator;
 
 //gps latlon convert to baidu latlon CoordinateConverter
 public class MeasureFragment extends Fragment {

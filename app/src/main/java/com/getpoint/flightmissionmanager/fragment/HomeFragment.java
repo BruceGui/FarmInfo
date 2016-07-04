@@ -1,4 +1,4 @@
-package com.getpoint.flightmissionmanager;
+package com.getpoint.flightmissionmanager.fragment;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -28,7 +28,12 @@ import com.baidu.mapapi.map.MapStatusUpdateFactory;
 import com.baidu.mapapi.map.MapView;
 import com.baidu.mapapi.model.LatLng;
 
+import com.getpoint.flightmissionmanager.FlightMissionUtils;
+import com.getpoint.flightmissionmanager.GPSInfo;
+import com.getpoint.flightmissionmanager.NativeGPSInfo;
 import com.getpoint.flightmissionmanager.R;
+import com.getpoint.flightmissionmanager.activity.MissionManagerActivity;
+import com.getpoint.flightmissionmanager.activity.NewMissionActivity;
 
 public class HomeFragment extends Fragment {
 

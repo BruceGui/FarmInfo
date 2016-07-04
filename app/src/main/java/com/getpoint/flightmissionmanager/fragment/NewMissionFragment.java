@@ -1,10 +1,7 @@
-package com.getpoint.flightmissionmanager;
+package com.getpoint.flightmissionmanager.fragment;
 
-import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -15,16 +12,14 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.getpoint.flightmissionmanager.FlightMissionUtils;
 import com.getpoint.flightmissionmanager.R;
+import com.getpoint.flightmissionmanager.activity.MeasureActivity;
 
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.Random;
 
 public class NewMissionFragment extends Fragment {
 

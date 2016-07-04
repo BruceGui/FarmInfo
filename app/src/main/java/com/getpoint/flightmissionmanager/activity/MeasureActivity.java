@@ -1,7 +1,10 @@
-package com.getpoint.flightmissionmanager;
+package com.getpoint.flightmissionmanager.activity;
 
 import android.support.v4.app.Fragment;
 import android.util.Log;
+
+import com.getpoint.flightmissionmanager.MeasureFragment;
+import com.getpoint.flightmissionmanager.SingleFragmentActivity;
 
 public class MeasureActivity extends SingleFragmentActivity {
     @Override

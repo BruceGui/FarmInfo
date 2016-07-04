@@ -1,10 +1,9 @@
-package com.getpoint.flightmissionmanager;
+package com.getpoint.flightmissionmanager.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -15,9 +14,11 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.Switch;
 
+import com.getpoint.flightmissionmanager.FlightMissionUtils;
 import com.getpoint.flightmissionmanager.R;
+import com.getpoint.flightmissionmanager.activity.MeasureActivity;
+import com.getpoint.flightmissionmanager.activity.NewMissionActivity;
 
 import java.io.File;
 import java.util.ArrayList;
