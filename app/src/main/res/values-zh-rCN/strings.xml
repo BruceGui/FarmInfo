@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">飞行任务管理</string>
+    <string name="app_name">农田信息管理</string>
     <string name="connect_type">连接类型: </string>
     <string name="wifi">Wi-Fi</string>
     <string name="bt">蓝牙</string>
@@ -8,6 +8,14 @@
     <string name="device_settings">设备管理</string>
     <string name="on_off">打开/关闭</string>
     <string name="exit">退出</string>
+    <string name="gps">GPS:</string>
+    <string name="lon">Lon:</string>
+    <string name="lat">Lat:</string>
+    <string name="h">H:</string>
+    <string name="l_dop">LDop:</string>
+    <string name="v_dop">VDop:</string>
+    <string name="h_dop">HDop:</string>
+    <string name="not_applicable">N/A</string>
     <string name="satellite_count">星数:</string>
     <string name="off">关闭</string>
     <string name="on">打开</string>
@@ -31,4 +39,18 @@
     <string name="get">获取</string>
     <string name="dot_out_of_range">点号超出范围</string>
     <string name="write_to_file_successfully">航点信息已写入文件。</string>
+    <string name="connect">连接</string>
+    <string name="disconnect">断开</string>
+    <string name="app_setting">设置</string>
+
+    <!-- 偏好设置 字符串 -->
+    <string name="pref_connection_type">遥测连接方式</string>
+    <string name="pref_connection_type_summary">选择哪一种连接数传的方式与无人机沟通</string>
+    <string name="pref_connection">连接参数</string>
+    <string name="pref_server">TCP 连接</string>
+    <string name="pref_server_ip">服务器IP</string>
+    <string name="pref_server_port">服务器端口</string>
+    <string name="pref_server_udp">UDP连接</string>
+    <string name="pref_udp_server_port">UDP服务器端口</string>
+
 </resources>

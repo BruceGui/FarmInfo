@@ -1,9 +1,16 @@
 apply plugin: 'com.android.application'
 
 android {
+    signingConfigs {
+        config {
+            keyAlias 'getway'
+            keyPassword 'getway'
+            storeFile file('E:/.android/getwaypoint.jks')
+            storePassword 'getway'
+        }
+    }
     compileSdkVersion 22
     buildToolsVersion "23.0.3"
-
     defaultConfig {
         applicationId "com.getpoint"
         minSdkVersion 19
@@ -15,9 +22,16 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.config
         }
         debug {
+            signingConfig signingConfigs.config
         }
+    }
+
+    lintOptions {
+        checkReleaseBuilds true
+        disable 'MissingTranslation'
     }
 }
 

@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">FlightMissionManager</string>
+    <string name="app_name">FarmInfoManager</string>
     <string name="connect_type">Content Type: </string>
     <string name="wifi">Wi-Fi</string>
     <string name="bt">BT</string>
@@ -39,4 +39,18 @@
     <string name="get">Get</string>
     <string name="dot_out_of_range">Dot out of range</string>
     <string name="write_to_file_successfully">WayPoint info has been writen into file.</string>
+    <string name="connect">Connect</string>
+    <string name="disconnect">Disconnect</string>
+    <string name="app_setting">Setting</string>
+
+    <!-- Preference String -->
+    <string name="pref_connection_type">Telemetry Connection Type</string>
+    <string name="pref_connection_type_summary">Which link to use to connect to the drone</string>
+    <string name="pref_connection">Connection Preferences</string>
+    <string name="pref_server">TCP Connection</string>
+    <string name="pref_server_ip">Server IP</string>
+    <string name="pref_server_port">Server PORT</string>
+    <string name="pref_server_udp">UDP Connection</string>
+    <string name="pref_udp_server_port">UDP Server Port</string>
+
 </resources>
