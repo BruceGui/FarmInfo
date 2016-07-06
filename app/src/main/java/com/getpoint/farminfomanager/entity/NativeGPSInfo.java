@@ -24,7 +24,6 @@ public class NativeGPSInfo implements GPSInfo {
 
     private OnRequestResultListener mOnRequestResultListener;
 
-
     public NativeGPSInfo(Context ctx) {
         mContext = ctx;
         mLocationClient = new LocationClient(mContext.getApplicationContext());

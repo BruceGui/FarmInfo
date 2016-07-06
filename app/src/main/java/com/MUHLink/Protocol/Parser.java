@@ -64,34 +64,34 @@ public class Parser {
                 }
                 break;
             case DATALINK_PARSE_STATE_GOT_STX2:
-                m.len = (byte)c;
+                m.len = c;
                 Log.i(TAG, "Length = " + m.len);
                 state = Datalink_states.DATALINK_PARSE_STATE_GOT_LENGTH;
                 break;
             case DATALINK_PARSE_STATE_GOT_LENGTH:
-                m.seq = (byte)c;
+                m.seq = c;
                 Log.i(TAG, "Seq = " + m.seq);
                 state = Datalink_states.DATALINK_PARSE_STATE_GOT_SEQ;
                 break;
             case DATALINK_PARSE_STATE_GOT_SEQ:
-                m.sysID = (byte)c;
+                m.sysID = c;
                 Log.i(TAG, "sysID = " + m.sysID);
                 state = Datalink_states.DATALINK_PARSE_STATE_GOT_SYSID;
                 break;
             case DATALINK_PARSE_STATE_GOT_SYSID:
-                m.compID = (byte)c;
+                m.compID = c;
                 Log.i(TAG, "compID = " + m.compID);
                 state = Datalink_states.DATALINK_PARSE_STATE_GOT_COMPID;
                 break;
             case DATALINK_PARSE_STATE_GOT_COMPID:
-                m.msgID = (byte)c;
+                m.msgID = c;
                 Log.i(TAG, "msgID = " + m.msgID);
                 state = Datalink_states.DATALINK_PARSE_STATE_GOT_MSGID;
                 break;
             case DATALINK_PARSE_STATE_GOT_MSGID:
                 m.payload.add((byte)c);
                 Log.i(TAG, "ADD msg: " + c);
-                if(((byte)m.payload.size()) == m.len) {
+                if(m.payloadFilled()) {
                     Log.i(TAG, "LEN- " + m.len);
                     state = Datalink_states.DATALINK_PARSE_STATE_GOT_PAYLOAD;
                 }

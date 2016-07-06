@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Properties for com.playuav.android.widgets.spinners.SpinnerSelfSelect widget -->
+    <declare-styleable name="SpinnerSelfSelect">
+        <attr name="isSelectable" format="reference|boolean" />
+    </declare-styleable>
+
+</resources>

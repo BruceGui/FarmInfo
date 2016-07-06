@@ -2,7 +2,7 @@ package com.getpoint.farminfomanager.activity;
 
 import android.support.v4.app.Fragment;
 
-import com.getpoint.farminfomanager.fragment.MissionManagerFragment;
+import com.getpoint.farminfomanager.fragment.Mission.MissionManagerFragment;
 
 public class MissionManagerActivity extends SingleFragmentActivity {
 

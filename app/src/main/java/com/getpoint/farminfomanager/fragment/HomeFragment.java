@@ -51,6 +51,7 @@ public class HomeFragment extends Fragment {
     private double mCurrentLatitude;
     private double mCurrentLongitude;
 
+    /*
     private TextView mConnectStateTextView;
     private TextView mGPSStateTextView;
     private TextView mSatliliteCountsTextView;
@@ -59,8 +60,10 @@ public class HomeFragment extends Fragment {
     private TextView mHeightValueTextView;
     private TextView mLDopTextView;
     private TextView mVDopTextView;
-    private TextView mHDopTextView;
+    private TextView mHDopTextView;*/
     private GPSInfo mGPSInfo;
+
+
 
     private MUHLinkClient deviceClient;
     private MUHLinkConnection deviceConnection;
@@ -115,6 +118,7 @@ public class HomeFragment extends Fragment {
     public void onStart() {
         super.onStart();
         mBaiduMap.setMyLocationEnabled(true);
+
         if (!mLocationClient.isStarted()) {
             mLocationClient.start();
         }
@@ -219,6 +223,7 @@ public class HomeFragment extends Fragment {
 
 
     private void updateGPSInfoTextView(GPSInfo gpsInfo) {
+        /*
         mConnectStateTextView.setText(gpsInfo.getConectionType());
         mGPSStateTextView.setText(gpsInfo.getGPSState());
         mSatliliteCountsTextView.setText(""+gpsInfo.getGPSSatlliteCounts());
@@ -228,9 +233,11 @@ public class HomeFragment extends Fragment {
         mLDopTextView.setText(""+gpsInfo.getLDop());
         mVDopTextView.setText(""+gpsInfo.getVDop());
         mHDopTextView.setText(""+gpsInfo.getHDop());
+        */
     }
 
     private void restoreGPSInfo() {
+        /*
         mConnectStateTextView.setText(R.string.no_link);
         mGPSStateTextView.setText(R.string.off);
         mSatliliteCountsTextView.setText("0");
@@ -240,11 +247,14 @@ public class HomeFragment extends Fragment {
         mLDopTextView.setText(R.string.not_applicable);
         mVDopTextView.setText(R.string.not_applicable);
         mHDopTextView.setText(R.string.not_applicable);
+        */
     }
 
     private void initView(View view) {
         mMapView = (MapView)view.findViewById(R.id.id_bmapView);
+        mMapView.showZoomControls(false);
         mBaiduMap = mMapView.getMap();
+        /*
         mConnectStateTextView = (TextView) view.findViewById(R.id.id_connect_type_value);
         mGPSStateTextView = (TextView)view.findViewById(R.id.id_GPS_state_value);
         mSatliliteCountsTextView = (TextView)view.findViewById(R.id.id_GPS_statellite_counts_value);
@@ -254,6 +264,7 @@ public class HomeFragment extends Fragment {
         mLDopTextView = (TextView)view.findViewById(R.id.id_ldop_value);
         mVDopTextView = (TextView)view.findViewById(R.id.id_vdop_value);
         mHDopTextView = (TextView)view.findViewById(R.id.id_hdop_value);
+        */
 
         restoreGPSInfo();
     }
