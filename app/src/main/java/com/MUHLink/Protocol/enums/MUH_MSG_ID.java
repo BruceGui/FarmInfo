@@ -7,6 +7,13 @@ package com.MUHLink.Protocol.enums;
 public class MUH_MSG_ID {
 
     /**
+     *  GPS 接受数据的同步信息
+     */
+    public static final int GPSLINK_STX1 = 0xAA;
+    public static final int GPSLINK_STX2 = 0x44;
+    public static final int GPSLINK_STX3 = 0x12;
+
+    /**
      *  同步头定义 数据长度的定义
      */
     public static final int DATALINK_STX1 = 0xEB;

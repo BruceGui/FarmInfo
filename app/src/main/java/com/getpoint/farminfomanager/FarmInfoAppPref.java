@@ -4,6 +4,9 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by Gui Zhou on 2016-07-04.
  */
@@ -14,6 +17,7 @@ public class FarmInfoAppPref {
     private static final String DEFAULT_TCP_SERVER_PORT = "5763";
     private static final String DEFAULT_UDP_SERVER_PORT = "12345";
 
+     private List<String> mGreeting = new ArrayList<>();
     /*
      * Public for legacy usage
      */
