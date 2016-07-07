@@ -4,6 +4,7 @@ import android.content.Context;
 import android.util.Log;
 
 import com.MUHLink.Protocol.MUHLinkPacket;
+import com.getpoint.farminfomanager.FarmInfoAppPref;
 
 /**
  * Created by Gui Zhou on 2016/3/17.
@@ -31,15 +32,16 @@ public class MUHLinkClient implements MUHLinkStream.MUHLinkOutputStream{
     };
 
     //protected DiygcsAPPPrefs mAppPrefs;
+    protected FarmInfoAppPref farmInfoAppPref;
     private final MUHLinkStream.MuhLinkInputStream listener;
     private MUHLinkConnection droneConn;
-    private final Context context;
 
     public MUHLinkClient(Context context, MUHLinkStream.MuhLinkInputStream listener, MUHLinkConnection droneConn) {
-        this.context = context;
+
         this.listener = listener;
         this.droneConn = droneConn;
 
+        farmInfoAppPref = new FarmInfoAppPref(context);
         //mAppPrefs = new DiygcsAPPPrefs(context);
     }
 
@@ -61,7 +63,7 @@ public class MUHLinkClient implements MUHLinkStream.MUHLinkOutputStream{
 
         if(connectionType == ConnectionType.TYPE_TCP) {
             Log.i(TAG, "CONN_VIA_TCP");
-            //droneConn = new TCPConnection(mAppPrefs.getTcpServerIp(), mAppPrefs.getTcpServerPort());
+            droneConn = new TCPConnection(farmInfoAppPref.getTcpServerIp(), farmInfoAppPref.getTcpServerPort());
             //droneConn.connect();
         } else if(connectionType == ConnectionType.TYPE_UDP) {
             Log.i(TAG, "CONN_VIA_UDP");

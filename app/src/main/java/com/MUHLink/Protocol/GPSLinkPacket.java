@@ -2,6 +2,7 @@ package com.MUHLink.Protocol;
 
 import com.MUHLink.Protocol.Messages.MUHLinkPayload;
 import com.MUHLink.Protocol.common.CRC;
+import com.MUHLink.Protocol.common.GPSCRC;
 
 import java.io.Serializable;
 
@@ -30,7 +31,7 @@ public class GPSLinkPacket implements Serializable {
     public int header[] = new int[28];
 
     public MUHLinkPayload payload;
-    public CRC crc;
+    public GPSCRC crc;
 
     public GPSLinkPacket() {
         payload = new MUHLinkPayload();
@@ -44,7 +45,7 @@ public class GPSLinkPacket implements Serializable {
         if(payload.size() >= MUHLinkPayload.MAX_PAYLOAD_SIZE-1) {
             return true;
         }
-        return (payload.size() == len);
+        return (payload.size() == msg_len);
     }
 
     /**
@@ -53,12 +54,24 @@ public class GPSLinkPacket implements Serializable {
     public void generateCRC() {
 
         //TODO
-        crc = new CRC();
-        crc.update_checksum(len);
-        crc.update_checksum(seq);
-        crc.update_checksum(sysID);
-        crc.update_checksum(compID);
-        crc.update_checksum(msgID);
+        crc = new GPSCRC();
+
+        crc.update_checksum(magic1);
+        crc.update_checksum(magic2);
+        crc.update_checksum(magic3);
+        crc.update_checksum(header_len);
+        crc.update_checksum(msg_ID);
+        crc.update_checksum(msg_type);
+        crc.update_checksum(portAddr);
+        crc.update_checksum(msg_len);
+        crc.update_checksum(sequence);
+        crc.update_checksum(idle_time);
+        crc.update_checksum(time_status);
+        crc.update_checksum(week);
+        crc.update_checksum(ms);
+        crc.update_checksum(receiverStatus);
+        crc.update_checksum(reserved);
+        crc.update_checksum(receiverSWVersion);
 
         payload.resetIndex();
         for(int i = 0; i < payload.size(); i++) {

@@ -1,3 +1,103 @@
 <?xml version="1.0" encoding="utf-8"?>
-<items version="2" />
+<items version="2" >
 
+    <item
+        jar="E:\programming\android\GetPoint\app\libs\baidumapapi_radar_v3_7_3.jar"
+        jumboMode="true"
+        revision="23.0.3"
+        sha1="285cb61966027336b8cc418a6a3ec159039aa0c2">
+        <dex dex="E:\programming\android\GetPoint\app\build\intermediates\pre-dexed\debug\baidumapapi_radar_v3_7_3_f52d0c37ec537bcf756fec62f23a4911508deb4e.jar" />
+    </item>
+    <item
+        jar="E:\programming\android\GetPoint\app\build\intermediates\incremental-classes\debug\instant-run-bootstrap.jar"
+        jumboMode="true"
+        revision="23.0.3"
+        sha1="0fe2c00022f8fd180a617c87e054ce2993598dc0">
+        <dex dex="E:\programming\android\GetPoint\app\build\intermediates\pre-dexed\debug\instant-run-bootstrap_418eb7abed6158a00684e16755e81bb729b0ff1f.jar" />
+    </item>
+    <item
+        jar="E:\programming\android\GetPoint\app\build\intermediates\exploded-aar\com.android.support\design\22.2.1\jars\classes.jar"
+        jumboMode="true"
+        revision="23.0.3"
+        sha1="1821601ddbec5ff125653097812823388700af74">
+        <dex dex="E:\programming\android\GetPoint\app\build\intermediates\pre-dexed\debug\com.android.support-design-22.2.1_395dc611a1e34da14384e596ae932347ac2bb162.jar" />
+    </item>
+    <item
+        jar="E:\programming\android\GetPoint\app\build\intermediates\exploded-aar\com.android.support\support-v4\22.2.1\jars\classes.jar"
+        jumboMode="true"
+        revision="23.0.3"
+        sha1="f8efd0096475e0daf054267b61544e10dc776503">
+        <dex dex="E:\programming\android\GetPoint\app\build\intermediates\pre-dexed\debug\com.android.support-support-v4-22.2.1_4eb3b45cd4685fca9fe1d66c2334575aa2e7cc70.jar" />
+    </item>
+    <item
+        jar="E:\programming\android\GetPoint\app\libs\baidumapapi_search_v3_7_3.jar"
+        jumboMode="true"
+        revision="23.0.3"
+        sha1="dea8cea1cf2639d2a92718333f47f5a7bef25b17">
+        <dex dex="E:\programming\android\GetPoint\app\build\intermediates\pre-dexed\debug\baidumapapi_search_v3_7_3_e96cfb9d67a6e632ad696514d87473011e1e8cc6.jar" />
+    </item>
+    <item
+        jar="E:\programming\android\GetPoint\app\build\intermediates\exploded-aar\com.android.support\support-v4\22.2.1\jars\libs\internal_impl-22.2.1.jar"
+        jumboMode="true"
+        revision="23.0.3"
+        sha1="c471eaaba13ff64f6e0383d1c30a9cdc9a97efeb">
+        <dex dex="E:\programming\android\GetPoint\app\build\intermediates\pre-dexed\debug\internal_impl-22.2.1_7d93383bb8e06f2bd1918642d270654fb3b6f482.jar" />
+    </item>
+    <item
+        jar="E:\programming\android\GetPoint\app\build\intermediates\incremental-runtime-classes\debug\instant-run.jar"
+        jumboMode="true"
+        revision="23.0.3"
+        sha1="769d6d468c204a014177f04338fb1790ea132c28">
+        <dex dex="E:\programming\android\GetPoint\app\build\intermediates\pre-dexed\debug\instant-run_587f94cdc36deee33e156b34d2c04899aef7e258.jar" />
+    </item>
+    <item
+        jar="E:\programming\android\GetPoint\app\libs\baidumapapi_cloud_v3_7_3.jar"
+        jumboMode="true"
+        revision="23.0.3"
+        sha1="1bfd60b172276bd6c127e1b020578ba8943cb817">
+        <dex dex="E:\programming\android\GetPoint\app\build\intermediates\pre-dexed\debug\baidumapapi_cloud_v3_7_3_85da6e9a60526c4006fd311a4aa6aa825d8ac559.jar" />
+    </item>
+    <item
+        jar="E:\programming\android\GetPoint\app\libs\baidumapapi_map_v3_7_3.jar"
+        jumboMode="true"
+        revision="23.0.3"
+        sha1="b18498f0ff59163574118729da41b7e89971d713">
+        <dex dex="E:\programming\android\GetPoint\app\build\intermediates\pre-dexed\debug\baidumapapi_map_v3_7_3_8650a652d137e59d481d8fd3ba8625661f6ad990.jar" />
+    </item>
+    <item
+        jar="E:\programming\android\GetPoint\app\libs\BaiduLBS_Android.jar"
+        jumboMode="true"
+        revision="23.0.3"
+        sha1="6f01713a57140ee3d45ec63e850d4c445a61acc7">
+        <dex dex="E:\programming\android\GetPoint\app\build\intermediates\pre-dexed\debug\BaiduLBS_Android_2efba7a63f220e090adc5de536b670166467a17a.jar" />
+    </item>
+    <item
+        jar="E:\programming\android\GetPoint\app\libs\baidumapapi_util_v3_7_3.jar"
+        jumboMode="true"
+        revision="23.0.3"
+        sha1="77f23565c6bc14129d2ec152c809161343cdeaad">
+        <dex dex="E:\programming\android\GetPoint\app\build\intermediates\pre-dexed\debug\baidumapapi_util_v3_7_3_2c15ea7e0a60005e6f2b5b362e37feaf91d03707.jar" />
+    </item>
+    <item
+        jar="E:\programming\android\GetPoint\app\libs\baidumapapi_base_v3_7_3.jar"
+        jumboMode="true"
+        revision="23.0.3"
+        sha1="26aec1b74c9e42fb4f27432b79cf9e65365f5612">
+        <dex dex="E:\programming\android\GetPoint\app\build\intermediates\pre-dexed\debug\baidumapapi_base_v3_7_3_e6e4a67fb8ea5124a4ff3f63c7a36d8e07b91a0b.jar" />
+    </item>
+    <item
+        jar="E:\programming\android\GetPoint\app\build\intermediates\exploded-aar\com.android.support\appcompat-v7\22.2.1\jars\classes.jar"
+        jumboMode="true"
+        revision="23.0.3"
+        sha1="4486e953d1f35f8ccab098b1dd67146366d5f731">
+        <dex dex="E:\programming\android\GetPoint\app\build\intermediates\pre-dexed\debug\com.android.support-appcompat-v7-22.2.1_d3ce8b51f5cfb8867d014cef26ba8f20256cd667.jar" />
+    </item>
+    <item
+        jar="D:\Android\android-sdk\extras\android\m2repository\com\android\support\support-annotations\22.2.1\support-annotations-22.2.1.jar"
+        jumboMode="true"
+        revision="23.0.3"
+        sha1="61a0ff5c29295ec56d7e0bd3d25d95dbf71b4b2b">
+        <dex dex="E:\programming\android\GetPoint\app\build\intermediates\pre-dexed\debug\support-annotations-22.2.1_b03c26d626ec785829bbbfadec068bccc5ca77c5.jar" />
+    </item>
+
+</items>

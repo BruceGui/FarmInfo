@@ -116,8 +116,6 @@ public class Parser {
                     state = Datalink_states.DATALINK_PARSE_STATE_UNINIT;
                 }
                 break;
-
-
         }
 
         if(msg_received) {

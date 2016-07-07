@@ -101,7 +101,6 @@ public class GPSParser {
                 break;
             case GPSLINK_PARSE_STATE_GOT_STX3:
                 m.header_len = c;
-                ;
                 state = Datalink_states.GPSLINK_PARSE_STATE_GOT_HEADERLEN;
                 break;
             case GPSLINK_PARSE_STATE_GOT_HEADERLEN:
@@ -207,35 +206,33 @@ public class GPSParser {
                 }
                 break;
             case GPSLINK_PARSE_STATE_GOT_PAYLOAD:
-                if (c == m.crc.getLSB()) {
+                if (c == m.crc.getLLSB()) {
                     state = Datalink_states.GPSLINK_PARSE_STATE_GOT_CK0;
                 } else {
                     msg_received = false;
-                    state = GPSLINK_PARSE_STATE_IDLE;
+                    state = Datalink_states.GPSLINK_PARSE_STATE_IDLE;
 
-                    if (c == GPSLINK_STX1) {
+                    if (c == MUH_MSG_ID.GPSLINK_STX1) {
                         m.magic1 = c;
-                        GPS_checksum_start(rxmsg);
-                        GPS_checksum_update(rxmsg, c);
-                        state = GPSLINK_PARSE_STATE_GOT_STX1;
+                        state = Datalink_states.GPSLINK_PARSE_STATE_GOT_STX1;
                     }
                 }
                 break;
             case GPSLINK_PARSE_STATE_GOT_CK0:
-                if (c == ((m.ck & 0x0000FF00) >> 8)) {
-                    state = GPSLINK_PARSE_STATE_GOT_CK1;
+                if (c == m.crc.getLMSB()) {
+                    state = Datalink_states.GPSLINK_PARSE_STATE_GOT_CK1;
                 } else {
                     msg_received = false;
-                    state = GPSLINK_PARSE_STATE_IDLE;
+                    state = Datalink_states.GPSLINK_PARSE_STATE_IDLE;
 
-                    if (c == GPSLINK_STX1) {
+                    if (c == MUH_MSG_ID.GPSLINK_STX1) {
                         m.magic1 = c;
-                        state = GPSLINK_PARSE_STATE_GOT_STX1;
+                        state = Datalink_states.GPSLINK_PARSE_STATE_GOT_STX1;
                     }
                 }
                 break;
             case GPSLINK_PARSE_STATE_GOT_CK1:
-                if (c == m.crc.getMSB()) {
+                if (c == m.crc.getMLSB()) {
                     state = Datalink_states.GPSLINK_PARSE_STATE_GOT_CK2;
                 } else {
                     msg_received = false;
@@ -245,6 +242,15 @@ public class GPSParser {
                         m.magic1 = c;
                         state = Datalink_states.GPSLINK_PARSE_STATE_GOT_STX1;
                     }
+                }
+                break;
+            case GPSLINK_PARSE_STATE_GOT_CK2:
+                if (c == m.crc.getMMSB()) {
+                    msg_received = true;
+                    state = Datalink_states.GPSLINK_PARSE_STATE_UNINIT;
+                } else {
+                    msg_received = false;
+                    state = Datalink_states.GPSLINK_PARSE_STATE_IDLE;
                 }
                 break;
         }

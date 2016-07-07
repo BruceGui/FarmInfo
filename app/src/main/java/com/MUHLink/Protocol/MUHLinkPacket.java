@@ -7,6 +7,7 @@ package com.MUHLink.Protocol;
 import com.MUHLink.Protocol.Messages.MUHLinkMessage;
 import com.MUHLink.Protocol.Messages.MUHLinkPayload;
 import com.MUHLink.Protocol.common.CRC;
+import com.MUHLink.Protocol.common.GPSCRC;
 import com.MUHLink.Protocol.common.msg_attitude;
 import com.MUHLink.Protocol.common.msg_heartbeat;
 import com.MUHLink.Protocol.enums.MUH_MSG_ID;

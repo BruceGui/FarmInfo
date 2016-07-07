@@ -18,6 +18,8 @@ import android.widget.Toast;
 
 import com.MUHLink.Connection.MUHLinkClient;
 import com.MUHLink.Connection.MUHLinkConnection;
+import com.getpoint.farminfomanager.FarmInfoAppPref;
+import com.getpoint.farminfomanager.FarmInfoManagerApp;
 import com.getpoint.farminfomanager.GPSDeviceManager;
 import com.getpoint.farminfomanager.R;
 import com.getpoint.farminfomanager.entity.GPSInfo;
@@ -39,10 +41,10 @@ public class FarmInfoActivity extends AppCompatActivity{
     private ImageButton mGoToMyLocation;
     private ImageButton mZoomToFit;
 
-    private MUHLinkClient deviceClient;
-    private MUHLinkConnection deviceConnection;
+    private FarmInfoManagerApp farmApp;
     private GPSDeviceManager gpsDeviceManager;
     private LocalBroadcastManager localBroadcastManager;
+    private FarmInfoAppPref farmInfoAppPref;
 
 
     @Override
@@ -57,55 +59,13 @@ public class FarmInfoActivity extends AppCompatActivity{
         Log.i(TAG, "ACtivity FarmInfo");
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-
-        getMenuInflater().inflate(R.menu.menu_home_fragment, menu);
-        return super.onCreateOptionsMenu(menu);
-    }
-
-    @Override
-    public boolean onPrepareOptionsMenu(Menu menu) {
-
-        final MenuItem toggleConnectionItem = menu.findItem(R.id.id_connect_act);
-
-        if(gpsDeviceManager.isconnect()) {
-            toggleConnectionItem.setTitle(R.string.disconnect);
-            menu.setGroupEnabled(R.id.id_menu_connected, true);
-            menu.setGroupVisible(R.id.id_menu_connected, true);
-        } else {
-            toggleConnectionItem.setTitle(R.string.connect);
-            menu.setGroupEnabled(R.id.id_menu_connected, false);
-            menu.setGroupVisible(R.id.id_menu_connected, false);
-        }
-
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        Intent intent;
-        switch (item.getItemId()) {
-            case R.id.id_connect_act:
-                break;
-            case R.id.id_setting:
-                intent = new Intent(FarmInfoActivity.this, SettingActivity.class);
-                Log.i(TAG, "Not Online");
-                startActivity(intent);
-                break;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-
-        return true;
-
-    }
 
     private void initCompVariable() {
 
+        farmInfoAppPref = new FarmInfoAppPref(getApplicationContext());
         localBroadcastManager = LocalBroadcastManager.getInstance(getApplicationContext());
-        gpsDeviceManager = new GPSDeviceManager(getApplicationContext(), deviceConnection,
-                localBroadcastManager);
+        farmApp = (FarmInfoManagerApp)getApplication();
+        gpsDeviceManager =  farmApp.getGpsDeviceManager();
 
         fragmentManager = getSupportFragmentManager();
         mFloatingAct = (FloatingActionButton)findViewById(R.id.farm_info_fab);
@@ -153,6 +113,63 @@ public class FarmInfoActivity extends AppCompatActivity{
                 ).commit();
             }
         }
+
+    }
+
+    private void toggleconnection() {
+
+        if(gpsDeviceManager.isconnect()) {
+            gpsDeviceManager.disconnect();
+        } else {
+            gpsDeviceManager.connect(farmInfoAppPref.getConnectionParameterType());
+        }
+
+    }
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+
+        getMenuInflater().inflate(R.menu.menu_home_fragment, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+
+        final MenuItem toggleConnectionItem = menu.findItem(R.id.id_connect_act);
+
+        if(gpsDeviceManager.isconnect()) {
+            toggleConnectionItem.setTitle(R.string.disconnect);
+            menu.setGroupEnabled(R.id.id_menu_connected, true);
+            menu.setGroupVisible(R.id.id_menu_connected, true);
+        } else {
+            toggleConnectionItem.setTitle(R.string.connect);
+            menu.setGroupEnabled(R.id.id_menu_connected, false);
+            menu.setGroupVisible(R.id.id_menu_connected, false);
+        }
+
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        Intent intent;
+        switch (item.getItemId()) {
+            case R.id.id_connect_act:
+                toggleconnection();
+                break;
+            case R.id.id_setting:
+                intent = new Intent(FarmInfoActivity.this, SettingActivity.class);
+                Log.i(TAG, "Not Online");
+                startActivity(intent);
+                break;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+
+        return true;
 
     }
 }
