@@ -28,7 +28,7 @@ public class GPSLinkPacket implements Serializable {
     public int receiverStatus;
     public int reserved;
     public int receiverSWVersion;
-    public int header[] = new int[28];
+    //public int header[] = new int[28];
 
     public MUHLinkPayload payload;
     public GPSCRC crc;

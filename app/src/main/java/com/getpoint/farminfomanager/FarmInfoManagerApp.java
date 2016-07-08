@@ -30,6 +30,10 @@ public class FarmInfoManagerApp extends Application {
 
     }
 
+    public GPS getGps() {
+        return this.gps;
+    }
+
     public GPSDeviceManager getGpsDeviceManager() {
         return this.gpsDeviceManager;
     }

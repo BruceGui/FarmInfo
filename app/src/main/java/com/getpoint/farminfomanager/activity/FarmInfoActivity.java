@@ -26,6 +26,8 @@ import com.getpoint.farminfomanager.R;
 import com.getpoint.farminfomanager.entity.GPSInfo;
 import com.getpoint.farminfomanager.entity.NativeGPSInfo;
 import com.getpoint.farminfomanager.fragment.BaiduMapFragment;
+import com.getpoint.farminfomanager.utils.GPS;
+import com.getpoint.farminfomanager.utils.LatLong;
 
 /**
  * Created by Gui Zhou on 2016-07-05.
@@ -46,6 +48,7 @@ public class FarmInfoActivity extends AppCompatActivity{
     private GPSDeviceManager gpsDeviceManager;
     private LocalBroadcastManager localBroadcastManager;
     private FarmInfoAppPref farmInfoAppPref;
+    private GPS gps;
 
 
     @Override
@@ -67,6 +70,7 @@ public class FarmInfoActivity extends AppCompatActivity{
         localBroadcastManager = LocalBroadcastManager.getInstance(getApplicationContext());
         farmApp = (FarmInfoManagerApp)getApplication();
         gpsDeviceManager =  farmApp.getGpsDeviceManager();
+        gps = farmApp.getGps();
 
         fragmentManager = getSupportFragmentManager();
         mFloatingAct = (FloatingActionButton)findViewById(R.id.farm_info_fab);
@@ -104,7 +108,9 @@ public class FarmInfoActivity extends AppCompatActivity{
         mGoToMyLocation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mapFragment.goToMyLocation();
+                //mapFragment.goToMyLocation();
+                LatLong latLong = new LatLong(gps.lat, gps.lon);
+                mapFragment.goToLocation(latLong);
             }
         });
 

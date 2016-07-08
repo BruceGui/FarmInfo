@@ -18,6 +18,7 @@ import com.baidu.mapapi.map.MapView;
 import com.baidu.mapapi.map.MyLocationConfiguration;
 import com.baidu.mapapi.map.MyLocationData;
 import com.baidu.mapapi.map.SupportMapFragment;
+import com.baidu.mapapi.model.LatLng;
 import com.getpoint.farminfomanager.utils.DroneHelper;
 import com.getpoint.farminfomanager.utils.LatLong;
 
@@ -106,6 +107,11 @@ public class BaiduMapFragment extends SupportMapFragment {
         MyLocationData locationData = getBaiduMap().getLocationData();
         if(locationData != null)
             updateCamera(DroneHelper.BDLocationToCoord(locationData), GO_TO_MY_LOCATION_ZOOM);
+    }
+
+    public void goToLocation(LatLong latLng) {
+        //updateCamera(DroneHelper.BaiduLatLngToCoord(latLng), GO_TO_MY_LOCATION_ZOOM);
+        updateCamera(latLng);
     }
 
     public void updateCamera(final LatLong coord, final float zoomLevel) {
