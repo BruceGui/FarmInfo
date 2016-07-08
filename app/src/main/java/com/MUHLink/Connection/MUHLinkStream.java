@@ -1,5 +1,6 @@
 package com.MUHLink.Connection;
 
+import com.MUHLink.Protocol.GPSLinkPacket;
 import com.MUHLink.Protocol.MUHLinkPacket;
 
 /**
@@ -24,7 +25,7 @@ public class MUHLinkStream {
 
         public void notifyDisconnected();
 
-        public void notifyReceivedData(MUHLinkPacket packet);
+        public void notifyReceivedData(GPSLinkPacket packet);
 
     }
 

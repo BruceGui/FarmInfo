@@ -12,12 +12,11 @@ import java.util.List;
  */
 public class FarmInfoAppPref {
 
-    private static final String DEFAULT_CONNECTION_TYPE = "TCP";
+    private static final String DEFAULT_CONNECTION_TYPE = "1";
     private static final String DEFAULT_TCP_SERVER_IP = "192.168.1.107";
     private static final String DEFAULT_TCP_SERVER_PORT = "5763";
     private static final String DEFAULT_UDP_SERVER_PORT = "12345";
 
-     private List<String> mGreeting = new ArrayList<>();
     /*
      * Public for legacy usage
      */

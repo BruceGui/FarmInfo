@@ -1,6 +1,7 @@
 package com.getpoint.farminfomanager.activity;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.support.design.widget.FloatingActionButton;
@@ -69,10 +70,24 @@ public class FarmInfoActivity extends AppCompatActivity{
 
         fragmentManager = getSupportFragmentManager();
         mFloatingAct = (FloatingActionButton)findViewById(R.id.farm_info_fab);
+
+        if(Build.VERSION.SDK_INT >= 21) {
+            mFloatingAct.setElevation(R.dimen.fab_elevation);
+        }
+
         mGoToMyLocation = (ImageButton)findViewById(R.id.my_location_button);
         mZoomToFit = (ImageButton)findViewById(R.id.zoom_to_fit_button);
 
         setupMapFragment();
+
+
+
+        Log.i(TAG, Build.VERSION.INCREMENTAL);
+        Log.i(TAG, Build.DEVICE);
+        Log.i(TAG, Build.VERSION.CODENAME);
+        Log.i(TAG, Build.VERSION.RELEASE);
+        Log.i(TAG, "" + Build.VERSION.SDK_INT);
+        Log.i(TAG, Build.BOARD);
 
     }
 

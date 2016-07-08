@@ -39,6 +39,10 @@ public class MUHLinkPayload {
         index = 0;
     }
 
+    public void setIndex(int index) {
+        this.index = index;
+    }
+
     public byte getByte() {
         byte result = 0;
         result |= (payload.get(index + 0) & 0xFF);

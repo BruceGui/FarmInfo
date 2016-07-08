@@ -2,6 +2,8 @@ package com.MUHLink.Connection;
 
 import android.util.Log;
 
+import com.MUHLink.Protocol.GPSLinkPacket;
+import com.MUHLink.Protocol.GPSParser;
 import com.MUHLink.Protocol.MUHLinkPacket;
 import com.MUHLink.Protocol.Parser;
 
@@ -56,22 +58,22 @@ public abstract class MUHLinkConnection {
                 openConnection();
                 mConnectionStatus.set(MUHLINK_CONNECTED);
                 reportConnect();
-                Log.i(TAG, "CONN-THREAD");
+                //Log.i(TAG, "CONN-THREAD");
 
                 /**
                  *  启动发送消息进程
                  */
                 sendingThread = new Thread(mSendingTask, "MUHLinkConnection-Sending Thread");
                 sendingThread.start();
-                Log.i(TAG, "SENDING-THREAD");
+                //Log.i(TAG, "SENDING-THREAD");
 
-                final Parser parser = new Parser();
+                final GPSParser parser = new GPSParser();
 
                 final byte[] readBuffer = new byte[READ_BUFFER_SIZE];
 
                 while (mConnectionStatus.get() == MUHLINK_CONNECTED) {
                     int bufferSize = readDataBlock(readBuffer);
-                    Log.i(TAG, "RECV-SOME-DATA");
+                    //Log.i(TAG, "RECV-SOME-DATA");
                     handleData(parser, bufferSize, readBuffer);
                 }
 
@@ -88,14 +90,14 @@ public abstract class MUHLinkConnection {
 
         }
 
-        private void handleData(Parser parser, int buffersize, byte[] buffer) {
+        private void handleData(GPSParser parser, int buffersize, byte[] buffer) {
             if(buffersize < 1) {
                 return ;
             }
 
-            Log.i(TAG, "Handler-Data: " + buffersize);
+            //Log.i(TAG, "Handler-Data: " + buffersize);
             for(int i = 0; i < buffersize; i++) {
-                MUHLinkPacket receivedPacket = parser.datalink_parser_char(buffer[i] & 0x00ff);
+                GPSLinkPacket receivedPacket = parser.datalink_parser_char(buffer[i] & 0x00ff);
                 if(receivedPacket != null) {
                     /**
                      *  真正处理数据的地方
@@ -245,7 +247,7 @@ public abstract class MUHLinkConnection {
      *  用来通知接口监听者接收到数据包了
      * @param packet 接收到的数据包
      */
-    private void reportReceivedPack(MUHLinkPacket packet) {
+    private void reportReceivedPack(GPSLinkPacket packet) {
         if(mListeners.isEmpty())
             return ;
 

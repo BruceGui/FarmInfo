@@ -48,6 +48,11 @@ public class GPSLinkPacket implements Serializable {
         return (payload.size() == msg_len);
     }
 
+
+    public void startCRC() {
+        crc = new GPSCRC();
+    }
+
     /**
      * 生成校验和
      */
@@ -56,6 +61,7 @@ public class GPSLinkPacket implements Serializable {
         //TODO
         crc = new GPSCRC();
 
+        /*
         crc.update_checksum(magic1);
         crc.update_checksum(magic2);
         crc.update_checksum(magic3);
@@ -72,11 +78,14 @@ public class GPSLinkPacket implements Serializable {
         crc.update_checksum(receiverStatus);
         crc.update_checksum(reserved);
         crc.update_checksum(receiverSWVersion);
+        */
 
+        /*
         payload.resetIndex();
         for(int i = 0; i < payload.size(); i++) {
             crc.update_checksum(payload.getByte());
         }
+        */
     }
 
 }

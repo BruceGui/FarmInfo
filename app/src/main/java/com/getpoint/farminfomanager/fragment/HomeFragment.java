@@ -93,8 +93,8 @@ public class HomeFragment extends Fragment {
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         localBroadcastManager = LocalBroadcastManager.getInstance(activity.getApplicationContext());
-        gpsDeviceManager = new GPSDeviceManager(activity.getApplicationContext(), deviceConnection,
-                localBroadcastManager);
+        //gpsDeviceManager = new GPSDeviceManager(activity.getApplicationContext(), deviceConnection,
+         //       localBroadcastManager);
     }
 
     @Override

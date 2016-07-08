@@ -3,8 +3,10 @@ package com.MUHLink.Connection;
 import android.content.Context;
 import android.util.Log;
 
+import com.MUHLink.Protocol.GPSLinkPacket;
 import com.MUHLink.Protocol.MUHLinkPacket;
 import com.getpoint.farminfomanager.FarmInfoAppPref;
+import com.getpoint.farminfomanager.GPSDeviceManager;
 
 /**
  * Created by Gui Zhou on 2016/3/17.
@@ -21,8 +23,9 @@ public class MUHLinkClient implements MUHLinkStream.MUHLinkOutputStream{
         }
 
         @Override
-        public void onReceivePacket(MUHLinkPacket packet) {
+        public void onReceivePacket(GPSLinkPacket packet) {
             listener.notifyReceivedData(packet);
+            //Log.i(TAG, "notify Data Recv");
         }
 
         @Override

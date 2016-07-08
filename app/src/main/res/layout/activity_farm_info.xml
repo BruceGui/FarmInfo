@@ -14,7 +14,20 @@
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_marginEnd="@dimen/map_button_end"
-        android:layout_marginTop="@dimen/map_button_top"/>
+        android:layout_marginTop="@dimen/map_button_top" />
+
+    <include
+        layout="@layout/gps_device_info"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true" />
+
+    <include
+        layout="@layout/gps_device_info"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true" />
+
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/farm_info_fab"
@@ -23,6 +36,7 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
         android:layout_margin="@dimen/fab_margin"
-        android:src="@mipmap/ic_add"/>
+        android:src="@drawable/ic_add_black_24dp"/>
+
 
 </RelativeLayout>
