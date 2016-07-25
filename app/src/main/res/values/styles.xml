@@ -100,4 +100,20 @@
         <item name="android:textColor">#4d4d4d</item>
     </style>
 
+    <!-- GPS Device Info show style -->
+
+    <style name="commonTextGPS" >
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <style name="commonInfoGPS" >
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_weight">2</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
 </resources>

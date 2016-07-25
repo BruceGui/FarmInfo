@@ -1,12 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/gpsInfoBackground">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:text="GPS_Device_INFO"/>
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            style="@style/commonTextGPS"
+            android:text="@string/lon_str"/>
+
+        <TextView
+            android:id="@+id/lon_value"
+            style="@style/commonInfoGPS"/>
+
+        <TextView
+            style="@style/commonTextGPS"
+            android:text="@string/lat_str"/>
+
+        <TextView
+            android:id="@+id/lat_value"
+            style="@style/commonInfoGPS"/>
+
+        <TextView
+            style="@style/commonTextGPS"
+            android:text="@string/hei_str"/>
+
+        <TextView
+            android:id="@+id/hei_value"
+            style="@style/commonInfoGPS"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+    </LinearLayout>
 
 </LinearLayout>

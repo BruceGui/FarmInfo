@@ -91,7 +91,6 @@ public class msg_gps_bestpos extends GPSMessage {
         Log.i(TAG, "sol_age: " + this.sol_age);
         Log.i(TAG, "used: " + this.used);
 
-
         Log.i(TAG, gpsutcTime.year + "年" +
                 gpsutcTime.month + "月" +
                 gpsutcTime.day + "日");

@@ -1,6 +1,9 @@
 package com.getpoint.farminfomanager.activity;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.PersistableBundle;
@@ -26,8 +29,11 @@ import com.getpoint.farminfomanager.R;
 import com.getpoint.farminfomanager.entity.GPSInfo;
 import com.getpoint.farminfomanager.entity.NativeGPSInfo;
 import com.getpoint.farminfomanager.fragment.BaiduMapFragment;
+import com.getpoint.farminfomanager.utils.AttributesEvent;
 import com.getpoint.farminfomanager.utils.GPS;
 import com.getpoint.farminfomanager.utils.LatLong;
+
+import org.w3c.dom.Attr;
 
 /**
  * Created by Gui Zhou on 2016-07-05.
@@ -50,6 +56,37 @@ public class FarmInfoActivity extends AppCompatActivity{
     private FarmInfoAppPref farmInfoAppPref;
     private GPS gps;
 
+    /**
+     *  初始化广播事件过滤器和广播接收器
+     */
+    private static final IntentFilter eventFilter = new IntentFilter();
+    static {
+        eventFilter.addAction(AttributesEvent.GPS_MSG_BESTVEL);
+        eventFilter.addAction(AttributesEvent.GPS_MSG_BESTPOS);
+        eventFilter.addAction(AttributesEvent.GPS_MSG_PSRDOP);
+    }
+
+    private final BroadcastReceiver eventReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+
+            final String action = intent.getAction();
+            final GPS gps = farmApp.getGps();
+
+            if(AttributesEvent.GPS_MSG_BESTPOS.equals(action)) {
+
+            }
+
+            if(AttributesEvent.GPS_MSG_BESTVEL.equals(action)) {
+
+            }
+
+            if(AttributesEvent.GPS_MSG_PSRDOP.equals(action)) {
+
+            }
+
+        }
+    };
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -59,6 +96,8 @@ public class FarmInfoActivity extends AppCompatActivity{
 
         initCompVariable();
         initCompListener();
+
+        farmApp.getLocalBroadcastManager().registerReceiver(eventReceiver, eventFilter);
 
         Log.i(TAG, "ACtivity FarmInfo");
     }
@@ -83,7 +122,6 @@ public class FarmInfoActivity extends AppCompatActivity{
         mZoomToFit = (ImageButton)findViewById(R.id.zoom_to_fit_button);
 
         setupMapFragment();
-
 
 
         Log.i(TAG, Build.VERSION.INCREMENTAL);
@@ -192,5 +230,12 @@ public class FarmInfoActivity extends AppCompatActivity{
 
         return true;
 
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        farmApp.getLocalBroadcastManager().unregisterReceiver(eventReceiver);
     }
 }

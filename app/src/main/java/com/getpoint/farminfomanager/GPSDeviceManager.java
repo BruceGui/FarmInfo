@@ -1,6 +1,7 @@
 package com.getpoint.farminfomanager;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
@@ -13,6 +14,7 @@ import com.MUHLink.Protocol.common.msg_gps_bestpos;
 import com.MUHLink.Protocol.common.msg_gps_bestvel;
 import com.MUHLink.Protocol.common.msg_gps_psrdop;
 import com.MUHLink.Protocol.enums.MUH_MSG_ID;
+import com.getpoint.farminfomanager.utils.AttributesEvent;
 import com.getpoint.farminfomanager.utils.GPS;
 
 /**
@@ -49,6 +51,11 @@ public class GPSDeviceManager implements MUHLinkStream.MuhLinkInputStream {
         return deviceClient.isConnected();
     }
 
+    private void sendMsgEvent(String event) {
+        Intent i = new Intent(event);
+        this.localBroadcastManager.sendBroadcast(i);
+    }
+
     @Override
     public void notifyConnected() {
 
@@ -67,14 +74,19 @@ public class GPSDeviceManager implements MUHLinkStream.MuhLinkInputStream {
             case MUH_MSG_ID.GPS_BIN_BESTPOS:
                 Log.i(TAG, "GOTPOS");
                 gps.getGPSBestPosMSG(new msg_gps_bestpos(packet));
+                sendMsgEvent(AttributesEvent.GPS_MSG_BESTPOS);
                 break;
             case MUH_MSG_ID.GPS_BIN_PSRDOP:
                 Log.i(TAG, "GOTDOP");
                 gps.getGPSPsrDopMSG(new msg_gps_psrdop(packet));
+                sendMsgEvent(AttributesEvent.GPS_MSG_PSRDOP);
                 break;
             case MUH_MSG_ID.GPS_BIN_BESTVEL:
                 Log.i(TAG, "GOTVEL");
                 gps.getGPSBestVelMSG(new msg_gps_bestvel(packet));
+                sendMsgEvent(AttributesEvent.GPS_MSG_BESTVEL);
+                break;
+            default:
                 break;
         }
     }

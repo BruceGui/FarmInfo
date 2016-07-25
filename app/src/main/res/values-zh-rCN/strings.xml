@@ -9,9 +9,9 @@
     <string name="on_off">打开/关闭</string>
     <string name="exit">退出</string>
     <string name="gps">GPS:</string>
-    <string name="lon">Lon:</string>
-    <string name="lat">Lat:</string>
-    <string name="h">H:</string>
+    <string name="lon_str">经度:</string>
+    <string name="lat_str">纬度:</string>
+    <string name="hei_str">高度:</string>
     <string name="l_dop">LDop:</string>
     <string name="v_dop">VDop:</string>
     <string name="h_dop">HDop:</string>

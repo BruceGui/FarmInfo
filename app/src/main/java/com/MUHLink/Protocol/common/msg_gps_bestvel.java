@@ -3,15 +3,18 @@ package com.MUHLink.Protocol.common;
 import com.MUHLink.Protocol.GPSLinkPacket;
 import com.MUHLink.Protocol.Messages.GPSMessage;
 import com.MUHLink.Protocol.Messages.MUHLinkPayload;
+import com.getpoint.farminfomanager.utils.GPSUTCTime;
 
 /**
  * Created by Gui Zhou on 2016-07-08.
  */
 public class msg_gps_bestvel  extends GPSMessage{
 
-    public float Vd;
-    public float track;
-    public float Hdot;
+    public GPSUTCTime gpsutcTime;
+
+    public double Vd;
+    public double track;
+    public double Hdot;
 
     public msg_gps_bestvel(GPSLinkPacket packet) {
 
@@ -29,6 +32,8 @@ public class msg_gps_bestvel  extends GPSMessage{
         this.reserved          = packet.reserved;
         this.receiverSWVersion = packet.receiverSWVersion;
 
+        this.gpsutcTime = new GPSUTCTime(this.week, this.ms);
+
         unpack(packet.payload);
 
     }
@@ -36,7 +41,12 @@ public class msg_gps_bestvel  extends GPSMessage{
     @Override
     public void unpack(MUHLinkPayload payload) {
 
-        payload.setIndex(4);
+        payload.setIndex(16);
+
+        this.Vd    = payload.getDouble();
+        this.track = payload.getDouble();
+        this.Hdot  = payload.getDouble();
+
 
     }
 

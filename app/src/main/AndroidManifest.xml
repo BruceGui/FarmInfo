@@ -34,30 +34,6 @@
         </activity>
 
         <activity
-            android:name="com.getpoint.farminfomanager.activity.HomeActivity"
-            android:label="@string/app_name">
-
-        </activity>
-
-        <activity
-            android:name="com.getpoint.farminfomanager.activity.MissionManagerActivity"
-            android:label="@string/mission_manager">
-
-        </activity>
-
-        <activity
-            android:name="com.getpoint.farminfomanager.activity.NewMissionActivity"
-            android:label="@string/new_mission_title">
-
-        </activity>
-
-        <activity
-            android:name="com.getpoint.farminfomanager.activity.MeasureActivity"
-            android:label="@string/measure">
-
-        </activity>
-
-        <activity
             android:name="com.getpoint.farminfomanager.activity.SettingActivity"
             android:label="@string/app_setting">
 
