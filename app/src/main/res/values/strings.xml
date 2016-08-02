@@ -25,6 +25,7 @@
     <string name="lon_str">Longitude:</string>
     <string name="lat_str">Latitude:</string>
     <string name="hei_str">Height:</string>
+    <string name="altitude_label">Altitude</string>
     <string name="l_dop">LDop:</string>
     <string name="v_dop">VDop:</string>
     <string name="h_dop">HDop:</string>

@@ -29,6 +29,8 @@ import com.getpoint.farminfomanager.R;
 import com.getpoint.farminfomanager.entity.GPSInfo;
 import com.getpoint.farminfomanager.entity.NativeGPSInfo;
 import com.getpoint.farminfomanager.fragment.BaiduMapFragment;
+import com.getpoint.farminfomanager.fragment.Mission.DangerPointFragment;
+import com.getpoint.farminfomanager.fragment.Mission.FramePointFragment;
 import com.getpoint.farminfomanager.utils.AttributesEvent;
 import com.getpoint.farminfomanager.utils.GPS;
 import com.getpoint.farminfomanager.utils.LatLong;
@@ -44,6 +46,9 @@ import org.w3c.dom.Attr;
 public class FarmInfoActivity extends AppCompatActivity implements MorphLayout.OnMorphListener{
 
     private static final String TAG = "FarmInfoActivity";
+
+    private FramePointFragment framePointFragment;
+    private DangerPointFragment dangerPointFragment;
 
     private BaiduMapFragment mapFragment;
     private FloatingActionButton mFloatingAct;
@@ -152,6 +157,7 @@ public class FarmInfoActivity extends AppCompatActivity implements MorphLayout.O
             public void onClick(View v) {
                 mFloatingAct.toggle();
                 mPointInfoLayout.morph(true, true);
+                setupPointDetailFragment();
             }
         });
 
@@ -180,6 +186,18 @@ public class FarmInfoActivity extends AppCompatActivity implements MorphLayout.O
                 }
             }
         });
+    }
+
+    private void setupPointDetailFragment() {
+
+        if(framePointFragment == null) {
+            framePointFragment = new FramePointFragment();
+
+            fragmentManager.beginTransaction().add(
+                    R.id.point_detail_fragment, framePointFragment
+            ).commit();
+        }
+
     }
 
     private void setupMapFragment() {

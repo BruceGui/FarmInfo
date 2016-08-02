@@ -3,29 +3,28 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:text="Mission_Point_Info"/>
+    <FrameLayout
+        android:id="@+id/point_detail_fragment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 
     <LinearLayout
-        android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        >
-        
+        android:layout_below="@id/point_detail_fragment"
+        android:orientation="horizontal">
+
         <Button
             android:id="@+id/point_cancel_btn"
             style="@style/btnStyle"
-            android:text="@string/btn_cancel"
-            android:background="@color/btnCancelColor"/>
-        
+            android:background="@color/btnCancelColor"
+            android:text="@string/btn_cancel" />
+
         <Button
             android:id="@+id/point_ok_btn"
             style="@style/btnStyle"
-            android:text="@string/btn_ok"
-            android:background="@color/btnOkColor" />
+            android:background="@color/btnOkColor"
+            android:text="@string/btn_ok" />
 
     </LinearLayout>
 
