@@ -9,5 +9,7 @@
     <dimen name="map_button_end">15dp</dimen>
     <dimen name="setup_action_button_width">90dp</dimen>
     <dimen name="setup_title_text_size">18sp</dimen>
+    <dimen name="fab_radius_default">28dp</dimen>
+    <dimen name="fab_redius_mini">20dp</dimen>
 
 </resources>

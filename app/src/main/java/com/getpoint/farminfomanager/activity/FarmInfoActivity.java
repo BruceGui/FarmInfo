@@ -7,7 +7,6 @@ import android.content.IntentFilter;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.PersistableBundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.content.LocalBroadcastManager;
@@ -17,6 +16,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
@@ -33,22 +33,28 @@ import com.getpoint.farminfomanager.utils.AttributesEvent;
 import com.getpoint.farminfomanager.utils.GPS;
 import com.getpoint.farminfomanager.utils.LatLong;
 
+import com.getpoint.farminfomanager.weights.FloatingActionButton;
+import com.getpoint.farminfomanager.weights.MorphLayout;
+
 import org.w3c.dom.Attr;
 
 /**
  * Created by Gui Zhou on 2016-07-05.
  */
-public class FarmInfoActivity extends AppCompatActivity{
+public class FarmInfoActivity extends AppCompatActivity implements MorphLayout.OnMorphListener{
 
     private static final String TAG = "FarmInfoActivity";
 
     private BaiduMapFragment mapFragment;
-    FloatingActionButton mFloatingAct;
+    private FloatingActionButton mFloatingAct;
+    private MorphLayout mPointInfoLayout;
 
     private FragmentManager fragmentManager;
 
     private ImageButton mGoToMyLocation;
     private ImageButton mZoomToFit;
+    private Button mPointOkBtn;
+    private Button mPointCancelBtn;
 
     private FarmInfoManagerApp farmApp;
     private GPSDeviceManager gpsDeviceManager;
@@ -114,12 +120,18 @@ public class FarmInfoActivity extends AppCompatActivity{
         fragmentManager = getSupportFragmentManager();
         mFloatingAct = (FloatingActionButton)findViewById(R.id.farm_info_fab);
 
+        mPointInfoLayout = (MorphLayout)findViewById(R.id.point_info_morph);
+        mPointInfoLayout.setMorphListener(this);
+        mPointInfoLayout.setFab(mFloatingAct);
+
         if(Build.VERSION.SDK_INT >= 21) {
             mFloatingAct.setElevation(R.dimen.fab_elevation);
         }
 
         mGoToMyLocation = (ImageButton)findViewById(R.id.my_location_button);
         mZoomToFit = (ImageButton)findViewById(R.id.zoom_to_fit_button);
+        mPointOkBtn = (Button)findViewById(R.id.point_ok_btn);
+        mPointCancelBtn = (Button)findViewById(R.id.point_cancel_btn);
 
         setupMapFragment();
 
@@ -138,8 +150,8 @@ public class FarmInfoActivity extends AppCompatActivity{
         mFloatingAct.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Snackbar.make(v, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                mFloatingAct.toggle();
+                mPointInfoLayout.morph(true, true);
             }
         });
 
@@ -156,6 +168,16 @@ public class FarmInfoActivity extends AppCompatActivity{
             @Override
             public void onClick(View v) {
 
+            }
+        });
+
+        mPointCancelBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(mPointInfoLayout.getState() == MorphLayout.State.MORPHED) {
+                    mFloatingAct.toggle();
+                    mPointInfoLayout.revert(true, true);
+                }
             }
         });
     }
@@ -185,6 +207,29 @@ public class FarmInfoActivity extends AppCompatActivity{
 
     }
 
+    /**
+     *  航点信息界面的监听函数
+     */
+
+    @Override
+    public void onMorphEnd() {
+
+    }
+
+    @Override
+    public void onMorphStart(int duration) {
+
+    }
+
+    @Override
+    public void onRevertEnd() {
+
+    }
+
+    @Override
+    public void onRevertStart(int duration) {
+
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -229,6 +274,18 @@ public class FarmInfoActivity extends AppCompatActivity{
         }
 
         return true;
+
+    }
+
+    @Override
+    public void onBackPressed() {
+
+        if(mPointInfoLayout.getState() == MorphLayout.State.MORPHED) {
+            mFloatingAct.toggle();
+            mPointInfoLayout.revert(true, true);
+        } else {
+            super.onBackPressed();
+        }
 
     }
 

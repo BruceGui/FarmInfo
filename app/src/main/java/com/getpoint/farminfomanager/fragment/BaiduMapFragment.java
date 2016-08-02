@@ -13,8 +13,10 @@ import com.baidu.location.BDLocationListener;
 import com.baidu.location.LocationClient;
 import com.baidu.location.LocationClientOption;
 import com.baidu.mapapi.map.BaiduMap;
+import com.baidu.mapapi.map.MapPoi;
 import com.baidu.mapapi.map.MapStatusUpdateFactory;
 import com.baidu.mapapi.map.MapView;
+import com.baidu.mapapi.map.Marker;
 import com.baidu.mapapi.map.MyLocationConfiguration;
 import com.baidu.mapapi.map.MyLocationData;
 import com.baidu.mapapi.map.SupportMapFragment;
@@ -51,23 +53,53 @@ public class BaiduMapFragment extends SupportMapFragment {
          */
         getBaiduMap().setMapType(BaiduMap.MAP_TYPE_SATELLITE);
         getBaiduMap().setMyLocationEnabled(true);
+        getMapView().showZoomControls(false);
+
         MyLocationConfiguration.LocationMode mLocationMode = MyLocationConfiguration.LocationMode.FOLLOWING;
         getBaiduMap().setMyLocationConfigeration(new
                 MyLocationConfiguration(mLocationMode, true, null));
-        getMapView().showZoomControls(false);
-        mLocClient = new LocationClient(context);
-        mLocClient.registerLocationListener(myListener);
-        LocationClientOption option = new LocationClientOption();
 
+        setupMapListener();
+
+        LocationClientOption option = new LocationClientOption();
         option.setOpenGps(true);// 打开gps
         option.setScanSpan(0);
         option.setCoorType("bd09ll"); // 设置坐标类型
 
+        mLocClient = new LocationClient(context);
+        mLocClient.registerLocationListener(myListener);
         mLocClient.setLocOption(option);
         mLocClient.start();
 
         return view;
 
+    }
+
+    /**
+     *  地图的各种监听事件
+     */
+    private void setupMapListener() {
+
+        final BaiduMap.OnMapClickListener onMapClickListener = new BaiduMap.OnMapClickListener() {
+            @Override
+            public void onMapClick(LatLng latLng) {
+
+            }
+
+            @Override
+            public boolean onMapPoiClick(MapPoi mapPoi) {
+                return false;
+            }
+        };
+
+        getBaiduMap().setOnMapClickListener(onMapClickListener);
+
+        getBaiduMap().setOnMarkerClickListener(new BaiduMap.OnMarkerClickListener() {
+            @Override
+            public boolean onMarkerClick(Marker marker) {
+                return false;
+            }
+        });
     }
 
     public class MyLocationListener implements BDLocationListener {

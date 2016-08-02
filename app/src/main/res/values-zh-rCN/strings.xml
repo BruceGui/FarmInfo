@@ -43,6 +43,9 @@
     <string name="disconnect">断开</string>
     <string name="app_setting">设置</string>
 
+    <string name="btn_ok">确定</string>
+    <string name="btn_cancel">取消</string>
+
     <!-- 偏好设置 字符串 -->
     <string name="pref_connection_type">遥测连接方式</string>
     <string name="pref_connection_type_summary">选择哪一种连接数传的方式与无人机沟通</string>
@@ -52,5 +55,9 @@
     <string name="pref_server_port">服务器端口</string>
     <string name="pref_server_udp">UDP连接</string>
     <string name="pref_udp_server_port">UDP服务器端口</string>
+
+    <!-- 航线点 字符串 -->
+    <string name="frame_point">边界点</string>
+    <string name="danger_point">障碍点</string>
 
 </resources>
