@@ -17,7 +17,7 @@
         <Button
             android:id="@+id/point_cancel_btn"
             style="@style/btnStyle"
-            android:background="@color/btnCancelColor"
+            android:background="@drawable/btn_cancel_background"
             android:text="@string/btn_cancel" />
 
         <Button

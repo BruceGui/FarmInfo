@@ -61,4 +61,9 @@
     <string name="frame_point">Boundary Point</string>
     <string name="danger_point">Barrier Point</string>
 
+    <!-- This are three kind of danger point -->
+    <string name="bypass_danger_poi">Bypass Point</string>
+    <string name="climb_danger_poi">Climb Point</string>
+    <string name="forward_danger_poi">Forward Point</string>
+
 </resources>

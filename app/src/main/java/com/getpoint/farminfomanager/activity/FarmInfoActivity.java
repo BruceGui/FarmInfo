@@ -26,15 +26,25 @@ import com.getpoint.farminfomanager.FarmInfoAppPref;
 import com.getpoint.farminfomanager.FarmInfoManagerApp;
 import com.getpoint.farminfomanager.GPSDeviceManager;
 import com.getpoint.farminfomanager.R;
+import com.getpoint.farminfomanager.entity.FarmInfo;
 import com.getpoint.farminfomanager.entity.GPSInfo;
 import com.getpoint.farminfomanager.entity.NativeGPSInfo;
+import com.getpoint.farminfomanager.entity.coordinate.LatLong;
+import com.getpoint.farminfomanager.entity.markers.FramePointMarker;
+import com.getpoint.farminfomanager.entity.points.FramePoint;
+import com.getpoint.farminfomanager.entity.points.PointItemType;
 import com.getpoint.farminfomanager.fragment.BaiduMapFragment;
+import com.getpoint.farminfomanager.fragment.Mission.BypassPointFragment;
+import com.getpoint.farminfomanager.fragment.Mission.ClimbPointFragment;
 import com.getpoint.farminfomanager.fragment.Mission.DangerPointFragment;
+import com.getpoint.farminfomanager.fragment.Mission.ForwardPointFragment;
 import com.getpoint.farminfomanager.fragment.Mission.FramePointFragment;
+import com.getpoint.farminfomanager.fragment.Mission.PointDetailFragment;
 import com.getpoint.farminfomanager.utils.AttributesEvent;
 import com.getpoint.farminfomanager.utils.GPS;
-import com.getpoint.farminfomanager.utils.LatLong;
 
+import com.getpoint.farminfomanager.utils.proxy.MissionItemProxy;
+import com.getpoint.farminfomanager.utils.proxy.MissionProxy;
 import com.getpoint.farminfomanager.weights.FloatingActionButton;
 import com.getpoint.farminfomanager.weights.MorphLayout;
 
@@ -43,12 +53,17 @@ import org.w3c.dom.Attr;
 /**
  * Created by Gui Zhou on 2016-07-05.
  */
-public class FarmInfoActivity extends AppCompatActivity implements MorphLayout.OnMorphListener{
+public class FarmInfoActivity extends AppCompatActivity implements
+        PointDetailFragment.OnPointDetailListener, MorphLayout.OnMorphListener {
 
     private static final String TAG = "FarmInfoActivity";
 
     private FramePointFragment framePointFragment;
     private DangerPointFragment dangerPointFragment;
+    private BypassPointFragment bypassPointFragment;
+    private ClimbPointFragment climbPointFragment;
+    private ForwardPointFragment forwardPointFragment;
+    private PointDetailFragment pointDetailFragment;
 
     private BaiduMapFragment mapFragment;
     private FloatingActionButton mFloatingAct;
@@ -64,13 +79,15 @@ public class FarmInfoActivity extends AppCompatActivity implements MorphLayout.O
     private FarmInfoManagerApp farmApp;
     private GPSDeviceManager gpsDeviceManager;
     private LocalBroadcastManager localBroadcastManager;
+    private MissionProxy missionProxy;
     private FarmInfoAppPref farmInfoAppPref;
     private GPS gps;
 
     /**
-     *  初始化广播事件过滤器和广播接收器
+     * 初始化广播事件过滤器和广播接收器
      */
     private static final IntentFilter eventFilter = new IntentFilter();
+
     static {
         eventFilter.addAction(AttributesEvent.GPS_MSG_BESTVEL);
         eventFilter.addAction(AttributesEvent.GPS_MSG_BESTPOS);
@@ -84,15 +101,15 @@ public class FarmInfoActivity extends AppCompatActivity implements MorphLayout.O
             final String action = intent.getAction();
             final GPS gps = farmApp.getGps();
 
-            if(AttributesEvent.GPS_MSG_BESTPOS.equals(action)) {
+            if (AttributesEvent.GPS_MSG_BESTPOS.equals(action)) {
 
             }
 
-            if(AttributesEvent.GPS_MSG_BESTVEL.equals(action)) {
+            if (AttributesEvent.GPS_MSG_BESTVEL.equals(action)) {
 
             }
 
-            if(AttributesEvent.GPS_MSG_PSRDOP.equals(action)) {
+            if (AttributesEvent.GPS_MSG_PSRDOP.equals(action)) {
 
             }
 
@@ -118,25 +135,30 @@ public class FarmInfoActivity extends AppCompatActivity implements MorphLayout.O
 
         farmInfoAppPref = new FarmInfoAppPref(getApplicationContext());
         localBroadcastManager = LocalBroadcastManager.getInstance(getApplicationContext());
-        farmApp = (FarmInfoManagerApp)getApplication();
-        gpsDeviceManager =  farmApp.getGpsDeviceManager();
+        farmApp = (FarmInfoManagerApp) getApplication();
+        gpsDeviceManager = farmApp.getGpsDeviceManager();
+        missionProxy = farmApp.getMissionProxy();
         gps = farmApp.getGps();
 
-        fragmentManager = getSupportFragmentManager();
-        mFloatingAct = (FloatingActionButton)findViewById(R.id.farm_info_fab);
+        if (pointDetailFragment == null) {
+            pointDetailFragment = new PointDetailFragment();
+        }
 
-        mPointInfoLayout = (MorphLayout)findViewById(R.id.point_info_morph);
+        fragmentManager = getSupportFragmentManager();
+        mFloatingAct = (FloatingActionButton) findViewById(R.id.farm_info_fab);
+
+        mPointInfoLayout = (MorphLayout) findViewById(R.id.point_info_morph);
         mPointInfoLayout.setMorphListener(this);
         mPointInfoLayout.setFab(mFloatingAct);
 
-        if(Build.VERSION.SDK_INT >= 21) {
+        if (Build.VERSION.SDK_INT >= 21) {
             mFloatingAct.setElevation(R.dimen.fab_elevation);
         }
 
-        mGoToMyLocation = (ImageButton)findViewById(R.id.my_location_button);
-        mZoomToFit = (ImageButton)findViewById(R.id.zoom_to_fit_button);
-        mPointOkBtn = (Button)findViewById(R.id.point_ok_btn);
-        mPointCancelBtn = (Button)findViewById(R.id.point_cancel_btn);
+        mGoToMyLocation = (ImageButton) findViewById(R.id.my_location_button);
+        mZoomToFit = (ImageButton) findViewById(R.id.zoom_to_fit_button);
+        mPointOkBtn = (Button) findViewById(R.id.point_ok_btn);
+        mPointCancelBtn = (Button) findViewById(R.id.point_cancel_btn);
 
         setupMapFragment();
 
@@ -155,18 +177,19 @@ public class FarmInfoActivity extends AppCompatActivity implements MorphLayout.O
         mFloatingAct.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mFloatingAct.toggle();
-                mPointInfoLayout.morph(true, true);
-                setupPointDetailFragment();
+                morphCreate();
+                //setupPointDetailFragment();
+                addPointDetail(PointItemType.FRAMEPOINT);
+
             }
         });
 
         mGoToMyLocation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //mapFragment.goToMyLocation();
-                LatLong latLong = new LatLong(gps.lat, gps.lon);
-                mapFragment.goToLocation(latLong);
+                mapFragment.goToMyLocation();
+                //LatLong latLong = new LatLong(gps.lat, gps.lon);
+                //mapFragment.goToLocation(latLong);
             }
         });
 
@@ -180,15 +203,73 @@ public class FarmInfoActivity extends AppCompatActivity implements MorphLayout.O
         mPointCancelBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(mPointInfoLayout.getState() == MorphLayout.State.MORPHED) {
-                    mFloatingAct.toggle();
-                    mPointInfoLayout.revert(true, true);
+                if (mPointInfoLayout.getState() == MorphLayout.State.MORPHED) {
+                    morphDestory();
                 }
+            }
+        });
+
+        mPointOkBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                /**
+                 *   获取当前点的信息，
+                 *   在地图上显示
+                 */
+                //TODO
+                final LatLong coord = mapFragment.getCurrentCoord();
+                final FramePoint framePoint = new FramePoint(coord);
+
+                /**
+                 *   把当前点添加到任务中去
+                 */
+                MissionItemProxy newItem = new MissionItemProxy(missionProxy, framePoint);
+                missionProxy.addItem(newItem);
+
+                /**
+                 *  在地图上产生当前点的标志
+                 */
+                FramePointMarker pointMarker = new FramePointMarker(newItem);
+                mapFragment.updateMarker(pointMarker);
+
+                /**
+                 * 关闭取点的界面
+                 */
+                morphDestory();
             }
         });
     }
 
-    private void setupPointDetailFragment() {
+    /**
+     * 添加一个点
+     */
+    private void addPointDetail(PointItemType itemType) {
+
+        switch (itemType) {
+
+            case FRAMEPOINT:
+                Log.i(TAG, "setup frame");
+                setupFrameDetailFragment();
+                break;
+            case BYPASSPOINT:
+                Log.i(TAG, "setup bypass");
+                setupBypassDetailFragment();
+                break;
+            case CLIMBPOINT:
+                Log.i(TAG, "setup climb");
+                setupClimbDetailFragment();
+                break;
+            case FORWAEDPOINT:
+                Log.i(TAG, "setup forward");
+                setupForwardDetailFragment();
+                break;
+            default:
+                break;
+        }
+
+    }
+
+    private void setupFrameDetailFragment() {
 
         if(framePointFragment == null) {
             framePointFragment = new FramePointFragment();
@@ -196,16 +277,77 @@ public class FarmInfoActivity extends AppCompatActivity implements MorphLayout.O
             fragmentManager.beginTransaction().add(
                     R.id.point_detail_fragment, framePointFragment
             ).commit();
+            Log.i(TAG, "new commit");
+        } else {
+            framePointFragment.setPointIndex(missionProxy.getCurrentFrameNumber());
+            Log.i(TAG, "update number" + missionProxy.getCurrentFrameNumber());
         }
+
+    }
+
+    private void setupBypassDetailFragment() {
+
+        if(bypassPointFragment == null) {
+            bypassPointFragment = new BypassPointFragment();
+
+            fragmentManager.beginTransaction().add(
+                    R.id.point_detail_fragment, bypassPointFragment
+            ).commit();
+        } else {
+            //framePointFragment.setPointIndex(missionProxy.getCurrentFrameNumber());
+        }
+
+    }
+
+    private void setupClimbDetailFragment() {
+
+        if(climbPointFragment == null) {
+            climbPointFragment = new ClimbPointFragment();
+
+            fragmentManager.beginTransaction().add(
+                    R.id.point_detail_fragment, climbPointFragment
+            ).commit();
+        } else {
+            //framePointFragment.setPointIndex(missionProxy.getCurrentFrameNumber());
+        }
+
+    }
+
+    private void setupForwardDetailFragment() {
+        if(forwardPointFragment == null) {
+            forwardPointFragment = new ForwardPointFragment();
+
+            fragmentManager.beginTransaction().add(
+                    R.id.point_detail_fragment, forwardPointFragment
+            ).commit();
+        } else {
+            //framePointFragment.setPointIndex(missionProxy.getCurrentFrameNumber());
+        }
+
+    }
+
+    @Override
+    public void onPointTypeChanged(PointItemType newType) {
+
+        //addPointDetail(newType);
+        updateSetupFragment(newType);
+
+    }
+
+    private void updateSetupFragment(PointItemType newType) {
+
+        fragmentManager.beginTransaction().replace(
+                R.id.point_detail_fragment, PointDetailFragment.newInstance(newType)
+        ).commit();
 
     }
 
     private void setupMapFragment() {
 
-        if(mapFragment == null) {
+        if (mapFragment == null) {
             mapFragment = (BaiduMapFragment) fragmentManager.findFragmentById(R.id.farm_info_map_fragment);
 
-            if(mapFragment == null) {
+            if (mapFragment == null) {
                 mapFragment = new BaiduMapFragment();
                 fragmentManager.beginTransaction().add(
                         R.id.farm_info_map_fragment, mapFragment
@@ -217,7 +359,7 @@ public class FarmInfoActivity extends AppCompatActivity implements MorphLayout.O
 
     private void toggleconnection() {
 
-        if(gpsDeviceManager.isconnect()) {
+        if (gpsDeviceManager.isconnect()) {
             gpsDeviceManager.disconnect();
         } else {
             gpsDeviceManager.connect(farmInfoAppPref.getConnectionParameterType());
@@ -226,7 +368,20 @@ public class FarmInfoActivity extends AppCompatActivity implements MorphLayout.O
     }
 
     /**
-     *  航点信息界面的监听函数
+     * Morph Layout return
+     */
+    private void morphDestory() {
+        mFloatingAct.toggle();
+        mPointInfoLayout.revert(true, true);
+    }
+
+    private void morphCreate() {
+        mFloatingAct.toggle();
+        mPointInfoLayout.morph(true, true);
+    }
+
+    /**
+     * 航点信息界面的监听函数
      */
 
     @Override
@@ -262,7 +417,7 @@ public class FarmInfoActivity extends AppCompatActivity implements MorphLayout.O
 
         final MenuItem toggleConnectionItem = menu.findItem(R.id.id_connect_act);
 
-        if(gpsDeviceManager.isconnect()) {
+        if (gpsDeviceManager.isconnect()) {
             toggleConnectionItem.setTitle(R.string.disconnect);
             menu.setGroupEnabled(R.id.id_menu_connected, true);
             menu.setGroupVisible(R.id.id_menu_connected, true);
@@ -298,7 +453,7 @@ public class FarmInfoActivity extends AppCompatActivity implements MorphLayout.O
     @Override
     public void onBackPressed() {
 
-        if(mPointInfoLayout.getState() == MorphLayout.State.MORPHED) {
+        if (mPointInfoLayout.getState() == MorphLayout.State.MORPHED) {
             mFloatingAct.toggle();
             mPointInfoLayout.revert(true, true);
         } else {

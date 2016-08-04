@@ -4,6 +4,7 @@ import android.content.res.Resources;
 import android.location.Location;
 
 import com.baidu.mapapi.map.MyLocationData;
+import com.getpoint.farminfomanager.entity.coordinate.LatLong;
 
 /**
  * Created by Gui Zhou on 2016-07-05.

@@ -1,6 +1,7 @@
 package com.getpoint.farminfomanager.fragment;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
@@ -13,16 +14,22 @@ import com.baidu.location.BDLocationListener;
 import com.baidu.location.LocationClient;
 import com.baidu.location.LocationClientOption;
 import com.baidu.mapapi.map.BaiduMap;
+import com.baidu.mapapi.map.BitmapDescriptorFactory;
 import com.baidu.mapapi.map.MapPoi;
 import com.baidu.mapapi.map.MapStatusUpdateFactory;
 import com.baidu.mapapi.map.MapView;
 import com.baidu.mapapi.map.Marker;
+import com.baidu.mapapi.map.MarkerOptions;
 import com.baidu.mapapi.map.MyLocationConfiguration;
 import com.baidu.mapapi.map.MyLocationData;
 import com.baidu.mapapi.map.SupportMapFragment;
 import com.baidu.mapapi.model.LatLng;
+import com.getpoint.farminfomanager.R;
+import com.getpoint.farminfomanager.entity.coordinate.LatLong;
+import com.getpoint.farminfomanager.entity.markers.PointMarker;
 import com.getpoint.farminfomanager.utils.DroneHelper;
-import com.getpoint.farminfomanager.utils.LatLong;
+
+import com.getpoint.farminfomanager.utils.collections.HashBiMap;
 
 /**
  * Created by Gui Zhou on 2016-07-05.
@@ -33,6 +40,8 @@ public class BaiduMapFragment extends SupportMapFragment {
     private static final String TAG = "BaiduMapFragment";
 
     private static final float GO_TO_MY_LOCATION_ZOOM = 19f;
+
+    private final HashBiMap<PointMarker, Marker> mBiMarkersMap = new HashBiMap<>();
 
     protected MapView mMapView;
     protected LocationClient mLocClient;
@@ -121,6 +130,64 @@ public class BaiduMapFragment extends SupportMapFragment {
     }
 
     /**
+     *  一些在地图上标记点信息的函数
+     */
+
+    public void updateMarker(PointMarker markerInfo) {
+        updateMarker(markerInfo, markerInfo.isDraggable());
+    }
+
+    public void updateMarker(PointMarker markerInfo, boolean isDraggable) {
+
+        final LatLong coord = markerInfo.getPosition();
+        if(coord == null) {
+            return;
+        }
+
+        final LatLng position = DroneHelper.CoordToBaiduLatLang(coord);
+        Marker marker = mBiMarkersMap.getValue(markerInfo);
+        if(marker == null) {
+            generateMarker(markerInfo, position, isDraggable);
+        } else {
+            updateMarker(marker, markerInfo, position, isDraggable);
+        }
+
+    }
+
+    private void generateMarker(PointMarker markerInfo, LatLng position, boolean isDraggable) {
+
+        final MarkerOptions markerOptions = new MarkerOptions()
+                .position(position)
+                .draggable(isDraggable)
+                .anchor(markerInfo.getAnchorU(), markerInfo.getAnchorV());
+
+        final Bitmap markerIcon = markerInfo.getIcon(getResources());
+
+        if(markerIcon != null) {
+            markerOptions.icon(BitmapDescriptorFactory.fromBitmap(markerIcon));
+        } else {
+            markerOptions.icon(BitmapDescriptorFactory
+                    .fromResource(R.drawable.ic_marker_white));
+        }
+
+        Marker marker = (Marker)getBaiduMap().addOverlay(markerOptions);
+        mBiMarkersMap.put(markerInfo, marker);
+    }
+
+    private void updateMarker(Marker marker, PointMarker markerInfo, LatLng position,
+                              boolean isDraggable) {
+        final Bitmap markerIcon = markerInfo.getIcon(getResources());
+        if (markerIcon != null) {
+            marker.setIcon(BitmapDescriptorFactory.fromBitmap(markerIcon));
+        }
+        marker.setAnchor(markerInfo.getAnchorU(), markerInfo.getAnchorV());
+        marker.setPosition(position);
+        marker.setDraggable(isDraggable);
+        marker.setVisible(markerInfo.isVisible());
+    }
+
+
+    /**
      * 以动画的形式放大、缩小地图
      * @param amount 正缩小、负放大
      */
@@ -150,6 +217,10 @@ public class BaiduMapFragment extends SupportMapFragment {
         if (coord != null) {
             getBaiduMap().animateMapStatus(MapStatusUpdateFactory.newLatLngZoom(DroneHelper.CoordToBaiduLatLang(coord), zoomLevel));
         }
+    }
+
+    public LatLong getCurrentCoord() {
+        return DroneHelper.BDLocationToCoord(getBaiduMap().getLocationData());
     }
 
     @Override

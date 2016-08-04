@@ -61,4 +61,9 @@
     <string name="frame_point">边界点</string>
     <string name="danger_point">障碍点</string>
 
+    <!-- 这是三种类型的障碍点 -->
+    <string name="bypass_danger_poi">绕飞点</string>
+    <string name="climb_danger_poi">爬升点</string>
+    <string name="forward_danger_poi">直飞点</string>
+
 </resources>

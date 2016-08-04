@@ -12,7 +12,8 @@
     <color name="greyText">#4d4d4d</color>
 
     <color name="btnOkColor">#4b84e6</color>
-    <color name="btnCancelColor">#f9f2f2</color>
+    <color name="btnCancelNormal">#f9f2f2</color>
+    <color name="btnCancelPressed">#c9cac3</color>
 
     <color name="gpsInfoBackground">#66dfeeee</color>
 

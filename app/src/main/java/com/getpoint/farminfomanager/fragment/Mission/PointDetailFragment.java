@@ -1,19 +1,23 @@
 package com.getpoint.farminfomanager.fragment.Mission;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Spinner;
+import android.widget.TextView;
 
+import com.getpoint.farminfomanager.FarmInfoManagerApp;
 import com.getpoint.farminfomanager.R;
-import com.getpoint.farminfomanager.entity.PointItemType;
+import com.getpoint.farminfomanager.entity.points.PointItemType;
 import com.getpoint.farminfomanager.utils.adapters.AdapterMissionItems;
+import com.getpoint.farminfomanager.utils.proxy.MissionProxy;
 import com.getpoint.farminfomanager.weights.spinners.SpinnerSelfSelect;
 
-import java.lang.reflect.Array;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
@@ -21,20 +25,83 @@ import java.util.List;
 /**
  * Created by Gui Zhou on 2016-07-05.
  */
+
 public class PointDetailFragment extends Fragment implements SpinnerSelfSelect.
         OnSpinnerItemSelectedListener {
 
     private static final String TAG = "PointDetailFragment";
 
+    public static PointDetailFragment newInstance(PointItemType itemType) {
+
+        PointDetailFragment fragment;
+        switch (itemType) {
+            case FRAMEPOINT:
+                fragment = new FramePointFragment();
+                break;
+            case BYPASSPOINT:
+                fragment = new BypassPointFragment();
+                break;
+            case CLIMBPOINT:
+                fragment = new ClimbPointFragment();
+                break;
+            case FORWAEDPOINT:
+                fragment = new ForwardPointFragment();
+                break;
+            default:
+                fragment = new FramePointFragment();
+                break;
+        }
+
+        return fragment;
+
+    }
+
+    public interface OnPointDetailListener {
+
+        /**
+         *  通知监听者 点的类型已经改变
+         * @param newType
+         */
+        public void onPointTypeChanged(PointItemType newType);
+
+    }
+
     protected static final int MIN_ALTITUDE = -200;
     protected static final int MAX_ALTITUDE = +200;
 
+    protected TextView pointType;
     protected SpinnerSelfSelect typeSpinner;
     protected AdapterMissionItems commandAdapter;
+    protected OnPointDetailListener mListener;
+    protected FarmInfoManagerApp farmApp;
+    protected MissionProxy missionProxy;
+
+    public PointItemType getPointType() {
+
+
+        if(pointType != null) {
+            final String currentType = pointType.getText().toString();
+
+            if (currentType.equals(PointItemType.BYPASSPOINT.getLabel())) {
+                return PointItemType.BYPASSPOINT;
+            } else if (currentType.equals(PointItemType.CLIMBPOINT.getLabel())){
+                return PointItemType.CLIMBPOINT;
+            } else if (currentType.equals(PointItemType.FORWAEDPOINT.getLabel())) {
+                return PointItemType.FORWAEDPOINT;
+            }
+
+        }
+
+        return PointItemType.FRAMEPOINT;
+    }
+
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        farmApp = (FarmInfoManagerApp) getActivity().getApplication();
+        missionProxy = farmApp.getMissionProxy();
     }
 
     @Nullable
@@ -46,8 +113,15 @@ public class PointDetailFragment extends Fragment implements SpinnerSelfSelect.
                 R.string.frame_point
         ));
 
-        PointItemType.DANGERPOINT.setLabel(getActivity().getApplicationContext().getResources().getString(
-                R.string.danger_point
+        PointItemType.BYPASSPOINT.setLabel(getActivity().getApplicationContext().getResources().getString(
+                R.string.bypass_danger_poi
+        ));
+
+        PointItemType.CLIMBPOINT.setLabel(getActivity().getApplicationContext().getResources().getString(
+                R.string.climb_danger_poi
+        ));
+        PointItemType.FORWAEDPOINT.setLabel(getActivity().getApplicationContext().getResources().getString(
+                R.string.forward_danger_poi
         ));
 
         List<PointItemType> list = new LinkedList<>(Arrays.asList(PointItemType.values()));
@@ -59,7 +133,27 @@ public class PointDetailFragment extends Fragment implements SpinnerSelfSelect.
         typeSpinner.setAdapter(commandAdapter);
         typeSpinner.setOnSpinnerItemSelectedListener(this);
 
+        pointType = (TextView)view.findViewById(R.id.WaypointType);
+
         return view;
+    }
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+
+        if(!(activity instanceof OnPointDetailListener)) {
+            throw new IllegalStateException("Parent activity must be an instance of"
+                        + OnPointDetailListener.class.getName());
+        }
+
+        mListener = (OnPointDetailListener) activity;
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mListener = null;
     }
 
     protected  int getLayoutResource() {
@@ -68,6 +162,11 @@ public class PointDetailFragment extends Fragment implements SpinnerSelfSelect.
 
     @Override
     public void onSpinnerItemSelected(Spinner spinner, int position) {
+
+        final PointItemType selectType = commandAdapter.getItem(position);
+        pointType.setText(selectType.getLabel());
+
+        mListener.onPointTypeChanged(getPointType());
 
     }
 }

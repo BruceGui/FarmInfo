@@ -22,7 +22,7 @@
         android:background="@drawable/wp_title_rectangle">
 
         <TextView
-            android:id="@+id/WaypointIndex"
+            android:id="@+id/dangerPointIndex"
             style="@style/largeMissionDetailText"
             android:layout_width="64dp"
             android:layout_height="wrap_content"
@@ -34,7 +34,7 @@
             android:layout_width="1dp"
             android:layout_marginTop="5dp"
             android:layout_height="54dp"
-            android:layout_toEndOf="@id/WaypointIndex"
+            android:layout_toEndOf="@id/dangerPointIndex"
             android:layout_alignParentTop="true"
             android:background="@drawable/wp_title_div"/>
 
