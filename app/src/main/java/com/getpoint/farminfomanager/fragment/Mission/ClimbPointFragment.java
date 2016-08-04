@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.baidu.mapapi.map.Text;
 import com.getpoint.farminfomanager.R;
 import com.getpoint.farminfomanager.weights.spinnerWheel.CardWheelHorizontalView;
 import com.getpoint.farminfomanager.weights.spinnerWheel.adapters.NumericWheelAdapter;
@@ -38,7 +39,14 @@ public class ClimbPointFragment extends PointDetailFragment implements
         altitudePicker.setCurrentValue(0);
         altitudePicker.addChangingListener(this);
 
+        pointIndex = (TextView)view.findViewById(R.id.dangerPointIndex);
+        pointIndex.setText(String.valueOf(missionProxy.getCurrentClimbNumber()));
+
         return view;
+    }
+
+    public void setPointIndex(int index) {
+        pointIndex.setText(String.valueOf(index));
     }
 
     @Override

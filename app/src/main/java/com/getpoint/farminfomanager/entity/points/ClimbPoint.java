@@ -7,6 +7,8 @@ import com.getpoint.farminfomanager.entity.coordinate.LatLong;
  */
 public class ClimbPoint extends DangerPoint {
 
+    private final short indicatNum = 7;
+
     public ClimbPoint(LatLong position) {
         super(position);
         this.pointType = PointItemType.CLIMBPOINT;

@@ -10,6 +10,8 @@ import java.util.List;
  */
 public class BypassPoint extends DangerPoint {
 
+    private final short indicatNum = 6;
+
     private List<DangerPoint> points = new ArrayList<>();
 
     public BypassPoint(LatLong position) {

@@ -43,6 +43,10 @@
     <string name="connect">连接</string>
     <string name="disconnect">断开</string>
     <string name="app_setting">设置</string>
+    <string name="label_yes_no_dialog_dont_show">不再显示</string>
+    <string name="label_enter_filename">输入文件名</string>
+    <string name="file_saved_success">保存成功</string>
+    <string name="file_saved_error">保存出错</string>
 
     <string name="btn_ok">确定</string>
     <string name="btn_cancel">取消</string>

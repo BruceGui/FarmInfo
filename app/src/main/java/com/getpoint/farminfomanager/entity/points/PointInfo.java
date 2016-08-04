@@ -36,4 +36,8 @@ public class PointInfo {
     public void setPointNum(short pointNum) {
         this.pointNum = pointNum;
     }
+
+    public String toString() {
+        return position.getLatitude() + " " + position.getLatitude() + " " + position.getAltitude();
+    }
 }

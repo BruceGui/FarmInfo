@@ -1,5 +1,7 @@
 package com.getpoint.farminfomanager.utils.proxy;
 
+import com.getpoint.farminfomanager.utils.file.IO.MissionWriter;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -55,6 +57,18 @@ public class MissionProxy {
         return this.boundaryItemProxies;
     }
 
+    public List<MissionItemProxy> getBypassItemProxies() {
+        return this.bypassItemProxies;
+    }
+
+    public List<MissionItemProxy> getClimbItemProxies() {
+        return this.climbItemProxies;
+    }
+
+    public List<MissionItemProxy> getForwardItemProies() {
+        return this.forwardItemProies;
+    }
+
     /**
      *   返回当前边界点总数
      * @return
@@ -62,6 +76,19 @@ public class MissionProxy {
     public int getCurrentFrameNumber() {
         return this.boundaryItemProxies.size() + 1;
     }
+
+    public int getCurrentBypassNumber() {
+        return this.bypassItemProxies.size() + 1;
+    }
+
+    public int getCurrentClimbNumber() {
+        return this.climbItemProxies.size() + 1;
+    }
+
+    public int getCurrentForwardNumber() {
+        return this.forwardItemProies.size() + 1;
+    }
+
 
     /**
      *  返回给定点的序号
@@ -83,5 +110,9 @@ public class MissionProxy {
                 return missionItemProxies.indexOf(item) + 1;
         }
 
+    }
+
+    public boolean writeMissionToFile(String filename) {
+        return MissionWriter.write(this, filename);
     }
 }

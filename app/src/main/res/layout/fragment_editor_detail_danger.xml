@@ -1,18 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    style="@style/missionItemDetailLayout"
-    >
+    style="@style/missionItemDetailLayout">
 
     <com.getpoint.farminfomanager.weights.spinners.SpinnerSelfSelect
         android:id="@+id/spinnerWaypointType"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="5dp"
         android:layout_alignParentTop="true"
-        android:entries="@array/ExampleWaypointType"
-        />
+        android:layout_margin="5dp"
+        android:entries="@array/ExampleWaypointType" />
 
     <RelativeLayout
         android:id="@+id/title_rect"
@@ -27,33 +24,33 @@
             android:layout_width="64dp"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            tools:text="22"/>
+            tools:text="22" />
 
         <View
             android:id="@+id/title_div"
             android:layout_width="1dp"
-            android:layout_marginTop="5dp"
             android:layout_height="54dp"
-            android:layout_toEndOf="@id/dangerPointIndex"
             android:layout_alignParentTop="true"
-            android:background="@drawable/wp_title_div"/>
+            android:layout_marginTop="5dp"
+            android:layout_toEndOf="@id/dangerPointIndex"
+            android:background="@drawable/wp_title_div" />
 
         <RelativeLayout
             android:id="@+id/title_content"
-            android:layout_toEndOf="@id/title_div"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_centerVertical="true">
+            android:layout_centerVertical="true"
+            android:layout_toEndOf="@id/title_div"
+            android:orientation="vertical">
 
             <TextView
                 android:id="@+id/WaypointType"
                 style="@style/missionHeaderTitle"
-                android:layout_marginStart="12dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
                 android:text="@string/frame_point"
-                android:textAllCaps="true"/>
+                android:textAllCaps="true" />
         </RelativeLayout>
     </RelativeLayout>
 
@@ -61,14 +58,14 @@
         android:id="@+id/menuHint"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
         android:layout_alignBottom="@id/title_rect"
-        android:src="@drawable/ic_menu_hint"
+        android:layout_alignParentEnd="true"
         android:layout_margin="10dp"
-        tools:ignore="ContentDescription"
-        />
+        android:src="@drawable/ic_menu_hint"
+        tools:ignore="ContentDescription" />
 
     <ScrollView
+        android:id="@+id/altitudeScrollView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/title_rect">
@@ -76,21 +73,37 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical" >
+            android:orientation="vertical">
 
             <include
                 layout="@layout/position_info_layout"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content" />
 
             <com.getpoint.farminfomanager.weights.spinnerWheel.CardWheelHorizontalView
                 android:id="@+id/altitudePicker"
+                style="@style/missionItemDetailCard"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/altitude_label"
-                style="@style/missionItemDetailCard"/>
+                android:text="@string/altitude_label" />
 
         </LinearLayout>
     </ScrollView>
+
+    <View
+        android:id="@+id/button_div"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@id/altitudeScrollView"
+        android:background="@drawable/wp_title_div" />
+
+    <Button
+        android:id="@+id/id_add_danger_point"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:layout_below="@id/button_div"
+        android:text="@string/btn_add"
+        android:background="@drawable/btn_add_point_background"
+        android:textSize="44sp" />
 
 </RelativeLayout>

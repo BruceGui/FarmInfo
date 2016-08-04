@@ -38,7 +38,14 @@ public class ForwardPointFragment extends PointDetailFragment implements
         altitudePicker.setCurrentValue(0);
         altitudePicker.addChangingListener(this);
 
+        pointIndex = (TextView)view.findViewById(R.id.dangerPointIndex);
+        pointIndex.setText(String.valueOf(missionProxy.getCurrentForwardNumber()));
+
         return view;
+    }
+
+    public void setPointIndex(int index) {
+        pointIndex.setText(String.valueOf(index));
     }
 
     @Override

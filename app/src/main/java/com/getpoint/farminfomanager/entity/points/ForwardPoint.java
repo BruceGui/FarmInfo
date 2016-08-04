@@ -7,10 +7,11 @@ import com.getpoint.farminfomanager.entity.coordinate.LatLong;
  */
 public class ForwardPoint extends DangerPoint {
 
+    private final short indicat = 8;
+
     public ForwardPoint(LatLong position) {
         super(position);
         this.pointType = PointItemType.FORWAEDPOINT;
     }
-
 
 }

@@ -43,7 +43,12 @@
     <string name="connect">Connect</string>
     <string name="disconnect">Disconnect</string>
     <string name="app_setting">Setting</string>
+    <string name="label_yes_no_dialog_dont_show">Don\'t show again.</string>
+    <string name="label_enter_filename">Enter Filename</string>
+    <string name="file_saved_success">File saved</string>
+    <string name="file_saved_error">Error saving file</string>
 
+    <string name="btn_add">+</string>
     <string name="btn_ok">OK</string>
     <string name="btn_cancel">Cancel</string>
 
