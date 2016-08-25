@@ -5,6 +5,7 @@
     android:layout_height="match_parent"
     android:background="@color/gpsInfoBackground">
 
+    <!-- 显示位置信息 -->
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
@@ -36,10 +37,70 @@
 
     </LinearLayout>
 
+
+    <!-- 显示精度因子 -->
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
+
+
+        <TextView
+            style="@style/commonTextGPS"
+            android:text="@string/gps_gdop"/>
+        <TextView
+            android:id="@+id/gps_gdop_value"
+            style="@style/commonInfoGPS" />
+
+        <TextView
+            style="@style/commonTextGPS"
+            android:text="@string/gps_pdop"/>
+        <TextView
+            android:id="@+id/gps_pdop_value"
+            style="@style/commonInfoGPS" />
+
+        <TextView
+            style="@style/commonTextGPS"
+            android:text="@string/gps_hdop"/>
+        <TextView
+            android:id="@+id/gps_hdop_value"
+            style="@style/commonInfoGPS" />
+
+    </LinearLayout>
+
+    <!-- 星数和定位状态 -->
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textSize="16sp"
+            android:text="@string/satellite_count"/>
+        <TextView
+            android:id="@+id/sate_count_value"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textSize="16sp"
+            android:text="@string/init_value_int"/>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textSize="16sp"
+            android:text="@string/posstate"/>
+        <TextView
+            android:id="@+id/posstate_value"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:textSize="16sp"
+            android:text="@string/init_value_float"/>
 
     </LinearLayout>
 

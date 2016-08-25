@@ -112,6 +112,18 @@ public class MissionProxy {
 
     }
 
+    /**
+     *  清除所有的航标点
+     */
+    public void missionClear() {
+
+        this.boundaryItemProxies.clear();
+        this.bypassItemProxies.clear();
+        this.climbItemProxies.clear();
+        this.forwardItemProies.clear();
+
+    }
+
     public boolean writeMissionToFile(String filename) {
         return MissionWriter.write(this, filename);
     }

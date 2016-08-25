@@ -62,7 +62,8 @@ public class BaiduMapFragment extends SupportMapFragment {
          */
         getBaiduMap().setMapType(BaiduMap.MAP_TYPE_SATELLITE);
         getBaiduMap().setMyLocationEnabled(true);
-        getMapView().showZoomControls(false);
+        mMapView.showZoomControls(false);
+        mMapView.showScaleControl(false);
 
         MyLocationConfiguration.LocationMode mLocationMode = MyLocationConfiguration.LocationMode.FOLLOWING;
         getBaiduMap().setMyLocationConfigeration(new

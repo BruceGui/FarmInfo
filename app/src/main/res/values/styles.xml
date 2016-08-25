@@ -1,21 +1,68 @@
 <resources>
 
-    <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-        <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
+    <!-- style the list navigation -->
+    <style name="DropDownItem" parent="Widget.AppCompat.DropDownItem.Spinner">
+        <item name="android:textSize">18sp</item>
+        <item name="android:minWidth">120dp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/greyText</item>
+        <item name="android:layout_width">100dp</item>
     </style>
 
-    <style name="AppTheme.NoActionBar">
-        <item name="windowActionBar">false</item>
-        <item name="windowNoTitle">true</item>
+    <style name="SpinnerItem" parent="@android:style/Widget.Holo.TextView.SpinnerItem">
+        <item name="android:textSize">26sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/greyText</item>
     </style>
 
-    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+    <style name="SetupSpinnerItem" parent="@android:style/Widget.Holo.Light.TextView">
+        <item name="android:textSize">26sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">#fff</item>
+    </style>
 
-    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+    <!--  App title style-->
+    <style name="CustomActionBarTheme.ActionBar.TitleTextStyle" parent="android:style/TextAppearance.Holo.Widget.ActionBar.Title">
+        <item name="android:textColor">#333</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:gravity">left</item>
+    </style>
+
+    <style name="CustomActionBarTheme.Dialog" parent="Theme.AppCompat.Light.Dialog">
+        <item name="android:popupMenuStyle">@style/MyPopupMenu</item>
+        <item name="android:itemTextAppearance">@style/myCustomMenuTextApearance</item>
+    </style>
+
+    <style name="action_text">
+        <item name="android:textColor">#ff0000</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:fontFamily">sans-serif-condensed</item>
+        <item name="android:gravity">left</item>
+    </style>
+
+    <!-- Popup Menu Style -->
+    <style name="MyPopupMenu" parent="android:style/Widget.Holo.Light.ListPopupWindow">
+        <item name="android:popupBackground">#ffffff</item>
+    </style>
+    <style name="myCustomMenuTextApearance" parent="@android:style/TextAppearance.Widget.TextView.PopupMenu">
+        <item name="android:gravity">left</item>
+        <item name="android:textColor">@color/greyText</item>
+    </style>
+
+
+    <!-- Editor overview info Style -->
+    <style name="editorMissionOverviewText">
+        <item name="android:textColor">#fff</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:layout_centerVertical">true</item>
+        <item name="android:fontFamily">sans-serif-condensed</item>
+        <item name="android:gravity">center_vertical|left</item>
+        <item name="android:paddingLeft">16dp</item>
+        <item name="android:background">@color/bottom_top_bar</item>
+    </style>
 
     <style name="mapButton">
         <item name="android:layout_width">40dp</item>

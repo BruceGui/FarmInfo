@@ -18,6 +18,11 @@
     <string name="h_dop">HDop:</string>
     <string name="not_applicable">N/A</string>
     <string name="satellite_count">星数:</string>
+    <string name="posstate">定位状态:</string>
+    <!-- 精度因子 -->
+    <string name="gps_gdop">gdop:</string>
+    <string name="gps_pdop">pdop:</string>
+    <string name="gps_hdop">hdop:</string>
     <string name="off">关闭</string>
     <string name="on">打开</string>
     <string name="add">添加</string>
@@ -42,9 +47,14 @@
     <string name="write_to_file_successfully">航点信息已写入文件。</string>
     <string name="connect">连接</string>
     <string name="disconnect">断开</string>
+    <string name="menu_open">打开</string>
+    <string name="menu_save">保存</string>
     <string name="app_setting">设置</string>
     <string name="label_yes_no_dialog_dont_show">不再显示</string>
     <string name="label_enter_filename">输入文件名</string>
+    <string name="save_mission_file">保存任务文件</string>
+    <string name="open_mission_file">打开任务文件</string>
+    <string name="new_folder">新文件夹</string>
     <string name="file_saved_success">保存成功</string>
     <string name="file_saved_error">保存出错</string>
 

@@ -22,6 +22,7 @@
         layout="@layout/gps_device_info"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/gps_info_margin"
         android:layout_alignParentBottom="true" />
 
     <com.getpoint.farminfomanager.weights.MorphLayout
@@ -41,7 +42,7 @@
         android:id="@+id/farm_info_fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@id/gps_info_layout"
+        android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
         android:layout_margin="@dimen/fab_margin"
         app:fab_color="@color/fab_blue"

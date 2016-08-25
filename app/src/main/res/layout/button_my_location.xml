@@ -14,9 +14,4 @@
         style="@style/mapButton"
         android:src="@drawable/ic_action_expand"/>
 
-    <ImageButton
-        android:id="@+id/save_mission_button"
-        style="@style/mapButton"
-        android:src="@drawable/ic_action_save"/>
-
 </LinearLayout>

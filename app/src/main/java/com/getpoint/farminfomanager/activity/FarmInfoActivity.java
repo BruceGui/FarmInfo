@@ -7,6 +7,7 @@ import android.content.IntentFilter;
 import android.media.Image;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
@@ -48,13 +49,17 @@ import com.getpoint.farminfomanager.weights.FloatingActionButton;
 import com.getpoint.farminfomanager.weights.MorphLayout;
 import com.getpoint.farminfomanager.weights.dialogs.EditInputDialog;
 
+import net.rdrei.android.dirchooser.DirectoryChooserConfig;
+import net.rdrei.android.dirchooser.DirectoryChooserFragment;
+
 import org.w3c.dom.Attr;
 
 /**
  * Created by Gui Zhou on 2016-07-05.
  */
 public class FarmInfoActivity extends AppCompatActivity implements
-        PointDetailFragment.OnPointDetailListener, MorphLayout.OnMorphListener {
+        PointDetailFragment.OnPointDetailListener, MorphLayout.OnMorphListener ,
+        DirectoryChooserFragment.OnFragmentInteractionListener {
 
     private static final String TAG = "FarmInfoActivity";
 
@@ -63,6 +68,7 @@ public class FarmInfoActivity extends AppCompatActivity implements
     private ClimbPointFragment climbPointFragment;
     private ForwardPointFragment forwardPointFragment;
     private PointDetailFragment pointDetailFragment;
+    private DirectoryChooserFragment mDirChooserFragment;
 
     private PointItemType currentType = PointItemType.FRAMEPOINT;
 
@@ -74,7 +80,6 @@ public class FarmInfoActivity extends AppCompatActivity implements
 
     private ImageButton mGoToMyLocation;
     private ImageButton mZoomToFit;
-    private ImageButton mSaveMission;
     private Button mPointOkBtn;
     private Button mPointCancelBtn;
 
@@ -159,7 +164,6 @@ public class FarmInfoActivity extends AppCompatActivity implements
 
         mGoToMyLocation = (ImageButton) findViewById(R.id.my_location_button);
         mZoomToFit    = (ImageButton) findViewById(R.id.zoom_to_fit_button);
-        mSaveMission  = (ImageButton) findViewById(R.id.save_mission_button);
         mPointOkBtn   = (Button) findViewById(R.id.point_ok_btn);
         mPointCancelBtn = (Button) findViewById(R.id.point_cancel_btn);
 
@@ -200,13 +204,6 @@ public class FarmInfoActivity extends AppCompatActivity implements
             @Override
             public void onClick(View v) {
 
-            }
-        });
-
-        mSaveMission.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                saveMissionFile();
             }
         });
 
@@ -254,7 +251,37 @@ public class FarmInfoActivity extends AppCompatActivity implements
         });
     }
 
+
+
+    /**
+     *   保存和打开任务文件的相关函数
+     */
+
+    @Override
+    public void onSelectDirectory(@NonNull String path) {
+
+        mDirChooserFragment.dismiss();
+
+    }
+
+    @Override
+    public void onCancelChooser() {
+        mDirChooserFragment.dismiss();
+    }
+
     private void saveMissionFile() {
+
+        final DirectoryChooserConfig config = DirectoryChooserConfig.builder()
+                .newDirectoryName(getString(R.string.new_folder))
+                .allowNewDirectoryNameModification(true)
+                .allowReadOnlyDirectory(false)
+                .build();
+
+        mDirChooserFragment = DirectoryChooserFragment.newInstance(config);
+
+        mDirChooserFragment.show(getFragmentManager(), null);
+
+        /*
         final Context context = getApplicationContext();
         final String defaultFilename =  FileStream.getWaypointFilename("points");
 
@@ -278,6 +305,11 @@ public class FarmInfoActivity extends AppCompatActivity implements
                 });
 
         dialog.show(getSupportFragmentManager(), "Mission filename");
+        */
+    }
+
+    private void openMissionFile() {
+
     }
 
     /**
@@ -519,17 +551,18 @@ public class FarmInfoActivity extends AppCompatActivity implements
 
         if (gpsDeviceManager.isconnect()) {
             toggleConnectionItem.setTitle(R.string.disconnect);
-            menu.setGroupEnabled(R.id.id_menu_connected, true);
-            menu.setGroupVisible(R.id.id_menu_connected, true);
+            //menu.setGroupEnabled(R.id.id_menu_connected, true);
+            //menu.setGroupVisible(R.id.id_menu_connected, true);
         } else {
             toggleConnectionItem.setTitle(R.string.connect);
-            menu.setGroupEnabled(R.id.id_menu_connected, false);
-            menu.setGroupVisible(R.id.id_menu_connected, false);
+            //menu.setGroupEnabled(R.id.id_menu_connected, false);
+            //menu.setGroupVisible(R.id.id_menu_connected, false);
         }
 
         return true;
     }
 
+    //TODO
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         Intent intent;
@@ -541,6 +574,12 @@ public class FarmInfoActivity extends AppCompatActivity implements
                 intent = new Intent(FarmInfoActivity.this, SettingActivity.class);
                 Log.i(TAG, "Not Online");
                 startActivity(intent);
+                break;
+            case R.id.id_menu_open_file:
+                openMissionFile();
+                break;
+            case R.id.id_menu_save_file:
+                saveMissionFile();
                 break;
             default:
                 return super.onOptionsItemSelected(item);
@@ -566,6 +605,7 @@ public class FarmInfoActivity extends AppCompatActivity implements
     protected void onDestroy() {
         super.onDestroy();
 
+        missionProxy.missionClear();
         farmApp.getLocalBroadcastManager().unregisterReceiver(eventReceiver);
     }
 }

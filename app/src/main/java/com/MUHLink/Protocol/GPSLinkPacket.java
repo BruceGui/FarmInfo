@@ -58,7 +58,6 @@ public class GPSLinkPacket implements Serializable {
      */
     public void generateCRC() {
 
-        //TODO
         crc = new GPSCRC();
 
         /*

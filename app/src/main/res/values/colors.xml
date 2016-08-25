@@ -3,6 +3,7 @@
     <color name="colorPrimary">#3f51b5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
+    <color name="transparent_light">#d0ffffff</color>
 
     <color name="fab_blue">#5795d7</color>
     <color name="white_grey">#f7f6f6</color>
@@ -18,5 +19,9 @@
     <color name="btnAddPressed">#999999</color>
 
     <color name="gpsInfoBackground">#66dfeeee</color>
+
+    <!-- color for the top, and bottom bar -->
+    <color name="bottom_top_bar">#66848484</color>
+    <color name="editor_bar">#66848484</color>
 
 </resources>

@@ -4,9 +4,23 @@
     tools:context=".MainActivity">
 
     <item
+        android:id="@+id/id_menu_open_file"
+        android:title="@string/menu_open"
+        android:icon="@drawable/ic_action_folder_open"
+        app:showAsAction="ifRoom"/>
+
+    <item
+        android:id="@+id/id_menu_save_file"
+        android:title="@string/menu_save"
+        android:icon="@drawable/ic_action_save"
+        app:showAsAction="ifRoom"/>
+
+    <item
         android:id="@+id/id_connect_act"
         android:title="@string/connect"
         app:showAsAction="never" />
+
+    <!--
 
     <group
         android:id="@+id/id_menu_connected"
@@ -35,14 +49,11 @@
 
     </group>
 
+    -->
+
     <item
         android:id="@+id/id_setting"
         android:title="@string/app_setting"
         app:showAsAction="never"/>
-
-    <item
-        android:id="@+id/id_exit"
-        android:title="@string/exit"
-        app:showAsAction="never" />
 
 </menu>

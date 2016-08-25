@@ -36,6 +36,10 @@ public class DroneHelper {
 
     public static LatLong BDLocationToCoord(MyLocationData location){
         double d[] = new double[2];
+        //TODO
+        /**
+         *   产生java null异常
+         */
         untransformBaidu(location.latitude,location.longitude,d);
         return new LatLong(d[0],d[1]);
     }

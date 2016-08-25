@@ -8,6 +8,8 @@ import com.getpoint.farminfomanager.entity.coordinate.LatLongAlt;
  */
 public class DangerPoint extends PointInfo {
 
+    protected short relativeAltitude;
+
     public DangerPoint(LatLong coord) {
         //pointType = PointItemType.DANGERPOINT;
         this.position = new LatLongAlt(coord.getLatitude(), coord.getLongitude(), 0);
