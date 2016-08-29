@@ -49,8 +49,11 @@ import com.getpoint.farminfomanager.weights.FloatingActionButton;
 import com.getpoint.farminfomanager.weights.MorphLayout;
 import com.getpoint.farminfomanager.weights.dialogs.EditInputDialog;
 
+import net.rdrei.android.dirchooser.ActionType;
 import net.rdrei.android.dirchooser.DirectoryChooserConfig;
 import net.rdrei.android.dirchooser.DirectoryChooserFragment;
+import net.rdrei.android.dirchooser.OpenMissionFragment;
+import net.rdrei.android.dirchooser.SaveMissionFragment;
 
 import org.w3c.dom.Attr;
 
@@ -58,8 +61,9 @@ import org.w3c.dom.Attr;
  * Created by Gui Zhou on 2016-07-05.
  */
 public class FarmInfoActivity extends AppCompatActivity implements
-        PointDetailFragment.OnPointDetailListener, MorphLayout.OnMorphListener ,
-        DirectoryChooserFragment.OnFragmentInteractionListener {
+        PointDetailFragment.OnPointDetailListener, MorphLayout.OnMorphListener,
+        SaveMissionFragment.OnFragmentInteractionListener,
+        OpenMissionFragment.OnFragmentInteractionListener{
 
     private static final String TAG = "FarmInfoActivity";
 
@@ -69,6 +73,8 @@ public class FarmInfoActivity extends AppCompatActivity implements
     private ForwardPointFragment forwardPointFragment;
     private PointDetailFragment pointDetailFragment;
     private DirectoryChooserFragment mDirChooserFragment;
+    private SaveMissionFragment mSaveMissionFragment;
+    private OpenMissionFragment mOpenMissionFragment;
 
     private PointItemType currentType = PointItemType.FRAMEPOINT;
 
@@ -163,8 +169,8 @@ public class FarmInfoActivity extends AppCompatActivity implements
         }
 
         mGoToMyLocation = (ImageButton) findViewById(R.id.my_location_button);
-        mZoomToFit    = (ImageButton) findViewById(R.id.zoom_to_fit_button);
-        mPointOkBtn   = (Button) findViewById(R.id.point_ok_btn);
+        mZoomToFit = (ImageButton) findViewById(R.id.zoom_to_fit_button);
+        mPointOkBtn = (Button) findViewById(R.id.point_ok_btn);
         mPointCancelBtn = (Button) findViewById(R.id.point_cancel_btn);
 
         setupMapFragment();
@@ -252,21 +258,30 @@ public class FarmInfoActivity extends AppCompatActivity implements
     }
 
 
-
     /**
-     *   保存和打开任务文件的相关函数
+     * 保存和打开任务文件的相关函数
      */
 
     @Override
-    public void onSelectDirectory(@NonNull String path) {
-
-        mDirChooserFragment.dismiss();
-
+    public void onSaveMission(@NonNull String path, @NonNull String filename) {
+        //TODO
+        mSaveMissionFragment.dismiss();
     }
 
     @Override
-    public void onCancelChooser() {
-        mDirChooserFragment.dismiss();
+    public void onSaveCancelChooser() {
+        mSaveMissionFragment.dismiss();
+    }
+
+    @Override
+    public void onOpenMission(@NonNull String path, @NonNull String filename) {
+        //TODO
+        mOpenMissionFragment.dismiss();
+    }
+
+    @Override
+    public void onOpenCancelChooser() {
+        mOpenMissionFragment.dismiss();
     }
 
     private void saveMissionFile() {
@@ -277,9 +292,9 @@ public class FarmInfoActivity extends AppCompatActivity implements
                 .allowReadOnlyDirectory(false)
                 .build();
 
-        mDirChooserFragment = DirectoryChooserFragment.newInstance(config);
+        mSaveMissionFragment = SaveMissionFragment.newInstance(config);
 
-        mDirChooserFragment.show(getFragmentManager(), null);
+        mSaveMissionFragment.show(getFragmentManager(), null);
 
         /*
         final Context context = getApplicationContext();
@@ -309,6 +324,16 @@ public class FarmInfoActivity extends AppCompatActivity implements
     }
 
     private void openMissionFile() {
+
+        final DirectoryChooserConfig config = DirectoryChooserConfig.builder()
+                .newDirectoryName(getString(R.string.new_folder))
+                .allowNewDirectoryNameModification(true)
+                .allowReadOnlyDirectory(false)
+                .build();
+
+        mOpenMissionFragment = OpenMissionFragment.newInstance(config);
+
+        mOpenMissionFragment.show(getFragmentManager(), null);
 
     }
 
@@ -343,7 +368,7 @@ public class FarmInfoActivity extends AppCompatActivity implements
 
     private void setupFrameDetailFragment() {
 
-        if(framePointFragment == null) {
+        if (framePointFragment == null) {
             framePointFragment = new FramePointFragment();
 
             fragmentManager.beginTransaction().add(
@@ -358,7 +383,7 @@ public class FarmInfoActivity extends AppCompatActivity implements
 
     private void setupBypassDetailFragment() {
 
-        if(bypassPointFragment == null) {
+        if (bypassPointFragment == null) {
             bypassPointFragment = new BypassPointFragment();
 
             fragmentManager.beginTransaction().add(
@@ -372,7 +397,7 @@ public class FarmInfoActivity extends AppCompatActivity implements
 
     private void setupClimbDetailFragment() {
 
-        if(climbPointFragment == null) {
+        if (climbPointFragment == null) {
             climbPointFragment = new ClimbPointFragment();
 
             fragmentManager.beginTransaction().add(
@@ -385,7 +410,7 @@ public class FarmInfoActivity extends AppCompatActivity implements
     }
 
     private void setupForwardDetailFragment() {
-        if(forwardPointFragment == null) {
+        if (forwardPointFragment == null) {
             forwardPointFragment = new ForwardPointFragment();
 
             fragmentManager.beginTransaction().add(
@@ -408,7 +433,8 @@ public class FarmInfoActivity extends AppCompatActivity implements
     }
 
     /**
-     *  添加边界点的函数
+     * 添加边界点的函数
+     *
      * @param coord
      */
     private void addFramePoint(LatLong coord) {

@@ -1,3 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<items version="2" />
+<items version="2" >
 
+    <item
+        jar="E:\programming\android\GetPoint\app\build\intermediates\exploded-aar\GetPoint\dirchooser\unspecified\jars\classes.jar"
+        jumboMode="false"
+        revision="23.0.3"
+        sha1="bd239b1bdcc3381a9bc97cea14ecfe1bc99e1de7">
+        <dex dex="E:\programming\android\GetPoint\app\build\intermediates\pre-dexed\release\GetPoint-dirchooser-unspecified_969fadd8021095efa414587e01e3a7780955c691.jar" />
+    </item>
+
+</items>

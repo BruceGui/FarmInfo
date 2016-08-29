@@ -87,10 +87,12 @@ public class DirectoryChooserFragment extends DialogFragment {
      *
      * @return A new instance of DirectoryChooserFragment.
      */
-    public static DirectoryChooserFragment newInstance(@NonNull final DirectoryChooserConfig config) {
+    public static DirectoryChooserFragment newInstance(@NonNull final DirectoryChooserConfig config
+                    ) {
         final DirectoryChooserFragment fragment = new DirectoryChooserFragment();
         final Bundle args = new Bundle();
         args.putParcelable(ARG_CONFIG, config);
+
         fragment.setArguments(args);
         return fragment;
     }
@@ -143,7 +145,7 @@ public class DirectoryChooserFragment extends DialogFragment {
             final Bundle savedInstanceState) {
 
         assert getActivity() != null;
-        final View view = inflater.inflate(R.layout.directory_chooser, container, false);
+        final View view = inflater.inflate(getResourceID(), container, false);
 
         mBtnConfirm = (Button) view.findViewById(R.id.btnConfirm);
         mBtnCancel = (Button) view.findViewById(R.id.btnCancel);
@@ -228,6 +230,10 @@ public class DirectoryChooserFragment extends DialogFragment {
         changeDirectory(initialDir);
 
         return view;
+    }
+
+    protected int getResourceID() {
+        return R.layout.directory_chooser;
     }
 
     private void adjustResourceLightness() {

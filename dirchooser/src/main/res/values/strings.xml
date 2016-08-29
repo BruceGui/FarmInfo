@@ -11,5 +11,7 @@
     <string name="create_folder_error_already_exists">Folder already exists</string>
     <string name="create_folder_error">Could not create folder</string>
     <string name="up_label">Up</string>
+    <string name="input_file_name">File name</string>
+    <string name="please_input_file_name">Please Input File Name</string>
 
 </resources>
