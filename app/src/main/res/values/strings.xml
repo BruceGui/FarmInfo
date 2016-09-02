@@ -59,6 +59,7 @@
     <string name="label_enter_filename">Enter Filename</string>
     <string name="file_saved_success">File saved</string>
     <string name="file_saved_error">Error saving file</string>
+    <string name="empty_place">  </string>
 
     <string name="btn_add">+</string>
     <string name="btn_ok">OK</string>

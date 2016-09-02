@@ -63,7 +63,7 @@ import org.w3c.dom.Attr;
 public class FarmInfoActivity extends AppCompatActivity implements
         PointDetailFragment.OnPointDetailListener, MorphLayout.OnMorphListener,
         SaveMissionFragment.OnFragmentInteractionListener,
-        OpenMissionFragment.OnFragmentInteractionListener{
+        OpenMissionFragment.OnFragmentInteractionListener {
 
     private static final String TAG = "FarmInfoActivity";
 
@@ -175,6 +175,10 @@ public class FarmInfoActivity extends AppCompatActivity implements
 
         setupMapFragment();
 
+        /**
+         *  添加所有的fragment,并隐藏所有的fragment
+         */
+        initAllFragment();
 
         Log.i(TAG, Build.VERSION.INCREMENTAL);
         Log.i(TAG, Build.DEVICE);
@@ -193,6 +197,7 @@ public class FarmInfoActivity extends AppCompatActivity implements
                 morphCreate();
                 //setupPointDetailFragment();
                 addPointDetail(currentType);
+                updatePointIndex(currentType);
 
             }
         });
@@ -257,15 +262,46 @@ public class FarmInfoActivity extends AppCompatActivity implements
         });
     }
 
+    /**
+     * 初始化各种添加点的fragment
+     */
+    private void initAllFragment() {
+
+        fragmentManager.beginTransaction().add(R.id.point_detail_fragment, PointDetailFragment.
+                        newInstance(PointItemType.FRAMEPOINT),
+                PointDetailFragment.getFragmentTag(PointItemType.FRAMEPOINT)).commit();
+        fragmentManager.beginTransaction().add(R.id.point_detail_fragment, PointDetailFragment.
+                        newInstance(PointItemType.BYPASSPOINT),
+                PointDetailFragment.getFragmentTag(PointItemType.BYPASSPOINT)).commit();
+        fragmentManager.beginTransaction().add(R.id.point_detail_fragment, PointDetailFragment.
+                        newInstance(PointItemType.FORWAEDPOINT),
+                PointDetailFragment.getFragmentTag(PointItemType.FORWAEDPOINT)).commit();
+        fragmentManager.beginTransaction().add(R.id.point_detail_fragment, PointDetailFragment.
+                        newInstance(PointItemType.CLIMBPOINT),
+                PointDetailFragment.getFragmentTag(PointItemType.CLIMBPOINT)).commit();
+    }
+
 
     /**
      * 保存和打开任务文件的相关函数
      */
 
     @Override
-    public void onSaveMission(@NonNull String path, @NonNull String filename) {
+    public void onSaveMission(@NonNull String filepath, @NonNull String filename) {
         //TODO
+        Log.i(TAG, filepath + "/" + filename);
+        final Context context = getApplicationContext();
         mSaveMissionFragment.dismiss();
+
+        if (missionProxy.writeMissionToFile(filepath, filename)) {
+            Toast.makeText(context, R.string.file_saved_success, Toast.LENGTH_SHORT)
+                    .show();
+            return;
+        }
+
+        Toast.makeText(context, R.string.file_saved_error, Toast.LENGTH_SHORT)
+                .show();
+
     }
 
     @Override
@@ -296,31 +332,6 @@ public class FarmInfoActivity extends AppCompatActivity implements
 
         mSaveMissionFragment.show(getFragmentManager(), null);
 
-        /*
-        final Context context = getApplicationContext();
-        final String defaultFilename =  FileStream.getWaypointFilename("points");
-
-        final EditInputDialog dialog = EditInputDialog.newInstance(context, getString(R.string.label_enter_filename),
-                defaultFilename, new EditInputDialog.Listener() {
-                    @Override
-                    public void onOk(CharSequence input) {
-                        if (missionProxy.writeMissionToFile(input.toString())) {
-                            Toast.makeText(context, R.string.file_saved_success, Toast.LENGTH_SHORT)
-                                    .show();
-                            return;
-                        }
-
-                        Toast.makeText(context, R.string.file_saved_error, Toast.LENGTH_SHORT)
-                                .show();
-                    }
-
-                    @Override
-                    public void onCancel() {
-                    }
-                });
-
-        dialog.show(getSupportFragmentManager(), "Mission filename");
-        */
     }
 
     private void openMissionFile() {
@@ -341,6 +352,7 @@ public class FarmInfoActivity extends AppCompatActivity implements
      * 添加一个点
      */
     private void addPointDetail(PointItemType itemType) {
+
 
         switch (itemType) {
 
@@ -364,72 +376,121 @@ public class FarmInfoActivity extends AppCompatActivity implements
                 break;
         }
 
+
+    }
+
+    /**
+     * 更新当前点的序号数
+     *
+     * @param itemType 点的类型
+     */
+    private void updatePointIndex(PointItemType itemType) {
+
+        switch (itemType) {
+            case FORWAEDPOINT:
+                if (forwardPointFragment == null) {
+                    forwardPointFragment = (ForwardPointFragment) fragmentManager.findFragmentByTag(PointDetailFragment.getFragmentTag(
+                            PointItemType.FORWAEDPOINT));
+                }
+                forwardPointFragment.setPointIndex(missionProxy.getCurrentForwardNumber());
+                break;
+            case BYPASSPOINT:
+                if (bypassPointFragment == null) {
+                    bypassPointFragment = (BypassPointFragment) fragmentManager.findFragmentByTag(PointDetailFragment.getFragmentTag(
+                            PointItemType.BYPASSPOINT));
+                }
+                bypassPointFragment.setPointIndex(missionProxy.getCurrentBypassNumber());
+                break;
+            case FRAMEPOINT:
+                if (framePointFragment == null) {
+                    framePointFragment = (FramePointFragment) fragmentManager.findFragmentByTag(PointDetailFragment.getFragmentTag(
+                            PointItemType.FRAMEPOINT));
+                }
+                framePointFragment.setPointIndex(missionProxy.getCurrentFrameNumber());
+                break;
+            case CLIMBPOINT:
+                if (climbPointFragment == null) {
+                    climbPointFragment = (ClimbPointFragment) fragmentManager.findFragmentByTag(PointDetailFragment.getFragmentTag(
+                            PointItemType.CLIMBPOINT));
+                }
+                climbPointFragment.setPointIndex(missionProxy.getCurrentClimbNumber());
+                break;
+            default:
+                break;
+        }
+
     }
 
     private void setupFrameDetailFragment() {
 
-        if (framePointFragment == null) {
-            framePointFragment = new FramePointFragment();
-
-            fragmentManager.beginTransaction().add(
-                    R.id.point_detail_fragment, framePointFragment
-            ).commit();
-            Log.i(TAG, "new commit");
-        } else {
-            framePointFragment.setPointIndex(missionProxy.getCurrentFrameNumber());
-        }
+        fragmentManager.beginTransaction().show(fragmentManager.findFragmentByTag(
+                PointDetailFragment.getFragmentTag(PointItemType.FRAMEPOINT)))
+                .hide(fragmentManager.findFragmentByTag(
+                        PointDetailFragment.getFragmentTag(PointItemType.BYPASSPOINT)))
+                .hide(fragmentManager.findFragmentByTag(
+                        PointDetailFragment.getFragmentTag(PointItemType.FORWAEDPOINT)))
+                .hide(fragmentManager.findFragmentByTag(
+                        PointDetailFragment.getFragmentTag(PointItemType.CLIMBPOINT)))
+                .commit();
 
     }
 
     private void setupBypassDetailFragment() {
 
-        if (bypassPointFragment == null) {
-            bypassPointFragment = new BypassPointFragment();
-
-            fragmentManager.beginTransaction().add(
-                    R.id.point_detail_fragment, bypassPointFragment
-            ).commit();
-        } else {
-            bypassPointFragment.setPointIndex(missionProxy.getCurrentBypassNumber());
-        }
-
+        fragmentManager.beginTransaction().show(fragmentManager.findFragmentByTag(
+                PointDetailFragment.getFragmentTag(PointItemType.BYPASSPOINT)))
+                .hide(fragmentManager.findFragmentByTag(
+                        PointDetailFragment.getFragmentTag(PointItemType.FRAMEPOINT)))
+                .hide(fragmentManager.findFragmentByTag(
+                        PointDetailFragment.getFragmentTag(PointItemType.FORWAEDPOINT)))
+                .hide(fragmentManager.findFragmentByTag(
+                        PointDetailFragment.getFragmentTag(PointItemType.CLIMBPOINT)))
+                .commit();
     }
 
     private void setupClimbDetailFragment() {
 
-        if (climbPointFragment == null) {
-            climbPointFragment = new ClimbPointFragment();
-
-            fragmentManager.beginTransaction().add(
-                    R.id.point_detail_fragment, climbPointFragment
-            ).commit();
-        } else {
-            climbPointFragment.setPointIndex(missionProxy.getCurrentClimbNumber());
-        }
-
+        fragmentManager.beginTransaction().show(fragmentManager.findFragmentByTag(
+                PointDetailFragment.getFragmentTag(PointItemType.CLIMBPOINT)))
+                .hide(fragmentManager.findFragmentByTag(
+                        PointDetailFragment.getFragmentTag(PointItemType.BYPASSPOINT)))
+                .hide(fragmentManager.findFragmentByTag(
+                        PointDetailFragment.getFragmentTag(PointItemType.FORWAEDPOINT)))
+                .hide(fragmentManager.findFragmentByTag(
+                        PointDetailFragment.getFragmentTag(PointItemType.FRAMEPOINT)))
+                .commit();
     }
 
     private void setupForwardDetailFragment() {
-        if (forwardPointFragment == null) {
-            forwardPointFragment = new ForwardPointFragment();
 
-            fragmentManager.beginTransaction().add(
-                    R.id.point_detail_fragment, forwardPointFragment
-            ).commit();
-        } else {
-            forwardPointFragment.setPointIndex(missionProxy.getCurrentForwardNumber());
-        }
-
+        fragmentManager.beginTransaction().show(fragmentManager.findFragmentByTag(
+                PointDetailFragment.getFragmentTag(PointItemType.FORWAEDPOINT)))
+                .hide(fragmentManager.findFragmentByTag(
+                        PointDetailFragment.getFragmentTag(PointItemType.BYPASSPOINT)))
+                .hide(fragmentManager.findFragmentByTag(
+                        PointDetailFragment.getFragmentTag(PointItemType.FRAMEPOINT)))
+                .hide(fragmentManager.findFragmentByTag(
+                        PointDetailFragment.getFragmentTag(PointItemType.CLIMBPOINT)))
+                .commit();
     }
 
+    /**
+     * 点类型更新时的监听函数
+     *
+     * @param newType 新的点类型
+     */
     @Override
     public void onPointTypeChanged(PointItemType newType) {
 
-        //addPointDetail(newType);
+        /**
+         *  隐藏当前的 fragment
+         */
+        fragmentManager.beginTransaction().hide(fragmentManager.findFragmentByTag(
+                PointDetailFragment.getFragmentTag(currentType)
+        )).show(fragmentManager.findFragmentByTag(
+                PointDetailFragment.getFragmentTag(newType))).commit();
         currentType = newType;
-        updateSetupFragment(newType);
-
-
+        updatePointIndex(currentType);
     }
 
     /**
@@ -487,16 +548,6 @@ public class FarmInfoActivity extends AppCompatActivity implements
 
         DangerPointMarker pointMarker = new DangerPointMarker(newItem);
         mapFragment.updateMarker(pointMarker);
-
-    }
-
-    private void updateSetupFragment(PointItemType newType) {
-
-        Log.i(TAG, newType.getLabel());
-
-        fragmentManager.beginTransaction().replace(
-                R.id.point_detail_fragment, PointDetailFragment.newInstance(newType)
-        ).commit();
 
     }
 

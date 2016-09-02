@@ -31,13 +31,20 @@ public class BypassPointFragment extends PointDetailFragment implements
 
         final Context context = getActivity().getApplicationContext();
 
-        final NumericWheelAdapter altitudeAdapter = new NumericWheelAdapter(context,
+        final NumericWheelAdapter altitudeAdapterMeter = new NumericWheelAdapter(context,
                 R.layout.wheel_text_centered, MIN_ALTITUDE,	MAX_ALTITUDE, "%d m");
-        CardWheelHorizontalView altitudePicker = (CardWheelHorizontalView) view.findViewById(R.id
-                .altitudePicker);
-        altitudePicker.setViewAdapter(altitudeAdapter);
-        altitudePicker.setCurrentValue(0);
-        altitudePicker.addChangingListener(this);
+        final NumericWheelAdapter altitudeAdapterCentimeter = new NumericWheelAdapter(context,
+                R.layout.wheel_text_centered, MIN_CENTIMETER,	MAX_CENTIMETER, "%d cm");
+        CardWheelHorizontalView altitudePickerMeter = (CardWheelHorizontalView) view.findViewById(R.id
+                .altitudePickerMeter);
+        altitudePickerMeter.setViewAdapter(altitudeAdapterMeter);
+        altitudePickerMeter.setCurrentValue(0);
+        altitudePickerMeter.addChangingListener(this);
+
+        CardWheelHorizontalView altitudePickerCentimeter = (CardWheelHorizontalView) view.findViewById(R.id
+                .altitudePickerCentimeter);
+        altitudePickerCentimeter.setViewAdapter(altitudeAdapterCentimeter);
+        altitudePickerCentimeter.setCurrentValue(0);
 
         pointIndex = (TextView)view.findViewById(R.id.dangerPointIndex);
         pointIndex.setText(String.valueOf(missionProxy.getCurrentBypassNumber()));

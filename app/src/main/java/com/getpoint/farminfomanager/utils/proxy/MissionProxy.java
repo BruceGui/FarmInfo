@@ -124,7 +124,7 @@ public class MissionProxy {
 
     }
 
-    public boolean writeMissionToFile(String filename) {
-        return MissionWriter.write(this, filename);
+    public boolean writeMissionToFile(String filepath, String filename) {
+        return MissionWriter.write(this, filepath, filename);
     }
 }

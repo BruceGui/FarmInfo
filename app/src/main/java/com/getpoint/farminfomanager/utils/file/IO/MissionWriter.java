@@ -19,11 +19,11 @@ import java.util.List;
 public class MissionWriter {
 	private static final String TAG = MissionWriter.class.getSimpleName();
 
-	public static boolean write(MissionProxy mission) {
-		return write(mission, FileStream.getWaypointFilename("waypoints"));
+	public static boolean write(MissionProxy mission, String filepath) {
+		return write(mission, filepath, FileStream.getWaypointFilename("waypoints"));
 	}
 
-	public static boolean write(MissionProxy mission, String filename) {
+	public static boolean write(MissionProxy mission, String filepath, String filename) {
 		try {
 			if (!FileManager.isExternalStorageAvailable())
 				return false;
@@ -32,7 +32,7 @@ public class MissionWriter {
 				filename += FileList.WAYPOINT_FILENAME_EXT;
 			}
 
-			final FileOutputStream out = FileStream.getWaypointFileStream(filename);
+			final FileOutputStream out = FileStream.getWaypointFileStream(filepath, filename);
 			/**
 			 *  把当前任务点写进文件中
 			 */
@@ -56,7 +56,7 @@ public class MissionWriter {
             /**
              *  向文件中写入障碍点的信息
              */
-            out.write(("danger point="
+            out.write(("danger num="
                         + (bypassPoints.size()
                         + climbPoints.size()
                         + forwardPoints.size())).getBytes());

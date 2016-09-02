@@ -32,9 +32,9 @@ public class FileStream {
 		return out;
 	}
 
-	static public FileOutputStream getWaypointFileStream(String filename) throws
+	static public FileOutputStream getWaypointFileStream(String filepath, String filename) throws
             FileNotFoundException {
-		File myDir = new File(DirectoryPath.getWaypointsPath());
+		File myDir = new File(filepath);
 		myDir.mkdirs();
 		File file = new File(myDir, filename);
 		if (file.exists())

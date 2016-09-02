@@ -31,6 +31,21 @@ public class PointDetailFragment extends Fragment implements SpinnerSelfSelect.
 
     private static final String TAG = "PointDetailFragment";
 
+    public static String getFragmentTag(PointItemType itemType) {
+        switch (itemType) {
+            case FRAMEPOINT:
+                return "FRAMEPOINT";
+            case BYPASSPOINT:
+                return "BYPASSPOINT";
+            case CLIMBPOINT:
+                return "CLIMBPOINT";
+            case FORWAEDPOINT:
+                return "FORWAEDPOINT";
+            default:
+                return "FRAMEPOINT";
+        }
+    }
+
     public static PointDetailFragment newInstance(PointItemType itemType) {
 
         PointDetailFragment fragment;
@@ -68,6 +83,8 @@ public class PointDetailFragment extends Fragment implements SpinnerSelfSelect.
 
     protected static final int MIN_ALTITUDE = -200;
     protected static final int MAX_ALTITUDE = +200;
+    protected static final int MIN_CENTIMETER = 0;
+    protected static final int MAX_CENTIMETER = 99;
 
     protected TextView pointType;
     protected SpinnerSelfSelect typeSpinner;
@@ -82,7 +99,9 @@ public class PointDetailFragment extends Fragment implements SpinnerSelfSelect.
         if(pointType != null) {
             final String currentType = pointType.getText().toString();
 
-            if (currentType.equals(PointItemType.BYPASSPOINT.getLabel())) {
+            if(currentType.equals(PointItemType.FRAMEPOINT.getLabel())) {
+                return PointItemType.FRAMEPOINT;
+            } else if (currentType.equals(PointItemType.BYPASSPOINT.getLabel())) {
                 return PointItemType.BYPASSPOINT;
             } else if (currentType.equals(PointItemType.CLIMBPOINT.getLabel())){
                 return PointItemType.CLIMBPOINT;

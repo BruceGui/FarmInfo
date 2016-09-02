@@ -5,15 +5,24 @@
 
     <com.getpoint.farminfomanager.weights.spinners.SpinnerSelfSelect
         android:id="@+id/spinnerWaypointType"
-        android:layout_width="match_parent"
+        android:layout_width="320dp"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_margin="5dp"
         android:entries="@array/ExampleWaypointType" />
 
+    <com.getpoint.farminfomanager.weights.spinners.SpinnerSelfSelect
+        android:id="@+id/spinnerInnerIndex"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_margin="5dp"
+        android:layout_toEndOf="@id/spinnerWaypointType"
+        android:entries="@array/ExampleWaypointType" />
+
     <RelativeLayout
         android:id="@+id/title_rect"
-        android:layout_width="match_parent"
+        android:layout_width="320dp"
         android:layout_height="64dp"
         android:layout_alignParentTop="true"
         android:background="@drawable/wp_title_rectangle">
@@ -37,7 +46,7 @@
 
         <RelativeLayout
             android:id="@+id/title_content"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_toEndOf="@id/title_div"
@@ -52,14 +61,52 @@
                 android:text="@string/frame_point"
                 android:textAllCaps="true" />
         </RelativeLayout>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/index_rect"
+        android:layout_width="wrap_content"
+        android:layout_height="64dp"
+        android:layout_alignParentTop="true"
+        android:layout_toEndOf="@id/title_rect"
+        android:background="@drawable/wp_title_rectangle">
+
+        <RelativeLayout
+            android:id="@+id/innerIndex"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/dangerInnerIndex"
+                style="@style/missionHeaderTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                android:text="@string/frame_point"
+                android:textAllCaps="true" />
+        </RelativeLayout>
+
     </RelativeLayout>
 
     <ImageView
-        android:id="@+id/menuHint"
+        android:id="@+id/menuHintTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignBottom="@id/title_rect"
-        android:layout_alignParentEnd="true"
+        android:layout_alignEnd="@id/title_rect"
+        android:layout_margin="10dp"
+        android:src="@drawable/ic_menu_hint"
+        tools:ignore="ContentDescription" />
+
+    <ImageView
+        android:id="@+id/menuHintIndex"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/index_rect"
+        android:layout_alignEnd="@id/index_rect"
         android:layout_margin="10dp"
         android:src="@drawable/ic_menu_hint"
         tools:ignore="ContentDescription" />
@@ -80,13 +127,28 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 
-            <com.getpoint.farminfomanager.weights.spinnerWheel.CardWheelHorizontalView
-                android:id="@+id/altitudePicker"
-                style="@style/missionItemDetailCard"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/altitude_label" />
+                android:orientation="horizontal">
 
+                <com.getpoint.farminfomanager.weights.spinnerWheel.CardWheelHorizontalView
+                    android:id="@+id/altitudePickerMeter"
+                    style="@style/missionItemDetailCard"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="@string/altitude_label"
+                    android:layout_weight="1"/>
+
+                <com.getpoint.farminfomanager.weights.spinnerWheel.CardWheelHorizontalView
+                    android:id="@+id/altitudePickerCentimeter"
+                    style="@style/missionItemDetailCard"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="   " />
+
+            </LinearLayout>
         </LinearLayout>
     </ScrollView>
 
@@ -102,8 +164,8 @@
         android:layout_width="match_parent"
         android:layout_height="56dp"
         android:layout_below="@id/button_div"
-        android:text="@string/btn_add"
         android:background="@drawable/btn_add_point_background"
+        android:text="@string/btn_add"
         android:textSize="44sp" />
 
 </RelativeLayout>
