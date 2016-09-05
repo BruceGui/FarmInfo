@@ -23,7 +23,7 @@ public enum PointItemType {
 
     private String label;
 
-    private PointItemType(String label) {
+    PointItemType(String label) {
         this.label = label;
     }
 

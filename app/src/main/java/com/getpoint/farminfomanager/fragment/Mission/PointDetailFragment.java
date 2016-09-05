@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +15,7 @@ import android.widget.TextView;
 import com.getpoint.farminfomanager.FarmInfoManagerApp;
 import com.getpoint.farminfomanager.R;
 import com.getpoint.farminfomanager.entity.points.PointItemType;
+import com.getpoint.farminfomanager.fragment.BaiduMapFragment;
 import com.getpoint.farminfomanager.utils.adapters.AdapterMissionItems;
 import com.getpoint.farminfomanager.utils.proxy.MissionProxy;
 import com.getpoint.farminfomanager.weights.spinners.SpinnerSelfSelect;
@@ -74,10 +76,11 @@ public class PointDetailFragment extends Fragment implements SpinnerSelfSelect.
     public interface OnPointDetailListener {
 
         /**
-         *  通知监听者 点的类型已经改变
+         * 通知监听者 点的类型已经改变
+         *
          * @param newType
          */
-        public void onPointTypeChanged(PointItemType newType);
+        void onPointTypeChanged(PointItemType newType);
 
     }
 
@@ -92,18 +95,19 @@ public class PointDetailFragment extends Fragment implements SpinnerSelfSelect.
     protected OnPointDetailListener mListener;
     protected FarmInfoManagerApp farmApp;
     protected MissionProxy missionProxy;
+    protected BaiduMapFragment mapFragment;
 
     public PointItemType getPointType() {
 
 
-        if(pointType != null) {
+        if (pointType != null) {
             final String currentType = pointType.getText().toString();
 
-            if(currentType.equals(PointItemType.FRAMEPOINT.getLabel())) {
+            if (currentType.equals(PointItemType.FRAMEPOINT.getLabel())) {
                 return PointItemType.FRAMEPOINT;
             } else if (currentType.equals(PointItemType.BYPASSPOINT.getLabel())) {
                 return PointItemType.BYPASSPOINT;
-            } else if (currentType.equals(PointItemType.CLIMBPOINT.getLabel())){
+            } else if (currentType.equals(PointItemType.CLIMBPOINT.getLabel())) {
                 return PointItemType.CLIMBPOINT;
             } else if (currentType.equals(PointItemType.FORWAEDPOINT.getLabel())) {
                 return PointItemType.FORWAEDPOINT;
@@ -148,22 +152,30 @@ public class PointDetailFragment extends Fragment implements SpinnerSelfSelect.
         commandAdapter = new AdapterMissionItems(getActivity(),
                 android.R.layout.simple_list_item_1, list.toArray(new PointItemType[list.size()]));
 
-        typeSpinner = (SpinnerSelfSelect)view.findViewById(R.id.spinnerWaypointType);
+        typeSpinner = (SpinnerSelfSelect) view.findViewById(R.id.spinnerWaypointType);
         typeSpinner.setAdapter(commandAdapter);
         typeSpinner.setOnSpinnerItemSelectedListener(this);
 
-        pointType = (TextView)view.findViewById(R.id.WaypointType);
+        pointType = (TextView) view.findViewById(R.id.WaypointType);
 
         return view;
+    }
+
+    public void setPointType(String type) {
+        pointType.setText(type);
+    }
+
+    public void setMapFragment(BaiduMapFragment mapFragment) {
+        this.mapFragment = mapFragment;
     }
 
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
 
-        if(!(activity instanceof OnPointDetailListener)) {
+        if (!(activity instanceof OnPointDetailListener)) {
             throw new IllegalStateException("Parent activity must be an instance of"
-                        + OnPointDetailListener.class.getName());
+                    + OnPointDetailListener.class.getName());
         }
 
         mListener = (OnPointDetailListener) activity;
@@ -175,13 +187,14 @@ public class PointDetailFragment extends Fragment implements SpinnerSelfSelect.
         mListener = null;
     }
 
-    protected  int getLayoutResource() {
+    protected int getLayoutResource() {
         return R.layout.fragment_editor_detail_generic;
     }
 
     @Override
     public void onSpinnerItemSelected(Spinner spinner, int position) {
 
+        Log.i(TAG, "POS " + position);
         final PointItemType selectType = commandAdapter.getItem(position);
         pointType.setText(selectType.getLabel());
 

@@ -6,9 +6,13 @@ import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.getpoint.farminfomanager.R;
+import com.getpoint.farminfomanager.entity.markers.DangerPointMarker;
+import com.getpoint.farminfomanager.entity.points.BypassPoint;
+import com.getpoint.farminfomanager.utils.proxy.MissionItemProxy;
 import com.getpoint.farminfomanager.weights.spinnerWheel.CardWheelHorizontalView;
 import com.getpoint.farminfomanager.weights.spinnerWheel.adapters.NumericWheelAdapter;
 
@@ -47,6 +51,23 @@ public class ForwardPointFragment extends PointDetailFragment implements
 
         pointIndex = (TextView)view.findViewById(R.id.dangerPointIndex);
         pointIndex.setText(String.valueOf(missionProxy.getCurrentForwardNumber()));
+
+        /**
+         *  添加内点的监听函数
+         */
+        Button addInerPoint = (Button)view.findViewById(R.id.id_add_danger_point);
+        addInerPoint.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final BypassPoint bypassPoint = new BypassPoint(mapFragment.getCurrentCoord());
+
+                MissionItemProxy newItem = new MissionItemProxy(missionProxy, bypassPoint);
+                missionProxy.addItem(newItem);
+
+                DangerPointMarker pointMarker = new DangerPointMarker(newItem);
+                mapFragment.updateMarker(pointMarker);
+            }
+        });
 
         return view;
     }
