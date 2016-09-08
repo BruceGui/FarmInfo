@@ -7,11 +7,13 @@ import com.getpoint.farminfomanager.entity.coordinate.LatLongAlt;
  */
 public class PointInfo {
 
+    /**
+     *
+     */
     protected LatLongAlt position;
-
-    protected short pointNum;
-
     protected PointItemType pointType;
+    protected short pointNum;
+    protected int flyheight;
 
     public PointInfo() {
 
@@ -25,7 +27,7 @@ public class PointInfo {
         return this.pointType;
     }
 
-    public void setPosition(double latitude, double longitude, float altitude) {
+    public void setPosition(double latitude, double longitude, int altitude) {
         position = new LatLongAlt(latitude, longitude, altitude);
     }
 
@@ -38,6 +40,34 @@ public class PointInfo {
     }
 
     public String toString() {
-        return position.getLatitude() + " " + position.getLatitude() + " " + position.getAltitude();
+        if (pointType.equals(PointItemType.FRAMEPOINT)) {
+            return position.getLatitude() + " "
+                    + position.getLatitude() + " "
+                    + position.getAltitude();
+        } else {
+            return position.getLatitude() + " "
+                    + position.getLatitude() + " "
+                    + position.getAltitude() + " "
+                    + pointNum + " "
+                    + flyheight;
+        }
     }
+
+    /**
+     *
+     *//*
+    public Object clone() {
+
+        PointInfo o = null;
+        try {
+            o = (PointInfo) super.clone();
+        } catch (CloneNotSupportedException e) {
+            e.printStackTrace();
+        }
+
+        o.position = (LatLongAlt)position.clone();
+
+        return o;
+
+    }*/
 }

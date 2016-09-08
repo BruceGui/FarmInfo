@@ -8,9 +8,9 @@ import com.getpoint.farminfomanager.entity.coordinate.LatLongAlt;
  */
 public class FramePoint extends PointInfo {
 
-    public FramePoint(LatLong coord) {
+    public FramePoint(LatLong coord, int altitude) {
 
-        this.position = new LatLongAlt(coord.getLatitude(), coord.getLongitude(), 0);
+        this.position = new LatLongAlt(coord.getLatitude(), coord.getLongitude(), altitude);
         this.pointType = PointItemType.FRAMEPOINT;
 
     }

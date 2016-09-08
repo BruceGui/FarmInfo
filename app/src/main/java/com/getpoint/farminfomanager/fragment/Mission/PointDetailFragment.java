@@ -90,11 +90,12 @@ public class PointDetailFragment extends Fragment implements SpinnerSelfSelect.
     protected static final int MAX_CENTIMETER = 99;
 
     protected TextView pointType;
-    protected SpinnerSelfSelect typeSpinner;
-    protected AdapterMissionItems commandAdapter;
-    protected OnPointDetailListener mListener;
-    protected FarmInfoManagerApp farmApp;
     protected MissionProxy missionProxy;
+    protected FarmInfoManagerApp farmApp;
+    protected SpinnerSelfSelect typeSpinner;
+    protected OnPointDetailListener mListener;
+    protected AdapterMissionItems commandAdapter;
+
     protected BaiduMapFragment mapFragment;
 
     public PointItemType getPointType() {

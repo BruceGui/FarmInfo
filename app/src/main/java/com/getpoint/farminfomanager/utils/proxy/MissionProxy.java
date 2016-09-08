@@ -1,5 +1,7 @@
 package com.getpoint.farminfomanager.utils.proxy;
 
+import android.util.Log;
+
 import com.getpoint.farminfomanager.utils.file.IO.MissionWriter;
 
 import java.util.ArrayList;
@@ -10,13 +12,15 @@ import java.util.List;
  */
 
 /**
- *  保存这个农田所有边界点和障碍点的信息
+ * 保存这个农田所有边界点和障碍点的信息
  */
 
 public class MissionProxy {
 
+    private static final String TAG = "MissionProxy";
+
     /**
-     *  存储当前任务的所有点集合
+     * 存储当前任务的所有点集合
      */
     private final List<MissionItemProxy> missionItemProxies = new ArrayList<>();
 
@@ -36,12 +40,15 @@ public class MissionProxy {
                 break;
             case BYPASSPOINT:
                 bypassItemProxies.add(itemToAdd);
+                Log.i(TAG, "add bypass");
                 break;
             case CLIMBPOINT:
                 climbItemProxies.add(itemToAdd);
+                Log.i(TAG, "add climb");
                 break;
             case FORWAEDPOINT:
                 forwardItemProies.add(itemToAdd);
+                Log.i(TAG, "add forward");
                 break;
             default:
                 missionItemProxies.add(itemToAdd);
@@ -70,7 +77,8 @@ public class MissionProxy {
     }
 
     /**
-     *   返回当前边界点总数
+     * 返回当前边界点总数
+     *
      * @return
      */
     public int getCurrentFrameNumber() {
@@ -91,7 +99,8 @@ public class MissionProxy {
 
 
     /**
-     *  返回给定点的序号
+     * 返回给定点的序号
+     *
      * @param item 给定的点
      * @return 序号
      */
@@ -105,7 +114,7 @@ public class MissionProxy {
             case CLIMBPOINT:
                 return climbItemProxies.indexOf(item) + 1;
             case FORWAEDPOINT:
-                return forwardItemProies.indexOf(item) +1;
+                return forwardItemProies.indexOf(item) + 1;
             default:
                 return missionItemProxies.indexOf(item) + 1;
         }
@@ -113,7 +122,7 @@ public class MissionProxy {
     }
 
     /**
-     *  清除所有的航标点
+     * 清除所有的航标点
      */
     public void missionClear() {
 
@@ -126,5 +135,15 @@ public class MissionProxy {
 
     public boolean writeMissionToFile(String filepath, String filename) {
         return MissionWriter.write(this, filepath, filename);
+    }
+
+    public boolean readMissionFromFile(String filepath) {
+
+        this.missionClear();
+        if (MissionWriter.read(filepath) != null) {
+            return true;
+        }
+        return false;
+
     }
 }

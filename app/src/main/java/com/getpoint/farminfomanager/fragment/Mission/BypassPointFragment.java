@@ -13,6 +13,8 @@ import android.widget.TextView;
 import com.getpoint.farminfomanager.R;
 import com.getpoint.farminfomanager.entity.markers.DangerPointMarker;
 import com.getpoint.farminfomanager.entity.points.BypassPoint;
+import com.getpoint.farminfomanager.entity.points.DangerPoint;
+import com.getpoint.farminfomanager.entity.points.PointItemType;
 import com.getpoint.farminfomanager.utils.proxy.MissionItemProxy;
 import com.getpoint.farminfomanager.weights.spinnerWheel.CardWheelHorizontalView;
 import com.getpoint.farminfomanager.weights.spinnerWheel.adapters.NumericWheelAdapter;
@@ -21,50 +23,62 @@ import com.getpoint.farminfomanager.weights.spinnerWheel.adapters.NumericWheelAd
  * Created by Station on 2016/8/4.
  */
 public class BypassPointFragment extends PointDetailFragment implements
-        CardWheelHorizontalView.OnCardWheelChangedListener{
+        CardWheelHorizontalView.OnCardWheelChangedListener {
 
     private TextView pointIndex;
+    private TextView innerIndex;
     private BypassPoint bypassPoint;
+    private CardWheelHorizontalView altitudePickerMeter;
+    private CardWheelHorizontalView altitudePickerCentimeter;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         final View view = super.onCreateView(inflater, container, savedInstanceState);
 
-        final TextView pointType = (TextView)view.findViewById(R.id.WaypointType);
+        final TextView pointType = (TextView) view.findViewById(R.id.WaypointType);
         pointType.setText(R.string.bypass_danger_poi);
 
         final Context context = getActivity().getApplicationContext();
 
         final NumericWheelAdapter altitudeAdapterMeter = new NumericWheelAdapter(context,
-                R.layout.wheel_text_centered, MIN_ALTITUDE,	MAX_ALTITUDE, "%d m");
+                R.layout.wheel_text_centered, MIN_ALTITUDE, MAX_ALTITUDE, "%d m");
         final NumericWheelAdapter altitudeAdapterCentimeter = new NumericWheelAdapter(context,
-                R.layout.wheel_text_centered, MIN_CENTIMETER,	MAX_CENTIMETER, "%d cm");
-        CardWheelHorizontalView altitudePickerMeter = (CardWheelHorizontalView) view.findViewById(R.id
+                R.layout.wheel_text_centered, MIN_CENTIMETER, MAX_CENTIMETER, "%d cm");
+        altitudePickerMeter = (CardWheelHorizontalView) view.findViewById(R.id
                 .altitudePickerMeter);
         altitudePickerMeter.setViewAdapter(altitudeAdapterMeter);
         altitudePickerMeter.setCurrentValue(0);
         altitudePickerMeter.addChangingListener(this);
 
-        CardWheelHorizontalView altitudePickerCentimeter = (CardWheelHorizontalView) view.findViewById(R.id
+        altitudePickerCentimeter = (CardWheelHorizontalView) view.findViewById(R.id
                 .altitudePickerCentimeter);
         altitudePickerCentimeter.setViewAdapter(altitudeAdapterCentimeter);
         altitudePickerCentimeter.setCurrentValue(0);
 
-        pointIndex = (TextView)view.findViewById(R.id.dangerPointIndex);
+        innerIndex = (TextView) view.findViewById(R.id.dangerInnerIndex);
+
+        pointIndex = (TextView) view.findViewById(R.id.dangerPointIndex);
         pointIndex.setText(String.valueOf(missionProxy.getCurrentBypassNumber()));
+
+        bypassPoint = new BypassPoint();
 
         /**
          *  添加内点的监听函数
          */
-        Button addInerPoint = (Button)view.findViewById(R.id.id_add_danger_point);
+        Button addInerPoint = (Button) view.findViewById(R.id.id_add_danger_point);
         addInerPoint.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final BypassPoint bypassPoint = new BypassPoint(mapFragment.getCurrentCoord());
+                final DangerPoint bp = new DangerPoint(mapFragment.getCurrentCoord(),
+                       0);
 
-                MissionItemProxy newItem = new MissionItemProxy(missionProxy, bypassPoint);
-                missionProxy.addItem(newItem);
+                bp.setPointType(PointItemType.BYPASSPOINT);
+                bp.setPointNum(BypassPoint.INDICATE_NUM);
+                bp.setFlyheight(getFlyHeight());
+
+                MissionItemProxy newItem = new MissionItemProxy(missionProxy, bp);
+                bypassPoint.addInnerPoint(bp);
 
                 DangerPointMarker pointMarker = new DangerPointMarker(newItem);
                 mapFragment.updateMarker(pointMarker);
@@ -74,15 +88,35 @@ public class BypassPointFragment extends PointDetailFragment implements
         return view;
     }
 
-
-
     public void setPointIndex(int index) {
         pointIndex.setText(String.valueOf(index));
     }
 
     public BypassPoint getBypassPoint() {
         final BypassPoint byp = bypassPoint;
-        return this.bypassPoint;
+        return byp;
+    }
+
+    /**
+     *  由于Java对象赋值的特殊性，每次clear时都new一个新对象；
+     */
+    public void clearInnerPoint() {
+        this.bypassPoint = new BypassPoint();
+    }
+
+    public int getFlyHeight() {
+
+        int altitude;
+
+        if(altitudePickerMeter.getCurrentValue() < 0) {
+            altitude = altitudePickerMeter.getCurrentValue()*100
+                    - altitudePickerCentimeter.getCurrentValue();
+        } else {
+            altitude = altitudePickerMeter.getCurrentValue()*100
+                    + altitudePickerCentimeter.getCurrentValue();
+        }
+
+        return altitude;
     }
 
     @Override

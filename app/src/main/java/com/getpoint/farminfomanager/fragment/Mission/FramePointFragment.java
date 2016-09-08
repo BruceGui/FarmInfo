@@ -20,6 +20,8 @@ public class FramePointFragment extends PointDetailFragment implements
         CardWheelHorizontalView.OnCardWheelChangedListener{
 
     private TextView pointIndex;
+    private CardWheelHorizontalView altitudePickerMeter;
+    private CardWheelHorizontalView altitudePickerCentimeter;
 
     @Override
     protected int getLayoutResource() {
@@ -43,13 +45,13 @@ public class FramePointFragment extends PointDetailFragment implements
                 R.layout.wheel_text_centered, MIN_ALTITUDE,	MAX_ALTITUDE, "%d m");
         final NumericWheelAdapter altitudeAdapterCentimeter = new NumericWheelAdapter(context,
                 R.layout.wheel_text_centered, MIN_CENTIMETER,	MAX_CENTIMETER, "%d cm");
-        CardWheelHorizontalView altitudePickerMeter = (CardWheelHorizontalView) view.findViewById(R.id
+        altitudePickerMeter = (CardWheelHorizontalView) view.findViewById(R.id
                 .altitudePickerMeter);
         altitudePickerMeter.setViewAdapter(altitudeAdapterMeter);
         altitudePickerMeter.setCurrentValue(0);
         altitudePickerMeter.addChangingListener(this);
 
-        CardWheelHorizontalView altitudePickerCentimeter = (CardWheelHorizontalView) view.findViewById(R.id
+        altitudePickerCentimeter = (CardWheelHorizontalView) view.findViewById(R.id
                 .altitudePickerCentimeter);
         altitudePickerCentimeter.setViewAdapter(altitudeAdapterCentimeter);
         altitudePickerCentimeter.setCurrentValue(0);
@@ -58,6 +60,21 @@ public class FramePointFragment extends PointDetailFragment implements
         pointIndex.setText(String.valueOf(missionProxy.getCurrentFrameNumber()));
 
         return view;
+    }
+
+    public int getAltitude() {
+
+        int altitude;
+
+        if(altitudePickerMeter.getCurrentValue() < 0) {
+            altitude = altitudePickerMeter.getCurrentValue()*100
+                    - altitudePickerCentimeter.getCurrentValue();
+        } else {
+            altitude = altitudePickerMeter.getCurrentValue()*100
+                    + altitudePickerCentimeter.getCurrentValue();
+        }
+
+        return altitude;
     }
 
     public void setPointIndex(int index) {

@@ -5,15 +5,15 @@ import android.os.Parcel;
 /**
  * Stores latitude, longitude, and altitude information for a coordinate.
  */
-public class LatLongAlt extends LatLong {
+public class LatLongAlt extends LatLong implements Cloneable{
 
     /**
      * Stores the altitude in meters.
      */
-    private double mAltitude;
+    private int mAltitude;
     private LatLong latLong;
 
-    public LatLongAlt(double latitude, double longitude, double altitude) {
+    public LatLongAlt(double latitude, double longitude, int altitude) {
         super(latitude, longitude);
         mAltitude = altitude;
         latLong = new LatLong(latitude, longitude);
@@ -35,12 +35,23 @@ public class LatLongAlt extends LatLong {
     /**
      * @return the altitude in meters
      */
-    public double getAltitude() {
+    public int getAltitude() {
         return mAltitude;
     }
 
-    public void setAltitude(float altitude) {
+    public void setAltitude(int altitude) {
         this.mAltitude = altitude;
+    }
+
+    public Object clone() {
+
+        LatLongAlt o;
+
+        o = (LatLongAlt)super.clone();
+        o.latLong = (LatLong)latLong.clone();
+
+        return o;
+
     }
 
     @Override

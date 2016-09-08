@@ -9,17 +9,29 @@ import java.util.List;
 /**
  * Created by Station on 2016/8/1.
  */
-public class DangerPoint extends PointInfo {
+public class DangerPoint extends PointInfo implements Cloneable{
 
-    protected short relativeAltitude;
-    protected List<DangerPoint> points = new ArrayList<>();
+    public DangerPoint() {}
 
-    public DangerPoint(LatLong coord) {
+    public DangerPoint(LatLong coord, int altitude) {
         //pointType = PointItemType.DANGERPOINT;
-        this.position = new LatLongAlt(coord.getLatitude(), coord.getLongitude(), 0);
+        this.position = new LatLongAlt(coord.getLatitude(), coord.getLongitude(), altitude);
     }
 
-    public void clearPoint() {
-        this.points.clear();
+    public void setFlyheight(int flyheight) {
+        this.flyheight = flyheight;
     }
+
+    public void setPointType(PointItemType type) {
+        this.pointType = type;
+    }
+
+    /*public Object clone() {
+
+        DangerPoint o = null;
+
+        o = (DangerPoint) super.clone();
+
+        return o;
+    }*/
 }

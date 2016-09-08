@@ -60,11 +60,9 @@ public class OpenMissionFragment extends DialogFragment {
 
     private Option<OnFragmentInteractionListener> mListener = Option.none();
 
-    private Button mBtnConfirm;
-    private Button mBtnCancel;
-    private EditText mFileName;
+    //private Button mBtnConfirm;
+    //private Button mBtnCancel;
     private ImageButton mBtnNavUp;
-    //private ImageButton mBtnCreateFolder;
     private TextView mTxtvSelectedFolder;
     private ListView mListDirectories;
 
@@ -146,25 +144,26 @@ public class OpenMissionFragment extends DialogFragment {
         assert getActivity() != null;
         final View view = inflater.inflate(getResourceID(), container, false);
 
-        mBtnConfirm = (Button) view.findViewById(R.id.btnConfirm);
-        mBtnCancel = (Button) view.findViewById(R.id.btnCancel);
-        mFileName = (EditText) view.findViewById(R.id.mission_file_name);
+        //mBtnConfirm = (Button) view.findViewById(R.id.btnConfirm);
+        //mBtnCancel = (Button) view.findViewById(R.id.btnCancel);
+        //mFileName = (EditText) view.findViewById(R.id.mission_file_name);
         mBtnNavUp = (ImageButton) view.findViewById(R.id.btnNavUp);
         //mBtnCreateFolder = (ImageButton) view.findViewById(R.id.btnCreateFolder);
         mTxtvSelectedFolder = (TextView) view.findViewById(R.id.txtvSelectedFolder);
         mListDirectories = (ListView) view.findViewById(R.id.directoryList);
 
+        /*
         mBtnConfirm.setOnClickListener(new OnClickListener() {
 
             @Override
             public void onClick(final View v) {
                 if (isValidFile(mSelectedDir)) {
-                    if(TextUtils.isEmpty(mFileName.getText())) {
-                        Toast.makeText(getActivity(), getString(R.string.please_input_file_name),
-                                Toast.LENGTH_SHORT).show();
-                    } else {
+                    //if(TextUtils.isEmpty(mFileName.getText())) {
+                        //Toast.makeText(getActivity(), getString(R.string.please_input_file_name),
+                         //       Toast.LENGTH_SHORT).show();
+                    //} else {
                         returnSelectedFolder();
-                    }
+                    //}
                 }
             }
         });
@@ -181,7 +180,7 @@ public class OpenMissionFragment extends DialogFragment {
                 });
             }
         });
-
+        */
         mListDirectories.setOnItemClickListener(new OnItemClickListener() {
 
             @Override
@@ -406,23 +405,42 @@ public class OpenMissionFragment extends DialogFragment {
             debug("Could not change folder: dir was null");
         } else if (!dir.isDirectory()) {
             debug("Could not change folder: dir is no directory");
+            /**
+             *  返回住界面文件的路径
+             */
+            mListener.foreach(new UnitFunction<OnFragmentInteractionListener>() {
+                @Override
+                public void apply(OnFragmentInteractionListener x) {
+                    x.onOpenMission(dir.getPath(), dir.getName());
+                }
+            });
         } else {
             final File[] contents = dir.listFiles();
             if (contents != null) {
                 int numDirectories = 0;
                 for (final File f : contents) {
-                    //if (f.isDirectory()) {
-                        numDirectories++;
-                    //}
+                    if(f.isDirectory()) {
+                        if (!f.getName().startsWith(".")) {
+                            numDirectories++;
+                        }
+                    } else if(f.getName().endsWith(".txt")) {
+                        numDirectories ++;
+                    }
                 }
                 mFilesInDir = new File[numDirectories];
                 mFilenames.clear();
                 for (int i = 0, counter = 0; i < numDirectories; counter++) {
-                    //if (contents[counter].isDirectory()) {
+                    if(contents[counter].isDirectory()) {
+                        if (!contents[counter].getName().startsWith(".")) {
+                            mFilesInDir[i] = contents[counter];
+                            mFilenames.add(contents[counter].getName());
+                            i++;
+                        }
+                    } else if(contents[counter].getName().endsWith(".txt")) {
                         mFilesInDir[i] = contents[counter];
                         mFilenames.add(contents[counter].getName());
                         i++;
-                   // }
+                    }
                 }
                 Arrays.sort(mFilesInDir);
                 Collections.sort(mFilenames);
@@ -446,7 +464,7 @@ public class OpenMissionFragment extends DialogFragment {
     private void refreshButtonState() {
         final Activity activity = getActivity();
         if (activity != null && mSelectedDir != null) {
-            mBtnConfirm.setEnabled(isValidFile(mSelectedDir));
+            //mBtnConfirm.setEnabled(isValidFile(mSelectedDir));
             getActivity().invalidateOptionsMenu();
         }
     }
@@ -494,7 +512,7 @@ public class OpenMissionFragment extends DialogFragment {
             mListener.foreach(new UnitFunction<OnFragmentInteractionListener>() {
                 @Override
                 public void apply(final OnFragmentInteractionListener f) {
-                    f.onOpenMission(mSelectedDir.getAbsolutePath(), mFileName.getText().toString());
+                    f.onOpenMission(mSelectedDir.getAbsolutePath(), "");
                 }
             });
         } else {
@@ -555,7 +573,7 @@ public class OpenMissionFragment extends DialogFragment {
      * fragment to allow an interaction in this fragment to be communicated
      * to the activity and potentially other fragments contained in that
      * activity.
-     * <p/>
+     * <p>
      * See the Android Training lesson <a href=
      * "http://developer.android.com/training/basics/fragments/communicating.html"
      * >Communicating with Other Fragments</a> for more information.

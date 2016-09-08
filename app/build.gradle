@@ -1,5 +1,7 @@
 apply plugin: 'com.android.application'
 
+println "Hello Groovy"
+
 android {
     signingConfigs {
         config {

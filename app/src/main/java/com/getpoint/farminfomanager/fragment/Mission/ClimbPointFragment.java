@@ -13,6 +13,9 @@ import com.baidu.mapapi.map.Text;
 import com.getpoint.farminfomanager.R;
 import com.getpoint.farminfomanager.entity.markers.DangerPointMarker;
 import com.getpoint.farminfomanager.entity.points.BypassPoint;
+import com.getpoint.farminfomanager.entity.points.ClimbPoint;
+import com.getpoint.farminfomanager.entity.points.DangerPoint;
+import com.getpoint.farminfomanager.entity.points.PointItemType;
 import com.getpoint.farminfomanager.utils.proxy.MissionItemProxy;
 import com.getpoint.farminfomanager.weights.spinnerWheel.CardWheelHorizontalView;
 import com.getpoint.farminfomanager.weights.spinnerWheel.adapters.NumericWheelAdapter;
@@ -24,6 +27,9 @@ public class ClimbPointFragment extends PointDetailFragment implements
         CardWheelHorizontalView.OnCardWheelChangedListener{
 
     private TextView pointIndex;
+    private ClimbPoint climbPoint;
+    private CardWheelHorizontalView altitudePickerMeter;
+    private CardWheelHorizontalView altitudePickerCentimeter;
 
     @Nullable
     @Override
@@ -39,19 +45,21 @@ public class ClimbPointFragment extends PointDetailFragment implements
                 R.layout.wheel_text_centered, MIN_ALTITUDE,	MAX_ALTITUDE, "%d m");
         final NumericWheelAdapter altitudeAdapterCentimeter = new NumericWheelAdapter(context,
                 R.layout.wheel_text_centered, MIN_CENTIMETER,	MAX_CENTIMETER, "%d cm");
-        CardWheelHorizontalView altitudePickerMeter = (CardWheelHorizontalView) view.findViewById(R.id
+        altitudePickerMeter = (CardWheelHorizontalView) view.findViewById(R.id
                 .altitudePickerMeter);
         altitudePickerMeter.setViewAdapter(altitudeAdapterMeter);
         altitudePickerMeter.setCurrentValue(0);
         altitudePickerMeter.addChangingListener(this);
 
-        CardWheelHorizontalView altitudePickerCentimeter = (CardWheelHorizontalView) view.findViewById(R.id
+        altitudePickerCentimeter = (CardWheelHorizontalView) view.findViewById(R.id
                 .altitudePickerCentimeter);
         altitudePickerCentimeter.setViewAdapter(altitudeAdapterCentimeter);
         altitudePickerCentimeter.setCurrentValue(0);
 
         pointIndex = (TextView)view.findViewById(R.id.dangerPointIndex);
         pointIndex.setText(String.valueOf(missionProxy.getCurrentClimbNumber()));
+
+        climbPoint = new ClimbPoint();
 
         /**
          *  添加内点的监听函数
@@ -60,10 +68,15 @@ public class ClimbPointFragment extends PointDetailFragment implements
         addInerPoint.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final BypassPoint bypassPoint = new BypassPoint(mapFragment.getCurrentCoord());
+                final DangerPoint cp = new DangerPoint(mapFragment.getCurrentCoord(),
+                        0);
 
-                MissionItemProxy newItem = new MissionItemProxy(missionProxy, bypassPoint);
-                missionProxy.addItem(newItem);
+                cp.setPointType(PointItemType.CLIMBPOINT);
+                cp.setPointNum(ClimbPoint.INDICATE_NUM);
+                cp.setFlyheight(getFlyHeight());
+
+                MissionItemProxy newItem = new MissionItemProxy(missionProxy, cp);
+                climbPoint.addInnerPoint(cp);
 
                 DangerPointMarker pointMarker = new DangerPointMarker(newItem);
                 mapFragment.updateMarker(pointMarker);
@@ -75,6 +88,30 @@ public class ClimbPointFragment extends PointDetailFragment implements
 
     public void setPointIndex(int index) {
         pointIndex.setText(String.valueOf(index));
+    }
+
+    public ClimbPoint getClimbPoint() {
+        final ClimbPoint byp = climbPoint;
+        return byp;
+    }
+
+    public void clearInnerPoint() {
+        this.climbPoint = new ClimbPoint();
+    }
+
+    public int getFlyHeight() {
+
+        int altitude;
+
+        if(altitudePickerMeter.getCurrentValue() < 0) {
+            altitude = altitudePickerMeter.getCurrentValue()*100
+                    - altitudePickerCentimeter.getCurrentValue();
+        } else {
+            altitude = altitudePickerMeter.getCurrentValue()*100
+                    + altitudePickerCentimeter.getCurrentValue();
+        }
+
+        return altitude;
     }
 
     @Override

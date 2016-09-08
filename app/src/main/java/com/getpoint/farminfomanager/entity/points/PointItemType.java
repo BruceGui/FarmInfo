@@ -34,4 +34,5 @@ public enum PointItemType {
     public String getLabel() {
         return this.label;
     }
+
 }

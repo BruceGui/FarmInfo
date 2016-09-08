@@ -57,6 +57,10 @@ import net.rdrei.android.dirchooser.SaveMissionFragment;
 
 import org.w3c.dom.Attr;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+
 /**
  * Created by Gui Zhou on 2016-07-05.
  */
@@ -239,7 +243,7 @@ public class FarmInfoActivity extends AppCompatActivity implements
 
                 switch (currentType) {
                     case FRAMEPOINT:
-                        addFramePoint(coord);
+                        addFramePoint(coord, framePointFragment.getAltitude());
                         break;
                     case BYPASSPOINT:
                         addBypassPoint(coord);
@@ -311,7 +315,23 @@ public class FarmInfoActivity extends AppCompatActivity implements
 
     @Override
     public void onOpenMission(@NonNull String path, @NonNull String filename) {
-        //TODO
+
+        Log.i(TAG, path);
+        /**
+         *  读取文件里面的点，并在地图上显示。
+         *  获取 inputstream
+         *  读取里面的点
+         *  然后再显示在地图上
+         */
+        File missionFile = new File(path);
+        try {
+            FileInputStream in = new FileInputStream(missionFile);
+            //TODO
+            missionProxy.readMissionFromFile(path);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+
         mOpenMissionFragment.dismiss();
     }
 
@@ -395,6 +415,7 @@ public class FarmInfoActivity extends AppCompatActivity implements
                 }
                 forwardPointFragment.setPointIndex(missionProxy.getCurrentForwardNumber());
                 forwardPointFragment.setPointType(PointItemType.FORWAEDPOINT.getLabel());
+                forwardPointFragment.clearInnerPoint();
                 break;
             case BYPASSPOINT:
                 if (bypassPointFragment == null) {
@@ -404,6 +425,7 @@ public class FarmInfoActivity extends AppCompatActivity implements
                 }
                 bypassPointFragment.setPointIndex(missionProxy.getCurrentBypassNumber());
                 bypassPointFragment.setPointType(PointItemType.BYPASSPOINT.getLabel());
+                bypassPointFragment.clearInnerPoint();
                 break;
             case FRAMEPOINT:
                 if (framePointFragment == null) {
@@ -421,6 +443,7 @@ public class FarmInfoActivity extends AppCompatActivity implements
                 }
                 climbPointFragment.setPointIndex(missionProxy.getCurrentClimbNumber());
                 climbPointFragment.setPointType(PointItemType.CLIMBPOINT.getLabel());
+                climbPointFragment.clearInnerPoint();
                 break;
             default:
                 break;
@@ -453,6 +476,7 @@ public class FarmInfoActivity extends AppCompatActivity implements
                 .hide(fragmentManager.findFragmentByTag(
                         PointDetailFragment.getFragmentTag(PointItemType.CLIMBPOINT)))
                 .commit();
+        bypassPointFragment.clearInnerPoint();
     }
 
     private void setupClimbDetailFragment() {
@@ -466,6 +490,7 @@ public class FarmInfoActivity extends AppCompatActivity implements
                 .hide(fragmentManager.findFragmentByTag(
                         PointDetailFragment.getFragmentTag(PointItemType.FRAMEPOINT)))
                 .commit();
+        climbPointFragment.clearInnerPoint();
     }
 
     private void setupForwardDetailFragment() {
@@ -479,6 +504,7 @@ public class FarmInfoActivity extends AppCompatActivity implements
                 .hide(fragmentManager.findFragmentByTag(
                         PointDetailFragment.getFragmentTag(PointItemType.CLIMBPOINT)))
                 .commit();
+        forwardPointFragment.clearInnerPoint();
     }
 
     /**
@@ -505,9 +531,9 @@ public class FarmInfoActivity extends AppCompatActivity implements
      *
      * @param coord
      */
-    private void addFramePoint(LatLong coord) {
+    private void addFramePoint(LatLong coord, int flyheight) {
 
-        final FramePoint framePoint = new FramePoint(coord);
+        final FramePoint framePoint = new FramePoint(coord, flyheight);
 
         /**
          *   把当前点添加到任务中去
@@ -524,41 +550,28 @@ public class FarmInfoActivity extends AppCompatActivity implements
 
     private void addBypassPoint(LatLong coord) {
 
-        //TODO
-        /**
-         *  从 fragment 中获取得到的 bypass point.
-         */
-        final BypassPoint bypassPoint = new BypassPoint(coord);
+        final BypassPoint bypassPoint = bypassPointFragment.getBypassPoint();
 
         MissionItemProxy newItem = new MissionItemProxy(missionProxy, bypassPoint);
         missionProxy.addItem(newItem);
-
-        //DangerPointMarker pointMarker = new DangerPointMarker(newItem);
-        //mapFragment.updateMarker(pointMarker);
 
     }
 
     private void addClimbPoint(LatLong coord) {
 
-        final ClimbPoint climbPoint = new ClimbPoint(coord);
+        final ClimbPoint climbPoint = climbPointFragment.getClimbPoint();
 
         MissionItemProxy newItem = new MissionItemProxy(missionProxy, climbPoint);
         missionProxy.addItem(newItem);
-
-        DangerPointMarker pointMarker = new DangerPointMarker(newItem);
-        mapFragment.updateMarker(pointMarker);
 
     }
 
     private void addForwardPoint(LatLong coord) {
 
-        final ForwardPoint forwardPoint = new ForwardPoint(coord);
+        final ForwardPoint forwardPoint = forwardPointFragment.getForwardPoint();
 
         MissionItemProxy newItem = new MissionItemProxy(missionProxy, forwardPoint);
         missionProxy.addItem(newItem);
-
-        DangerPointMarker pointMarker = new DangerPointMarker(newItem);
-        mapFragment.updateMarker(pointMarker);
 
     }
 

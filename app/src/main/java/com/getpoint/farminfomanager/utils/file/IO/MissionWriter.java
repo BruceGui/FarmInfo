@@ -2,6 +2,10 @@ package com.getpoint.farminfomanager.utils.file.IO;
 
 import android.util.Log;
 
+import com.getpoint.farminfomanager.entity.points.BypassPoint;
+import com.getpoint.farminfomanager.entity.points.ClimbPoint;
+import com.getpoint.farminfomanager.entity.points.DangerPoint;
+import com.getpoint.farminfomanager.entity.points.ForwardPoint;
 import com.getpoint.farminfomanager.entity.points.PointInfo;
 import com.getpoint.farminfomanager.utils.file.FileList;
 import com.getpoint.farminfomanager.utils.file.FileManager;
@@ -17,7 +21,7 @@ import java.util.List;
  * Write a mission to file.
  */
 public class MissionWriter {
-	private static final String TAG = MissionWriter.class.getSimpleName();
+	private static final String TAG = "MissionWriter";
 
 	public static boolean write(MissionProxy mission, String filepath) {
 		return write(mission, filepath, FileStream.getWaypointFilename("waypoints"));
@@ -25,8 +29,6 @@ public class MissionWriter {
 
 	public static boolean write(MissionProxy mission, String filepath, String filename) {
 		try {
-			if (!FileManager.isExternalStorageAvailable())
-				return false;
 
 			if (!filename.endsWith(FileList.WAYPOINT_FILENAME_EXT)) {
 				filename += FileList.WAYPOINT_FILENAME_EXT;
@@ -48,7 +50,7 @@ public class MissionWriter {
             out.write(("frame points=" + boundaryPoints.size()).getBytes());
             out.write("\r\n".getBytes());
 
-            for(MissionItemProxy itemProxy : mission.getBoundaryItemProxies()) {
+            for(MissionItemProxy itemProxy : boundaryPoints) {
                 out.write(itemProxy.getPointInfo().toString().getBytes());
                 out.write("\r\n".getBytes());
             }
@@ -61,6 +63,51 @@ public class MissionWriter {
                         + climbPoints.size()
                         + forwardPoints.size())).getBytes());
 
+            out.write("\r\n".getBytes());
+
+
+            /**
+             *  写入绕飞点
+             */
+            for(MissionItemProxy itemProxy : bypassPoints) {
+                for(DangerPoint innerPoint : ((BypassPoint)itemProxy.getPointInfo())
+                        .getInnerPoint()) {
+                    out.write(innerPoint.toString().getBytes());
+                    out.write(" ".getBytes());
+                }
+                Log.i(TAG, "write bypass");
+                out.write("\r\n".getBytes());
+            }
+
+            Log.i(TAG, "bypass.size = " + bypassPoints.size());
+
+            /**
+             *  写入爬升点
+             */
+            for(MissionItemProxy itemProxy : climbPoints) {
+                for(DangerPoint innerPoint : ((ClimbPoint)itemProxy.getPointInfo())
+                        .getInnerPoint()) {
+                    out.write(innerPoint.toString().getBytes());
+                    out.write(" ".getBytes());
+                }
+                Log.i(TAG, "write climb");
+                out.write("\r\n".getBytes());
+            }
+
+            /**
+             *  写入直飞点
+             */
+            for(MissionItemProxy itemProxy : forwardPoints) {
+                for(DangerPoint innerPoint : ((ForwardPoint)itemProxy.getPointInfo())
+                        .getInnerPoint()) {
+                    out.write(innerPoint.toString().getBytes());
+                    out.write(" ".getBytes());
+
+                }
+                Log.i(TAG, "write forward");
+                out.write("\r\n".getBytes());
+            }
+
             out.close();
 
 		} catch (Exception e) {
@@ -68,5 +115,15 @@ public class MissionWriter {
 			return false;
 		}
 		return true;
+	}
+
+	public static MissionProxy read(String filepath) {
+
+        Log.i(TAG, "read mission from file:" + filepath);
+        /**
+         *  Java 文件相关的操作
+         */
+
+		return null;
 	}
 }

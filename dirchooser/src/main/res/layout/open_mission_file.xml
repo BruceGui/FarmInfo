@@ -15,37 +15,6 @@
             android:layout_alignParentTop="true"
             android:background="?android:attr/dividerVertical" />
 
-        <View
-            android:id="@+id/horizontalDivider"
-            android:layout_width="1dip"
-            android:layout_height="fill_parent"
-            android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginBottom="4dp"
-            android:layout_marginTop="4dp"
-            android:background="?android:attr/dividerVertical" />
-
-        <Button
-            android:id="@+id/btnCancel"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentTop="true"
-            android:layout_toLeftOf="@id/horizontalDivider"
-            android:background="?android:attr/selectableItemBackground"
-            android:text="@string/cancel_label" />
-
-        <Button
-            android:id="@+id/btnConfirm"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentTop="true"
-            android:layout_toRightOf="@id/horizontalDivider"
-            android:background="?android:attr/selectableItemBackground"
-            android:text="@string/confirm_label" />
     </RelativeLayout>
 
     <RelativeLayout
@@ -58,7 +27,7 @@
             android:id="@+id/btnNavUp"
             android:layout_width="60dp"
             android:layout_height="60dp"
-            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
             android:background="@drawable/borderless_button"
             android:contentDescription="@string/up_label"
@@ -72,7 +41,7 @@
             android:layout_marginLeft="8dp"
             android:layout_marginRight="8dp"
             android:layout_marginTop="8dp"
-            android:layout_toRightOf="@id/btnNavUp"
+            android:layout_toEndOf="@id/btnNavUp"
             android:text="@string/selected_folder_label"
             android:textStyle="bold" >
         </TextView>
@@ -80,30 +49,16 @@
         <TextView
             android:id="@+id/txtvSelectedFolder"
             android:layout_below="@id/txtvSelectedFolderLabel"
-            android:layout_toRightOf="@id/btnNavUp"
-            android:layout_toLeftOf="@+id/btnCreateFolder"
+            android:layout_toEndOf="@id/btnNavUp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:ellipsize="start"
             android:scrollHorizontally="true"
             android:singleLine="true"
-            android:layout_marginLeft="8dp"
+            android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp"
             />
-
-        <!--
-        <ImageButton
-            android:id="@+id/btnCreateFolder"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentTop="true"
-            android:contentDescription="@string/create_folder_label"
-            android:background="@drawable/borderless_button"
-            android:src="@drawable/ic_action_create"
-            />
-         -->
 
         <View
             android:id="@+id/divider"

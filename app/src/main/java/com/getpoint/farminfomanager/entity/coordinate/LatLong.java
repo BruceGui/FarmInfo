@@ -8,7 +8,7 @@ import java.io.Serializable;
 /**
  * Stores latitude and longitude in degrees.
  */
-public class LatLong implements Parcelable, Serializable {
+public class LatLong implements Parcelable, Serializable, Cloneable{
 
     /**
      * Stores latitude, and longitude in degrees
@@ -76,6 +76,24 @@ public class LatLong implements Parcelable, Serializable {
             longitude += coord.longitude;
         }
         return new LatLong(latitude, longitude);
+    }
+
+    /**
+     *  实现克隆方法
+     * @return 克隆的对象
+     */
+    public Object clone() {
+
+        Object o = null;
+
+        try {
+            o = super.clone();
+        } catch (CloneNotSupportedException e) {
+            e.printStackTrace();
+        }
+
+        return o;
+
     }
 
     @Override
