@@ -99,9 +99,9 @@ public class ForwardPointFragment extends PointDetailFragment implements
         this.forwardPoint = new ForwardPoint();
     }
 
-    public int getFlyHeight() {
+    public float getFlyHeight() {
 
-        int altitude;
+        float altitude;
 
         if(altitudePickerMeter.getCurrentValue() < 0) {
             altitude = altitudePickerMeter.getCurrentValue()*100

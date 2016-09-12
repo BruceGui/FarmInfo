@@ -62,9 +62,9 @@ public class FramePointFragment extends PointDetailFragment implements
         return view;
     }
 
-    public int getAltitude() {
+    public float getAltitude() {
 
-        int altitude;
+        float altitude;
 
         if(altitudePickerMeter.getCurrentValue() < 0) {
             altitude = altitudePickerMeter.getCurrentValue()*100

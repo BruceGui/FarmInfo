@@ -16,6 +16,11 @@
         app:showAsAction="ifRoom"/>
 
     <item
+        android:id="@+id/id_menu_new_mission"
+        android:title="@string/menu_new"
+        app:showAsAction="never"/>
+
+    <item
         android:id="@+id/id_connect_act"
         android:title="@string/connect"
         app:showAsAction="never" />

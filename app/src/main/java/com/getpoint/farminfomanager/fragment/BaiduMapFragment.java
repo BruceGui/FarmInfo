@@ -26,10 +26,15 @@ import com.baidu.mapapi.map.SupportMapFragment;
 import com.baidu.mapapi.model.LatLng;
 import com.getpoint.farminfomanager.R;
 import com.getpoint.farminfomanager.entity.coordinate.LatLong;
+import com.getpoint.farminfomanager.entity.markers.FramePointMarker;
 import com.getpoint.farminfomanager.entity.markers.PointMarker;
 import com.getpoint.farminfomanager.utils.DroneHelper;
 
 import com.getpoint.farminfomanager.utils.collections.HashBiMap;
+import com.getpoint.farminfomanager.utils.proxy.MissionItemProxy;
+import com.getpoint.farminfomanager.utils.proxy.MissionProxy;
+
+import java.util.List;
 
 /**
  * Created by Gui Zhou on 2016-07-05.
@@ -86,7 +91,7 @@ public class BaiduMapFragment extends SupportMapFragment {
     }
 
     /**
-     *  地图的各种监听事件
+     * 地图的各种监听事件
      */
     private void setupMapListener() {
 
@@ -131,7 +136,7 @@ public class BaiduMapFragment extends SupportMapFragment {
     }
 
     /**
-     *  一些在地图上标记点信息的函数
+     * 一些在地图上标记点信息的函数
      */
 
     public void updateMarker(PointMarker markerInfo) {
@@ -141,13 +146,13 @@ public class BaiduMapFragment extends SupportMapFragment {
     public void updateMarker(PointMarker markerInfo, boolean isDraggable) {
 
         final LatLong coord = markerInfo.getPosition();
-        if(coord == null) {
+        if (coord == null) {
             return;
         }
 
         final LatLng position = DroneHelper.CoordToBaiduLatLang(coord);
         Marker marker = mBiMarkersMap.getValue(markerInfo);
-        if(marker == null) {
+        if (marker == null) {
             generateMarker(markerInfo, position, isDraggable);
         } else {
             updateMarker(marker, markerInfo, position, isDraggable);
@@ -164,14 +169,14 @@ public class BaiduMapFragment extends SupportMapFragment {
 
         final Bitmap markerIcon = markerInfo.getIcon(getResources());
 
-        if(markerIcon != null) {
+        if (markerIcon != null) {
             markerOptions.icon(BitmapDescriptorFactory.fromBitmap(markerIcon));
         } else {
             markerOptions.icon(BitmapDescriptorFactory
                     .fromResource(R.drawable.ic_marker_white));
         }
 
-        Marker marker = (Marker)getBaiduMap().addOverlay(markerOptions);
+        Marker marker = (Marker) getBaiduMap().addOverlay(markerOptions);
         mBiMarkersMap.put(markerInfo, marker);
     }
 
@@ -188,16 +193,39 @@ public class BaiduMapFragment extends SupportMapFragment {
     }
 
 
+    public void addMarkerFromMission(MissionProxy mission) {
+
+        final List<MissionItemProxy> boundaryPoints = mission.getBoundaryItemProxies();
+        final List<MissionItemProxy> bypassPoints = mission.getBypassItemProxies();
+        final List<MissionItemProxy> climbPoints = mission.getClimbItemProxies();
+        final List<MissionItemProxy> forwardPoints = mission.getForwardItemProies();
+
+        /**
+         *   在地图上画各个 marker
+         */
+        for (MissionItemProxy itemProxy : boundaryPoints) {
+            FramePointMarker pointMarker = new FramePointMarker(itemProxy);
+            updateMarker(pointMarker);
+        }
+    }
+
+    public void clearAllMarker() {
+        getBaiduMap().clear();
+        mBiMarkersMap.clear();
+    }
+
+
     /**
      * 以动画的形式放大、缩小地图
+     *
      * @param amount 正缩小、负放大
      */
     public void zoomMap(float amount) {
         getBaiduMap().animateMapStatus(MapStatusUpdateFactory.zoomBy(amount));
     }
 
-    private void updateCamera(final LatLong coord){
-        if(coord != null){
+    private void updateCamera(final LatLong coord) {
+        if (coord != null) {
             final float zoomLevel = getBaiduMap().getMapStatus().zoom;
             getBaiduMap().animateMapStatus(MapStatusUpdateFactory.newLatLngZoom(DroneHelper.CoordToBaiduLatLang(coord), zoomLevel));
         }
@@ -205,7 +233,7 @@ public class BaiduMapFragment extends SupportMapFragment {
 
     public void goToMyLocation() {
         MyLocationData locationData = getBaiduMap().getLocationData();
-        if(locationData != null)
+        if (locationData != null)
             updateCamera(DroneHelper.BDLocationToCoord(locationData), GO_TO_MY_LOCATION_ZOOM);
     }
 
@@ -227,7 +255,7 @@ public class BaiduMapFragment extends SupportMapFragment {
     @Override
     public void onPause() {
         // MapView的生命周期与Activity同步，当activity挂起时需调用MapView.onPause()
-        if(mMapView != null)
+        if (mMapView != null)
             mMapView.onPause();
         super.onPause();
     }
@@ -235,7 +263,7 @@ public class BaiduMapFragment extends SupportMapFragment {
     @Override
     public void onResume() {
         // MapView的生命周期与Activity同步，当activity恢复时需调用MapView.onResume()
-        if(mMapView != null)
+        if (mMapView != null)
             mMapView.onResume();
         super.onResume();
     }

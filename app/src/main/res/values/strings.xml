@@ -52,6 +52,7 @@
     <string name="app_setting">Setting</string>
     <string name="menu_open">Open</string>
     <string name="menu_save">Save</string>
+    <string name="menu_new">New Mission</string>
     <string name="save_mission_file">Save Mission File</string>
     <string name="open_mission_file">Open Mission File</string>
     <string name="new_folder">New Folder</string>

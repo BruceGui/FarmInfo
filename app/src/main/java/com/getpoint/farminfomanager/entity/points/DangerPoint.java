@@ -13,12 +13,12 @@ public class DangerPoint extends PointInfo implements Cloneable{
 
     public DangerPoint() {}
 
-    public DangerPoint(LatLong coord, int altitude) {
+    public DangerPoint(LatLong coord, float altitude) {
         //pointType = PointItemType.DANGERPOINT;
         this.position = new LatLongAlt(coord.getLatitude(), coord.getLongitude(), altitude);
     }
 
-    public void setFlyheight(int flyheight) {
+    public void setFlyheight(float flyheight) {
         this.flyheight = flyheight;
     }
 

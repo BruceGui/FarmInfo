@@ -22,15 +22,15 @@ public class MissionProxy {
     /**
      * 存储当前任务的所有点集合
      */
-    private final List<MissionItemProxy> missionItemProxies = new ArrayList<>();
+    private List<MissionItemProxy> missionItemProxies = new ArrayList<>();
 
-    private final List<MissionItemProxy> boundaryItemProxies = new ArrayList<>();
+    private List<MissionItemProxy> boundaryItemProxies = new ArrayList<>();
 
-    private final List<MissionItemProxy> bypassItemProxies = new ArrayList<>();
+    private List<MissionItemProxy> bypassItemProxies = new ArrayList<>();
 
-    private final List<MissionItemProxy> climbItemProxies = new ArrayList<>();
+    private List<MissionItemProxy> climbItemProxies = new ArrayList<>();
 
-    private final List<MissionItemProxy> forwardItemProies = new ArrayList<>();
+    private List<MissionItemProxy> forwardItemProies = new ArrayList<>();
 
     public void addItem(MissionItemProxy itemToAdd) {
 
@@ -140,7 +140,15 @@ public class MissionProxy {
     public boolean readMissionFromFile(String filepath) {
 
         this.missionClear();
-        if (MissionWriter.read(filepath) != null) {
+        MissionProxy missionProxy = MissionWriter.read(filepath);
+        if (missionProxy != null) {
+
+            Log.i(TAG, "read mission success");
+            this.boundaryItemProxies = missionProxy.getBoundaryItemProxies();
+            this.bypassItemProxies = missionProxy.getBypassItemProxies();
+            this.forwardItemProies = missionProxy.getForwardItemProies();
+            this.climbItemProxies = missionProxy.getClimbItemProxies();
+
             return true;
         }
         return false;

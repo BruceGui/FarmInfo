@@ -316,20 +316,11 @@ public class FarmInfoActivity extends AppCompatActivity implements
     @Override
     public void onOpenMission(@NonNull String path, @NonNull String filename) {
 
-        Log.i(TAG, path);
         /**
-         *  读取文件里面的点，并在地图上显示。
-         *  获取 inputstream
-         *  读取里面的点
-         *  然后再显示在地图上
+         *   如果成功读取 mission ，然后就在地图上画 marker.
          */
-        File missionFile = new File(path);
-        try {
-            FileInputStream in = new FileInputStream(missionFile);
-            //TODO
-            missionProxy.readMissionFromFile(path);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
+        if (missionProxy.readMissionFromFile(path)) {
+            mapFragment.addMarkerFromMission(missionProxy);
         }
 
         mOpenMissionFragment.dismiss();
@@ -366,6 +357,11 @@ public class FarmInfoActivity extends AppCompatActivity implements
 
         mOpenMissionFragment.show(getFragmentManager(), null);
 
+    }
+
+    private void newMissionFile() {
+        missionProxy = new MissionProxy();
+        mapFragment.clearAllMarker();
     }
 
     /**
@@ -531,7 +527,7 @@ public class FarmInfoActivity extends AppCompatActivity implements
      *
      * @param coord
      */
-    private void addFramePoint(LatLong coord, int flyheight) {
+    private void addFramePoint(LatLong coord, float flyheight) {
 
         final FramePoint framePoint = new FramePoint(coord, flyheight);
 
@@ -673,7 +669,6 @@ public class FarmInfoActivity extends AppCompatActivity implements
                 break;
             case R.id.id_setting:
                 intent = new Intent(FarmInfoActivity.this, SettingActivity.class);
-                Log.i(TAG, "Not Online");
                 startActivity(intent);
                 break;
             case R.id.id_menu_open_file:
@@ -681,6 +676,9 @@ public class FarmInfoActivity extends AppCompatActivity implements
                 break;
             case R.id.id_menu_save_file:
                 saveMissionFile();
+                break;
+            case R.id.id_menu_new_mission:
+                newMissionFile();
                 break;
             default:
                 return super.onOptionsItemSelected(item);
@@ -706,7 +704,9 @@ public class FarmInfoActivity extends AppCompatActivity implements
     protected void onDestroy() {
         super.onDestroy();
 
-        missionProxy.missionClear();
+        if(missionProxy != null) {
+            missionProxy.missionClear();
+        }
         farmApp.getLocalBroadcastManager().unregisterReceiver(eventReceiver);
     }
 }

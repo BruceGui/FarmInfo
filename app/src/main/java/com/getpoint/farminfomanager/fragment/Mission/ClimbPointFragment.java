@@ -99,9 +99,9 @@ public class ClimbPointFragment extends PointDetailFragment implements
         this.climbPoint = new ClimbPoint();
     }
 
-    public int getFlyHeight() {
+    public float getFlyHeight() {
 
-        int altitude;
+        float altitude;
 
         if(altitudePickerMeter.getCurrentValue() < 0) {
             altitude = altitudePickerMeter.getCurrentValue()*100

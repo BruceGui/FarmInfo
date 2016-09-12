@@ -10,10 +10,10 @@ public class LatLongAlt extends LatLong implements Cloneable{
     /**
      * Stores the altitude in meters.
      */
-    private int mAltitude;
+    private float mAltitude;
     private LatLong latLong;
 
-    public LatLongAlt(double latitude, double longitude, int altitude) {
+    public LatLongAlt(double latitude, double longitude, float altitude) {
         super(latitude, longitude);
         mAltitude = altitude;
         latLong = new LatLong(latitude, longitude);
@@ -35,7 +35,7 @@ public class LatLongAlt extends LatLong implements Cloneable{
     /**
      * @return the altitude in meters
      */
-    public int getAltitude() {
+    public float getAltitude() {
         return mAltitude;
     }
 

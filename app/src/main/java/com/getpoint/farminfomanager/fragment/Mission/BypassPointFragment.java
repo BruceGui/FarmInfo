@@ -104,9 +104,9 @@ public class BypassPointFragment extends PointDetailFragment implements
         this.bypassPoint = new BypassPoint();
     }
 
-    public int getFlyHeight() {
+    public float getFlyHeight() {
 
-        int altitude;
+        float altitude;
 
         if(altitudePickerMeter.getCurrentValue() < 0) {
             altitude = altitudePickerMeter.getCurrentValue()*100

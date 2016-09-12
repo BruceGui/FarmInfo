@@ -13,7 +13,7 @@ public class PointInfo {
     protected LatLongAlt position;
     protected PointItemType pointType;
     protected short pointNum;
-    protected int flyheight;
+    protected float flyheight;
 
     public PointInfo() {
 
@@ -27,7 +27,7 @@ public class PointInfo {
         return this.pointType;
     }
 
-    public void setPosition(double latitude, double longitude, int altitude) {
+    public void setPosition(double latitude, double longitude, float altitude) {
         position = new LatLongAlt(latitude, longitude, altitude);
     }
 
@@ -42,11 +42,11 @@ public class PointInfo {
     public String toString() {
         if (pointType.equals(PointItemType.FRAMEPOINT)) {
             return position.getLatitude() + " "
-                    + position.getLatitude() + " "
+                    + position.getLongitude() + " "
                     + position.getAltitude();
         } else {
             return position.getLatitude() + " "
-                    + position.getLatitude() + " "
+                    + position.getLongitude() + " "
                     + position.getAltitude() + " "
                     + pointNum + " "
                     + flyheight;
