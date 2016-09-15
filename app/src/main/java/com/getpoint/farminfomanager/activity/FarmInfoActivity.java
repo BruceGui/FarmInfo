@@ -60,6 +60,8 @@ import org.w3c.dom.Attr;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Gui Zhou on 2016-07-05.
@@ -76,7 +78,6 @@ public class FarmInfoActivity extends AppCompatActivity implements
     private ClimbPointFragment climbPointFragment;
     private ForwardPointFragment forwardPointFragment;
     private PointDetailFragment pointDetailFragment;
-    private DirectoryChooserFragment mDirChooserFragment;
     private SaveMissionFragment mSaveMissionFragment;
     private OpenMissionFragment mOpenMissionFragment;
 
@@ -218,7 +219,13 @@ public class FarmInfoActivity extends AppCompatActivity implements
         mZoomToFit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                final List<LatLong> points = new ArrayList<>();
 
+                for(MissionItemProxy itemProxy : missionProxy.getBoundaryItemProxies()) {
+                    points.add(itemProxy.getPointInfo().getPosition().getLatLong());
+                }
+
+                mapFragment.zoomToFit(points);
             }
         });
 
@@ -540,7 +547,8 @@ public class FarmInfoActivity extends AppCompatActivity implements
         /**
          *  在地图上产生当前点的标志
          */
-        FramePointMarker pointMarker = new FramePointMarker(newItem);
+        FramePointMarker pointMarker = (FramePointMarker) newItem.getMarker();
+        pointMarker.setMarkerNum(missionProxy.getOrder(newItem));
         mapFragment.updateMarker(pointMarker);
     }
 

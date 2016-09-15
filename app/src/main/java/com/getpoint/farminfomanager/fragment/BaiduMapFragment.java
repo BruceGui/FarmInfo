@@ -16,6 +16,7 @@ import com.baidu.location.LocationClientOption;
 import com.baidu.mapapi.map.BaiduMap;
 import com.baidu.mapapi.map.BitmapDescriptorFactory;
 import com.baidu.mapapi.map.MapPoi;
+import com.baidu.mapapi.map.MapStatusUpdate;
 import com.baidu.mapapi.map.MapStatusUpdateFactory;
 import com.baidu.mapapi.map.MapView;
 import com.baidu.mapapi.map.Marker;
@@ -24,16 +25,23 @@ import com.baidu.mapapi.map.MyLocationConfiguration;
 import com.baidu.mapapi.map.MyLocationData;
 import com.baidu.mapapi.map.SupportMapFragment;
 import com.baidu.mapapi.model.LatLng;
+import com.baidu.mapapi.model.LatLngBounds;
 import com.getpoint.farminfomanager.R;
 import com.getpoint.farminfomanager.entity.coordinate.LatLong;
+import com.getpoint.farminfomanager.entity.markers.DangerPointMarker;
 import com.getpoint.farminfomanager.entity.markers.FramePointMarker;
 import com.getpoint.farminfomanager.entity.markers.PointMarker;
+import com.getpoint.farminfomanager.entity.points.BypassPoint;
+import com.getpoint.farminfomanager.entity.points.ClimbPoint;
+import com.getpoint.farminfomanager.entity.points.DangerPoint;
+import com.getpoint.farminfomanager.entity.points.ForwardPoint;
 import com.getpoint.farminfomanager.utils.DroneHelper;
 
 import com.getpoint.farminfomanager.utils.collections.HashBiMap;
 import com.getpoint.farminfomanager.utils.proxy.MissionItemProxy;
 import com.getpoint.farminfomanager.utils.proxy.MissionProxy;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -154,6 +162,7 @@ public class BaiduMapFragment extends SupportMapFragment {
         Marker marker = mBiMarkersMap.getValue(markerInfo);
         if (marker == null) {
             generateMarker(markerInfo, position, isDraggable);
+            Log.i(TAG, "generate marker");
         } else {
             updateMarker(marker, markerInfo, position, isDraggable);
         }
@@ -195,17 +204,61 @@ public class BaiduMapFragment extends SupportMapFragment {
 
     public void addMarkerFromMission(MissionProxy mission) {
 
+        clearAllMarker();
+
         final List<MissionItemProxy> boundaryPoints = mission.getBoundaryItemProxies();
         final List<MissionItemProxy> bypassPoints = mission.getBypassItemProxies();
         final List<MissionItemProxy> climbPoints = mission.getClimbItemProxies();
         final List<MissionItemProxy> forwardPoints = mission.getForwardItemProies();
 
         /**
-         *   在地图上画各个 marker
+         *   边界点的marker
          */
         for (MissionItemProxy itemProxy : boundaryPoints) {
             FramePointMarker pointMarker = new FramePointMarker(itemProxy);
+            pointMarker.setMarkerNum(mission.getOrder(itemProxy));
             updateMarker(pointMarker);
+        }
+        /**
+         *  绕飞点marker
+         */
+        for (MissionItemProxy itemProxy : bypassPoints) {
+            final List<DangerPoint> dps = ((BypassPoint) itemProxy.getPointInfo())
+                    .getInnerPoint();
+            for (DangerPoint innerPoint : dps) {
+                MissionItemProxy newItem = new MissionItemProxy(mission, innerPoint);
+                DangerPointMarker pointMarker = new DangerPointMarker(newItem);
+                pointMarker.setMarkerNum(dps.indexOf(innerPoint)+1);
+                updateMarker(pointMarker);
+            }
+        }
+
+        /**
+         *  爬升点的marker
+         */
+        for (MissionItemProxy itemProxy : climbPoints) {
+            final List<DangerPoint> dps = ((ClimbPoint) itemProxy.getPointInfo())
+                    .getInnerPoint();
+            for (DangerPoint innerPoint : dps) {
+                MissionItemProxy newItem = new MissionItemProxy(mission, innerPoint);
+                DangerPointMarker pointMarker = new DangerPointMarker(newItem);
+                pointMarker.setMarkerNum(dps.indexOf(innerPoint)+1);
+                updateMarker(pointMarker);
+            }
+        }
+
+        /**
+         *  前飞点的marker
+         */
+        for (MissionItemProxy itemProxy : forwardPoints) {
+            final List<DangerPoint> dps = ((ForwardPoint) itemProxy.getPointInfo())
+                    .getInnerPoint();
+            for (DangerPoint innerPoint : dps) {
+                MissionItemProxy newItem = new MissionItemProxy(mission, innerPoint);
+                DangerPointMarker pointMarker = new DangerPointMarker(newItem);
+                pointMarker.setMarkerNum(dps.indexOf(innerPoint)+1);
+                updateMarker(pointMarker);
+            }
         }
     }
 
@@ -222,6 +275,23 @@ public class BaiduMapFragment extends SupportMapFragment {
      */
     public void zoomMap(float amount) {
         getBaiduMap().animateMapStatus(MapStatusUpdateFactory.zoomBy(amount));
+    }
+
+    /**
+     *   放大到适应坐标点系的位置
+     * @param coords 坐标点系
+     */
+    public void zoomToFit(List<LatLong> coords) {
+        if(!coords.isEmpty()) {
+            final List<LatLng> points = new ArrayList<>();
+            for (LatLong coord : coords) {
+                points.add(DroneHelper.CoordToBaiduLatLang(coord));
+            }
+
+            final LatLngBounds bounds = getBounds(points);
+            MapStatusUpdate update = MapStatusUpdateFactory.newLatLngBounds(bounds);
+            getBaiduMap().animateMapStatus(update);
+        }
     }
 
     private void updateCamera(final LatLong coord) {
@@ -250,6 +320,14 @@ public class BaiduMapFragment extends SupportMapFragment {
 
     public LatLong getCurrentCoord() {
         return DroneHelper.BDLocationToCoord(getBaiduMap().getLocationData());
+    }
+
+    private LatLngBounds getBounds(List<LatLng> points) {
+        LatLngBounds.Builder builder = new LatLngBounds.Builder();
+        for(LatLng point : points) {
+            builder.include(point);
+        }
+        return builder.build();
     }
 
     @Override

@@ -41,12 +41,12 @@ public class PointInfo {
 
     public String toString() {
         if (pointType.equals(PointItemType.FRAMEPOINT)) {
-            return position.getLatitude() + " "
-                    + position.getLongitude() + " "
+            return position.getLongitude() + " "
+                    + position.getLatitude() + " "
                     + position.getAltitude();
         } else {
-            return position.getLatitude() + " "
-                    + position.getLongitude() + " "
+            return position.getLongitude() + " "
+                    + position.getLatitude() + " "
                     + position.getAltitude() + " "
                     + pointNum + " "
                     + flyheight;

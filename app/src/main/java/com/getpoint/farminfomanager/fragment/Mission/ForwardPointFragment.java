@@ -79,6 +79,7 @@ public class ForwardPointFragment extends PointDetailFragment implements
                 forwardPoint.addInnerPoint(fp);
 
                 DangerPointMarker pointMarker = new DangerPointMarker(newItem);
+                pointMarker.setMarkerNum(forwardPoint.getInnerPoint().indexOf(fp));
                 mapFragment.updateMarker(pointMarker);
             }
         });

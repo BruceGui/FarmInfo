@@ -79,6 +79,7 @@ public class ClimbPointFragment extends PointDetailFragment implements
                 climbPoint.addInnerPoint(cp);
 
                 DangerPointMarker pointMarker = new DangerPointMarker(newItem);
+                pointMarker.setMarkerNum(climbPoint.getInnerPoint().indexOf(cp));
                 mapFragment.updateMarker(pointMarker);
             }
         });

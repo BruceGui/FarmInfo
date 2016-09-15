@@ -66,9 +66,9 @@ public class MissionParser {
                     m = new MissionProxy();
                 } else {
                     final String[] s = line.split(" ");
-                    LatLong coord = new LatLong(Double.parseDouble(s[0]),
-                            Double.parseDouble(s[1]));
-                    Log.i(TAG, "" + coord.getLatitude() + " " + coord.getLongitude());
+                    LatLong coord = new LatLong(Double.parseDouble(s[1]),
+                            Double.parseDouble(s[0]));
+                    Log.i(TAG, "" + coord.getLongitude() + " " + coord.getLatitude());
 
 
 
@@ -113,9 +113,9 @@ public class MissionParser {
                      */
                     List<DangerPoint> dps = new ArrayList<>();
                     for (int i = 0; i < pointnum; i++) {
-                        LatLong coord = new LatLong(Double.parseDouble(s[5 * i + 0]),
-                                Double.parseDouble(s[5 * i + 1]));
-                        Log.i(TAG, "" + coord.getLatitude() + " " + coord.getLongitude());
+                        LatLong coord = new LatLong(Double.parseDouble(s[5 * i + 1]),
+                                Double.parseDouble(s[5 * i + 0]));
+                        Log.i(TAG, "" + coord.getLongitude() + " " + coord.getLatitude());
 
                         final DangerPoint dp = new DangerPoint(coord,
                                 Float.parseFloat(s[5 * i + 2]));

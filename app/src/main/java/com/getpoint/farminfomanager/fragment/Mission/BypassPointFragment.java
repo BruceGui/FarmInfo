@@ -80,7 +80,8 @@ public class BypassPointFragment extends PointDetailFragment implements
                 MissionItemProxy newItem = new MissionItemProxy(missionProxy, bp);
                 bypassPoint.addInnerPoint(bp);
 
-                DangerPointMarker pointMarker = new DangerPointMarker(newItem);
+                DangerPointMarker pointMarker = (DangerPointMarker) newItem.getMarker();
+                pointMarker.setMarkerNum(bypassPoint.getInnerPoint().indexOf(bp));
                 mapFragment.updateMarker(pointMarker);
             }
         });

@@ -14,6 +14,7 @@ import com.getpoint.farminfomanager.utils.proxy.MissionProxy;
 public abstract class PointMarker {
 
     private final MissionItemProxy mMarkerOrigin;
+    private int markerNum;
 
     public static PointMarker newInstance(MissionItemProxy origin) {
 
@@ -22,13 +23,9 @@ public abstract class PointMarker {
             case FRAMEPOINT:
                 pointMarker = new FramePointMarker(origin);
                 break;
-            case BYPASSPOINT:
-            case FORWAEDPOINT:
-            case CLIMBPOINT:
+            default:
                 pointMarker = new DangerPointMarker(origin);
                 break;
-            default:
-                return null;
         }
 
         return pointMarker;
@@ -65,11 +62,12 @@ public abstract class PointMarker {
     }
 
     public Bitmap getIcon(Resources res) {
-
-        final MissionProxy missionProxy = mMarkerOrigin.getMission();
-
         return MarkerWithText.getMarkerWithTextAndDetail(getIconResource(),
-                Integer.toString(missionProxy.getOrder(mMarkerOrigin)), null, res);
+                Integer.toString(markerNum), null, res);
+    }
+
+    public void setMarkerNum(int markerNum) {
+        this.markerNum = markerNum;
     }
 
     protected abstract int getIconResource();
