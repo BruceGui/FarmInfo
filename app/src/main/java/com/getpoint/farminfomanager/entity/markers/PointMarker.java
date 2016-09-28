@@ -35,6 +35,10 @@ public abstract class PointMarker {
         mMarkerOrigin = origin;
     }
 
+    public MissionItemProxy getmMarkerOrigin() {
+        return this.mMarkerOrigin;
+    }
+
     public float getAnchorU() {
         return 0.5f;
     }

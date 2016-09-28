@@ -1,7 +1,9 @@
 package com.getpoint.farminfomanager.fragment;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
@@ -23,10 +25,13 @@ import com.baidu.mapapi.map.Marker;
 import com.baidu.mapapi.map.MarkerOptions;
 import com.baidu.mapapi.map.MyLocationConfiguration;
 import com.baidu.mapapi.map.MyLocationData;
+import com.baidu.mapapi.map.PolygonOptions;
+import com.baidu.mapapi.map.PolylineOptions;
 import com.baidu.mapapi.map.SupportMapFragment;
 import com.baidu.mapapi.model.LatLng;
 import com.baidu.mapapi.model.LatLngBounds;
 import com.getpoint.farminfomanager.R;
+import com.getpoint.farminfomanager.activity.FarmInfoActivity;
 import com.getpoint.farminfomanager.entity.coordinate.LatLong;
 import com.getpoint.farminfomanager.entity.markers.DangerPointMarker;
 import com.getpoint.farminfomanager.entity.markers.FramePointMarker;
@@ -53,12 +58,27 @@ public class BaiduMapFragment extends SupportMapFragment {
     private static final String TAG = "BaiduMapFragment";
 
     private static final float GO_TO_MY_LOCATION_ZOOM = 19f;
+    public static final int MISSION_PATH_DEFAULT_COLOR = Color.WHITE;
+    public static final int MISSION_PATH_DEFAULT_WIDTH = 4;
 
     private final HashBiMap<PointMarker, Marker> mBiMarkersMap = new HashBiMap<>();
 
+    private OnMarkerClickedListener markerClickListener;
     protected MapView mMapView;
     protected LocationClient mLocClient;
     public MyLocationListener myListener = new MyLocationListener();
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+
+        if(!(activity instanceof OnMarkerClickedListener)) {
+            throw new IllegalStateException("Parent Activity must implement " +
+                    OnMarkerClickedListener.class.getName());
+        }
+
+        markerClickListener = (OnMarkerClickedListener) activity;
+    }
 
     @Override
     public View onCreateView(LayoutInflater layoutInflater, ViewGroup viewGroup, Bundle bundle) {
@@ -77,6 +97,7 @@ public class BaiduMapFragment extends SupportMapFragment {
         getBaiduMap().setMyLocationEnabled(true);
         mMapView.showZoomControls(false);
         mMapView.showScaleControl(false);
+
 
         MyLocationConfiguration.LocationMode mLocationMode = MyLocationConfiguration.LocationMode.FOLLOWING;
         getBaiduMap().setMyLocationConfigeration(new
@@ -120,6 +141,16 @@ public class BaiduMapFragment extends SupportMapFragment {
         getBaiduMap().setOnMarkerClickListener(new BaiduMap.OnMarkerClickListener() {
             @Override
             public boolean onMarkerClick(Marker marker) {
+
+                MissionItemProxy m = mBiMarkersMap.getKey(marker).getmMarkerOrigin();
+
+                if (m != null) {
+
+                    if(markerClickListener != null) {
+                        markerClickListener.onMarkerClick(m);
+                    }
+                }
+
                 return false;
             }
         });
@@ -201,8 +232,17 @@ public class BaiduMapFragment extends SupportMapFragment {
         marker.setVisible(markerInfo.isVisible());
     }
 
+    public void clearAllMarker() {
+        getBaiduMap().clear();
+        mBiMarkersMap.clear();
+    }
 
-    public void addMarkerFromMission(MissionProxy mission) {
+
+    /**
+     *   从 Mission 中更新地图marker和polyline的信息
+     * @param mission 要更新的任务
+     */
+    public void updateInfoFromMission(MissionProxy mission) {
 
         clearAllMarker();
 
@@ -228,7 +268,7 @@ public class BaiduMapFragment extends SupportMapFragment {
             for (DangerPoint innerPoint : dps) {
                 MissionItemProxy newItem = new MissionItemProxy(mission, innerPoint);
                 DangerPointMarker pointMarker = new DangerPointMarker(newItem);
-                pointMarker.setMarkerNum(dps.indexOf(innerPoint)+1);
+                pointMarker.setMarkerNum(dps.indexOf(innerPoint) + 1);
                 updateMarker(pointMarker);
             }
         }
@@ -242,7 +282,7 @@ public class BaiduMapFragment extends SupportMapFragment {
             for (DangerPoint innerPoint : dps) {
                 MissionItemProxy newItem = new MissionItemProxy(mission, innerPoint);
                 DangerPointMarker pointMarker = new DangerPointMarker(newItem);
-                pointMarker.setMarkerNum(dps.indexOf(innerPoint)+1);
+                pointMarker.setMarkerNum(dps.indexOf(innerPoint) + 1);
                 updateMarker(pointMarker);
             }
         }
@@ -256,16 +296,46 @@ public class BaiduMapFragment extends SupportMapFragment {
             for (DangerPoint innerPoint : dps) {
                 MissionItemProxy newItem = new MissionItemProxy(mission, innerPoint);
                 DangerPointMarker pointMarker = new DangerPointMarker(newItem);
-                pointMarker.setMarkerNum(dps.indexOf(innerPoint)+1);
+                pointMarker.setMarkerNum(dps.indexOf(innerPoint) + 1);
                 updateMarker(pointMarker);
             }
         }
+
+        /**
+         *  更新polyline信息
+         */
+        List<LatLong> pathCoords = new ArrayList<>();
+
+        for (MissionItemProxy itemProxy : boundaryPoints) {
+            pathCoords.add(itemProxy.getPointInfo().getPosition().getLatLong());
+        }
+        pathCoords.add(pathCoords.get(0));
+
+        final List<LatLng> pathPoints = new ArrayList<>(pathCoords.size());
+        for(LatLong coord : pathCoords) {
+            pathPoints.add(DroneHelper.CoordToBaiduLatLang(coord));
+        }
+
+        PolylineOptions pathOptions = new PolylineOptions();
+        pathOptions.color(MISSION_PATH_DEFAULT_COLOR)
+                .width(MISSION_PATH_DEFAULT_WIDTH);
+        pathOptions.points(pathPoints);
+        getBaiduMap().addOverlay(pathOptions);
+
     }
 
-    public void clearAllMarker() {
-        getBaiduMap().clear();
-        mBiMarkersMap.clear();
+    /**
+     *  画地图上的点和点之间的连线 Polyline path
+     *
+     *  首先获得一个 List<LatLng> 的路径点的list
+     *  然后再新建一个 PolylineOptions 并设置一些参数 color points
+     *  接着直接 getBaiduMap().addOverlay(polyoptions);
+
+
+    public void updatePolylineFromMission(MissionProxy m) {
+
     }
+     */
 
 
     /**
@@ -278,11 +348,12 @@ public class BaiduMapFragment extends SupportMapFragment {
     }
 
     /**
-     *   放大到适应坐标点系的位置
+     * 放大到适应坐标点系的位置
+     *
      * @param coords 坐标点系
      */
     public void zoomToFit(List<LatLong> coords) {
-        if(!coords.isEmpty()) {
+        if (!coords.isEmpty()) {
             final List<LatLng> points = new ArrayList<>();
             for (LatLong coord : coords) {
                 points.add(DroneHelper.CoordToBaiduLatLang(coord));
@@ -324,11 +395,21 @@ public class BaiduMapFragment extends SupportMapFragment {
 
     private LatLngBounds getBounds(List<LatLng> points) {
         LatLngBounds.Builder builder = new LatLngBounds.Builder();
-        for(LatLng point : points) {
+        for (LatLng point : points) {
             builder.include(point);
         }
         return builder.build();
     }
+
+    /**
+     * 处理地图标记的监听接口，供类实现
+     */
+    public interface OnMarkerClickedListener {
+
+        boolean onMarkerClick(MissionItemProxy m);
+    }
+
+
 
     @Override
     public void onPause() {

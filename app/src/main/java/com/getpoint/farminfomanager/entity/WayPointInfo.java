@@ -14,21 +14,21 @@ public class WayPointInfo {
     private int mVdx3;
 
 
-    public WayPointInfo(    int routeIndex,
-                     int wayPointIndex,
-            double lon,
-            double lat,
-            int height,
-            int vdx1,
-            int vdx2,
-            int vdx3) {
+    public WayPointInfo(int routeIndex,
+                        int wayPointIndex,
+                        double lon,
+                        double lat,
+                        int height,
+                        int vdx1,
+                        int vdx2,
+                        int vdx3) {
         mRouteIndex = routeIndex;
         mWayPointIndex = wayPointIndex;
         mLat = lat;
         mLon = lon;
         mHeight = height;
         mVdx1 = vdx1;
-        mVdx2  = vdx2;
+        mVdx2 = vdx2;
         mVdx3 = vdx3;
     }
 
@@ -112,12 +112,12 @@ public class WayPointInfo {
     @Override
     public String toString() {
         return new String("" + mRouteIndex + "    "
-                               + mWayPointIndex + "    "
-                               + mLon +  "    "
-                               + mLat  + "    "
-                               + mHeight + "    "
-                               + mVdx1 + "    "
-                               + mVdx2 + "    "
-                               + mVdx3) ;
+                + mWayPointIndex + "    "
+                + mLon + "    "
+                + mLat + "    "
+                + mHeight + "    "
+                + mVdx1 + "    "
+                + mVdx2 + "    "
+                + mVdx3);
     }
 }

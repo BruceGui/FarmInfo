@@ -23,12 +23,10 @@ public class MissionItemProxy {
     private final PointMarker mMarker;
 
     public MissionItemProxy(MissionProxy mission, PointInfo pointInfo) {
-
         mMission = mission;
         mPointInfo = pointInfo;
         mMarker = PointMarker.newInstance(this);
     }
-
 
     public PointInfo getPointInfo() {
         return this.mPointInfo;

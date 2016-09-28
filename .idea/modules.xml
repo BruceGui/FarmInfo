@@ -4,7 +4,6 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/GetPoint.iml" filepath="$PROJECT_DIR$/GetPoint.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
-      <module fileurl="file://$PROJECT_DIR$/dirchooser/dirchooser.iml" filepath="$PROJECT_DIR$/dirchooser/dirchooser.iml" />
     </modules>
   </component>
 </project>

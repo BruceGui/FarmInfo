@@ -20,6 +20,7 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
+import com.baidu.mapapi.map.BaiduMap;
 import com.getpoint.farminfomanager.FarmInfoAppPref;
 import com.getpoint.farminfomanager.FarmInfoManagerApp;
 import com.getpoint.farminfomanager.GPSDeviceManager;
@@ -39,7 +40,10 @@ import com.getpoint.farminfomanager.fragment.Mission.DangerPointFragment;
 import com.getpoint.farminfomanager.fragment.Mission.ForwardPointFragment;
 import com.getpoint.farminfomanager.fragment.Mission.FramePointFragment;
 import com.getpoint.farminfomanager.fragment.Mission.PointDetailFragment;
+import com.getpoint.farminfomanager.fragment.OpenMissionFragment;
+import com.getpoint.farminfomanager.fragment.SaveMissionFragment;
 import com.getpoint.farminfomanager.utils.AttributesEvent;
+import com.getpoint.farminfomanager.utils.DirectoryChooserConfig;
 import com.getpoint.farminfomanager.utils.GPS;
 
 import com.getpoint.farminfomanager.utils.file.FileStream;
@@ -48,12 +52,6 @@ import com.getpoint.farminfomanager.utils.proxy.MissionProxy;
 import com.getpoint.farminfomanager.weights.FloatingActionButton;
 import com.getpoint.farminfomanager.weights.MorphLayout;
 import com.getpoint.farminfomanager.weights.dialogs.EditInputDialog;
-
-import net.rdrei.android.dirchooser.ActionType;
-import net.rdrei.android.dirchooser.DirectoryChooserConfig;
-import net.rdrei.android.dirchooser.DirectoryChooserFragment;
-import net.rdrei.android.dirchooser.OpenMissionFragment;
-import net.rdrei.android.dirchooser.SaveMissionFragment;
 
 import org.w3c.dom.Attr;
 
@@ -68,6 +66,7 @@ import java.util.List;
  */
 public class FarmInfoActivity extends AppCompatActivity implements
         PointDetailFragment.OnPointDetailListener, MorphLayout.OnMorphListener,
+        BaiduMapFragment.OnMarkerClickedListener,
         SaveMissionFragment.OnFragmentInteractionListener,
         OpenMissionFragment.OnFragmentInteractionListener {
 
@@ -327,7 +326,7 @@ public class FarmInfoActivity extends AppCompatActivity implements
          *   如果成功读取 mission ，然后就在地图上画 marker.
          */
         if (missionProxy.readMissionFromFile(path)) {
-            mapFragment.addMarkerFromMission(missionProxy);
+            mapFragment.updateInfoFromMission(missionProxy);
         }
 
         mOpenMissionFragment.dismiss();
@@ -336,6 +335,35 @@ public class FarmInfoActivity extends AppCompatActivity implements
     @Override
     public void onOpenCancelChooser() {
         mOpenMissionFragment.dismiss();
+    }
+
+    /**
+     *  地图标记的点击监听函数
+     * @param m MissionItemProxy
+     * @return
+     */
+    @Override
+    public boolean onMarkerClick(MissionItemProxy m) {
+        Log.i(TAG, "Point Type:" + m.getPointInfo().getPointType().getLabel());
+
+        final PointItemType itemType = m.getPointInfo().getPointType();
+        Log.i("TAG", "Altitude: " + m.getPointInfo().getPosition().getAltitude());
+
+        switch (itemType) {
+            case FRAMEPOINT:
+                Log.i(TAG, "Point Order: " + missionProxy.getOrder(m));
+                break;
+            case BYPASSPOINT:
+                break;
+            case CLIMBPOINT:
+                break;
+            case FORWAEDPOINT:
+                break;
+            default:
+                break;
+        }
+
+        return false;
     }
 
     private void saveMissionFile() {

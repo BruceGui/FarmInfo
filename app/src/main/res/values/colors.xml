@@ -24,4 +24,10 @@
     <color name="bottom_top_bar">#66848484</color>
     <color name="editor_bar">#66848484</color>
 
+    <color name="bright_blue">#33B5E5</color>
+
+    <!-- Use Gingerbread-orange -->
+    <color name="selection_background_color">#FEBB20</color>
+
+
 </resources>
