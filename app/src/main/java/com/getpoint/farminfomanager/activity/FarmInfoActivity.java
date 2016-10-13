@@ -4,14 +4,12 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.media.Image;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -20,13 +18,11 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
-import com.baidu.mapapi.map.BaiduMap;
 import com.getpoint.farminfomanager.FarmInfoAppPref;
 import com.getpoint.farminfomanager.FarmInfoManagerApp;
 import com.getpoint.farminfomanager.GPSDeviceManager;
 import com.getpoint.farminfomanager.R;
 import com.getpoint.farminfomanager.entity.coordinate.LatLong;
-import com.getpoint.farminfomanager.entity.markers.DangerPointMarker;
 import com.getpoint.farminfomanager.entity.markers.FramePointMarker;
 import com.getpoint.farminfomanager.entity.points.BypassPoint;
 import com.getpoint.farminfomanager.entity.points.ClimbPoint;
@@ -36,7 +32,6 @@ import com.getpoint.farminfomanager.entity.points.PointItemType;
 import com.getpoint.farminfomanager.fragment.BaiduMapFragment;
 import com.getpoint.farminfomanager.fragment.Mission.BypassPointFragment;
 import com.getpoint.farminfomanager.fragment.Mission.ClimbPointFragment;
-import com.getpoint.farminfomanager.fragment.Mission.DangerPointFragment;
 import com.getpoint.farminfomanager.fragment.Mission.ForwardPointFragment;
 import com.getpoint.farminfomanager.fragment.Mission.FramePointFragment;
 import com.getpoint.farminfomanager.fragment.Mission.PointDetailFragment;
@@ -46,18 +41,11 @@ import com.getpoint.farminfomanager.utils.AttributesEvent;
 import com.getpoint.farminfomanager.utils.DirectoryChooserConfig;
 import com.getpoint.farminfomanager.utils.GPS;
 
-import com.getpoint.farminfomanager.utils.file.FileStream;
 import com.getpoint.farminfomanager.utils.proxy.MissionItemProxy;
 import com.getpoint.farminfomanager.utils.proxy.MissionProxy;
 import com.getpoint.farminfomanager.weights.FloatingActionButton;
 import com.getpoint.farminfomanager.weights.MorphLayout;
-import com.getpoint.farminfomanager.weights.dialogs.EditInputDialog;
 
-import org.w3c.dom.Attr;
-
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -88,6 +76,7 @@ public class FarmInfoActivity extends AppCompatActivity implements
 
     private FragmentManager fragmentManager;
 
+    private Menu mMenu;
     private ImageButton mGoToMyLocation;
     private ImageButton mZoomToFit;
     private Button mPointOkBtn;
@@ -168,9 +157,7 @@ public class FarmInfoActivity extends AppCompatActivity implements
         mPointInfoLayout.setMorphListener(this);
         mPointInfoLayout.setFab(mFloatingAct);
 
-        if (Build.VERSION.SDK_INT >= 21) {
-            mFloatingAct.setElevation(R.dimen.fab_elevation);
-        }
+
 
         mGoToMyLocation = (ImageButton) findViewById(R.id.my_location_button);
         mZoomToFit = (ImageButton) findViewById(R.id.zoom_to_fit_button);
@@ -220,7 +207,7 @@ public class FarmInfoActivity extends AppCompatActivity implements
             public void onClick(View v) {
                 final List<LatLong> points = new ArrayList<>();
 
-                for(MissionItemProxy itemProxy : missionProxy.getBoundaryItemProxies()) {
+                for (MissionItemProxy itemProxy : missionProxy.getBoundaryItemProxies()) {
                     points.add(itemProxy.getPointInfo().getPosition().getLatLong());
                 }
 
@@ -338,12 +325,16 @@ public class FarmInfoActivity extends AppCompatActivity implements
     }
 
     /**
-     *  地图标记的点击监听函数
+     * 地图标记的点击监听函数
+     *
      * @param m MissionItemProxy
      * @return
      */
     @Override
     public boolean onMarkerClick(MissionItemProxy m) {
+
+        //TODO 动态的标题栏，用来对打点的进行操作
+
         Log.i(TAG, "Point Type:" + m.getPointInfo().getPointType().getLabel());
 
         final PointItemType itemType = m.getPointInfo().getPointType();
@@ -352,6 +343,9 @@ public class FarmInfoActivity extends AppCompatActivity implements
         switch (itemType) {
             case FRAMEPOINT:
                 Log.i(TAG, "Point Order: " + missionProxy.getOrder(m));
+                mMenu.setGroupVisible(R.id.menu_normal, false);
+                mMenu.setGroupVisible(R.id.menu_edit, true);
+                mMenu.setGroupEnabled(R.id.menu_edit, true);
                 break;
             case BYPASSPOINT:
                 break;
@@ -368,6 +362,8 @@ public class FarmInfoActivity extends AppCompatActivity implements
 
     private void saveMissionFile() {
 
+        //TODO 用 view pager 显示保存点的信息，然后下一步显示保存页面
+
         final DirectoryChooserConfig config = DirectoryChooserConfig.builder()
                 .newDirectoryName(getString(R.string.new_folder))
                 .allowNewDirectoryNameModification(true)
@@ -376,7 +372,9 @@ public class FarmInfoActivity extends AppCompatActivity implements
 
         mSaveMissionFragment = SaveMissionFragment.newInstance(config);
 
-        mSaveMissionFragment.show(getFragmentManager(), null);
+        //mMissionPagerFragment.show(getFragmentManager(), null);
+        startActivity(new Intent(FarmInfoActivity.this, PointDetailActivity.class));
+        //mSaveMissionFragment.show(getFragmentManager(), null);
 
     }
 
@@ -673,6 +671,11 @@ public class FarmInfoActivity extends AppCompatActivity implements
     public boolean onCreateOptionsMenu(Menu menu) {
 
         getMenuInflater().inflate(R.menu.menu_home_fragment, menu);
+
+        if(mMenu == null) {
+            mMenu = menu;
+        }
+
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -740,7 +743,7 @@ public class FarmInfoActivity extends AppCompatActivity implements
     protected void onDestroy() {
         super.onDestroy();
 
-        if(missionProxy != null) {
+        if (missionProxy != null) {
             missionProxy.missionClear();
         }
         farmApp.getLocalBroadcastManager().unregisterReceiver(eventReceiver);

@@ -40,7 +40,6 @@ public class MissionWriter {
             /**
              *  把当前任务点写进文件中
              */
-            //TODO
             final List<MissionItemProxy> boundaryPoints = mission.getBoundaryItemProxies();
             final List<MissionItemProxy> bypassPoints = mission.getBypassItemProxies();
             final List<MissionItemProxy> climbPoints = mission.getClimbItemProxies();
@@ -110,7 +109,9 @@ public class MissionWriter {
                 out.write("\r\n".getBytes());
             }
 
-            //out.write();
+            /**
+             *  写入结束信号
+             */
             out.write("end".getBytes());
             out.write("\r\n".getBytes());
             out.close();

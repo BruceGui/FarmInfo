@@ -3,62 +3,51 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".MainActivity">
 
-    <item
-        android:id="@+id/id_menu_open_file"
-        android:title="@string/menu_open"
-        android:icon="@drawable/ic_action_folder_open"
-        app:showAsAction="ifRoom"/>
-
-    <item
-        android:id="@+id/id_menu_save_file"
-        android:title="@string/menu_save"
-        android:icon="@drawable/ic_action_save"
-        app:showAsAction="ifRoom"/>
-
-    <item
-        android:id="@+id/id_menu_new_mission"
-        android:title="@string/menu_new"
-        app:showAsAction="never"/>
-
-    <item
-        android:id="@+id/id_connect_act"
-        android:title="@string/connect"
-        app:showAsAction="never" />
-
-    <!--
-
     <group
-        android:id="@+id/id_menu_connected"
-        android:enabled="false"
-        android:visible="false">
+        android:id="@+id/menu_normal"
+        android:visible="true"
+        android:enabled="true">
+
         <item
-            android:id="@+id/id_new_mission"
-            android:title="@string/new_mission_title"
-            app:showAsAction="never" />
+            android:id="@+id/id_menu_open_file"
+            android:icon="@drawable/ic_action_folder_open"
+            android:title="@string/menu_open"
+            app:showAsAction="ifRoom" />
+
         <item
-            android:id="@+id/id_mission_manager"
-            android:title="@string/mission_manager"
-            app:showAsAction="never" />
+            android:id="@+id/id_menu_save_file"
+            android:icon="@drawable/ic_action_save"
+            android:title="@string/menu_save"
+            app:showAsAction="ifRoom" />
+
         <item
-            android:id="@+id/id_measure"
-            android:title="@string/measure"
-            app:showAsAction="never" />
-        <item
-            android:id="@+id/id_device_settings"
-            android:title="@string/device_settings"
-            app:showAsAction="never" />
-        <item
-            android:id="@+id/id_on_off"
-            android:title="@string/on_off"
+            android:id="@+id/id_menu_new_mission"
+            android:title="@string/menu_new"
             app:showAsAction="never" />
 
+        <item
+            android:id="@+id/id_connect_act"
+            android:title="@string/connect"
+            app:showAsAction="never" />
+
+
+        <item
+            android:id="@+id/id_setting"
+            android:title="@string/app_setting"
+            app:showAsAction="never" />
     </group>
 
-    -->
+    <group
+        android:id="@+id/menu_edit"
+        android:visible="false"
+        android:enabled="false">
 
-    <item
-        android:id="@+id/id_setting"
-        android:title="@string/app_setting"
-        app:showAsAction="never"/>
+        <item
+            android:id="@+id/id_delete"
+            android:icon="@drawable/ic_action_trash"
+            android:title="@string/delete_point"
+            app:showAsAction="ifRoom"/>
+
+    </group>
 
 </menu>

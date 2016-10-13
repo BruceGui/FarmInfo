@@ -25,6 +25,7 @@ import com.baidu.mapapi.map.Marker;
 import com.baidu.mapapi.map.MarkerOptions;
 import com.baidu.mapapi.map.MyLocationConfiguration;
 import com.baidu.mapapi.map.MyLocationData;
+import com.baidu.mapapi.map.Polygon;
 import com.baidu.mapapi.map.PolygonOptions;
 import com.baidu.mapapi.map.PolylineOptions;
 import com.baidu.mapapi.map.SupportMapFragment;
@@ -62,6 +63,7 @@ public class BaiduMapFragment extends SupportMapFragment {
     public static final int MISSION_PATH_DEFAULT_WIDTH = 4;
 
     private final HashBiMap<PointMarker, Marker> mBiMarkersMap = new HashBiMap<>();
+    private List<Polygon> mPolygonsPaths = new ArrayList<>();
 
     private OnMarkerClickedListener markerClickListener;
     protected MapView mMapView;
@@ -72,7 +74,7 @@ public class BaiduMapFragment extends SupportMapFragment {
     public void onAttach(Activity activity) {
         super.onAttach(activity);
 
-        if(!(activity instanceof OnMarkerClickedListener)) {
+        if (!(activity instanceof OnMarkerClickedListener)) {
             throw new IllegalStateException("Parent Activity must implement " +
                     OnMarkerClickedListener.class.getName());
         }
@@ -146,7 +148,7 @@ public class BaiduMapFragment extends SupportMapFragment {
 
                 if (m != null) {
 
-                    if(markerClickListener != null) {
+                    if (markerClickListener != null) {
                         markerClickListener.onMarkerClick(m);
                     }
                 }
@@ -239,7 +241,8 @@ public class BaiduMapFragment extends SupportMapFragment {
 
 
     /**
-     *   从 Mission 中更新地图marker和polyline的信息
+     * 从 Mission 中更新地图marker和polyline的信息
+     *
      * @param mission 要更新的任务
      */
     public void updateInfoFromMission(MissionProxy mission) {
@@ -259,6 +262,7 @@ public class BaiduMapFragment extends SupportMapFragment {
             pointMarker.setMarkerNum(mission.getOrder(itemProxy));
             updateMarker(pointMarker);
         }
+
         /**
          *  绕飞点marker
          */
@@ -303,16 +307,95 @@ public class BaiduMapFragment extends SupportMapFragment {
 
         /**
          *  更新polyline信息
+         *  首先清除所有的 点的画线信息。然后再更新
          */
         List<LatLong> pathCoords = new ArrayList<>();
 
+        /**
+         *  画边界点的线
+         */
         for (MissionItemProxy itemProxy : boundaryPoints) {
             pathCoords.add(itemProxy.getPointInfo().getPosition().getLatLong());
         }
         pathCoords.add(pathCoords.get(0));
 
+        updatePolyline(pathCoords);
+
+        /**
+         *  画绕飞点的线
+         */
+        pathCoords.clear();
+        for (MissionItemProxy itemProxy : bypassPoints) {
+            final List<DangerPoint> dps = ((BypassPoint) itemProxy.getPointInfo())
+                    .getInnerPoint();
+            for (DangerPoint innerPoint : dps) {
+                pathCoords.add(innerPoint.getPosition().getLatLong());
+            }
+
+            if(!pathCoords.isEmpty()) {
+                pathCoords.add(pathCoords.get(0));
+            }
+            updatePolyline(pathCoords);
+        }
+
+
+        /**
+         *  画前飞点的线
+         */
+        pathCoords.clear();
+        for (MissionItemProxy itemProxy : forwardPoints) {
+            final List<DangerPoint> dps = ((ForwardPoint) itemProxy.getPointInfo())
+                    .getInnerPoint();
+            for (DangerPoint innerPoint : dps) {
+                pathCoords.add(innerPoint.getPosition().getLatLong());
+            }
+
+            if(!pathCoords.isEmpty()) {
+                pathCoords.add(pathCoords.get(0));
+            }
+            updatePolyline(pathCoords);
+        }
+
+        /**
+         *  画爬升点的线
+         */
+        pathCoords.clear();
+        for (MissionItemProxy itemProxy : climbPoints) {
+            final List<DangerPoint> dps = ((ClimbPoint) itemProxy.getPointInfo())
+                    .getInnerPoint();
+            for (DangerPoint innerPoint : dps) {
+                pathCoords.add(innerPoint.getPosition().getLatLong());
+            }
+
+            if(!pathCoords.isEmpty()) {
+                pathCoords.add(pathCoords.get(0));
+            }
+            updatePolyline(pathCoords);
+        }
+    }
+
+    /**
+     * 画地图上的点和点之间的连线 Polyline path
+     * <p>
+     * 首先获得一个 List<LatLng> 的路径点的list
+     * 然后再新建一个 PolylineOptions 并设置一些参数 color points
+     * 接着直接 getBaiduMap().addOverlay(polyoptions);
+     * <p>
+     * <p>
+     * public void updatePolylineFromMission(MissionProxy m) {
+     * <p>
+     * }
+     */
+
+    //TODO 如何在添加点之后更新画的线
+    /**
+     * 画线的方法 首先存储点的集合，然后再画点线
+     * @param pathCoords 点的集合
+     */
+    public void updatePolyline(List<LatLong> pathCoords) {
+
         final List<LatLng> pathPoints = new ArrayList<>(pathCoords.size());
-        for(LatLong coord : pathCoords) {
+        for (LatLong coord : pathCoords) {
             pathPoints.add(DroneHelper.CoordToBaiduLatLang(coord));
         }
 
@@ -321,22 +404,7 @@ public class BaiduMapFragment extends SupportMapFragment {
                 .width(MISSION_PATH_DEFAULT_WIDTH);
         pathOptions.points(pathPoints);
         getBaiduMap().addOverlay(pathOptions);
-
     }
-
-    /**
-     *  画地图上的点和点之间的连线 Polyline path
-     *
-     *  首先获得一个 List<LatLng> 的路径点的list
-     *  然后再新建一个 PolylineOptions 并设置一些参数 color points
-     *  接着直接 getBaiduMap().addOverlay(polyoptions);
-
-
-    public void updatePolylineFromMission(MissionProxy m) {
-
-    }
-     */
-
 
     /**
      * 以动画的形式放大、缩小地图
@@ -408,7 +476,6 @@ public class BaiduMapFragment extends SupportMapFragment {
 
         boolean onMarkerClick(MissionItemProxy m);
     }
-
 
 
     @Override

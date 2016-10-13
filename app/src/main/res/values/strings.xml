@@ -98,5 +98,11 @@
     <string name="up_label">Up</string>
     <string name="input_file_name">File name</string>
     <string name="please_input_file_name">Please Input File Name</string>
+    <string name="delete_point">Delete</string>
+    <string name="save_title">Save Mission</string>
+
+    <string name="action_previous">Previous</string>
+    <string name="action_next">Next</string>
+    <string name="action_finish">Finish</string>
 
 </resources>
