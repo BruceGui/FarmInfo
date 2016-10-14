@@ -32,7 +32,10 @@
     <string name="lon_str">Longitude:</string>
     <string name="lat_str">Latitude:</string>
     <string name="hei_str">Height:</string>
+    <string name="lon_label">Longitude</string>
+    <string name="lat_label">Latitude</string>
     <string name="altitude_label">Fly Altitude</string>
+    <string name="serial_num">Number</string>
     <string name="l_dop">LDop:</string>
     <string name="v_dop">VDop:</string>
     <string name="h_dop">HDop:</string>

@@ -12,7 +12,10 @@
     <string name="lon_str">经度:</string>
     <string name="lat_str">纬度:</string>
     <string name="hei_str">高度:</string>
+    <string name="lon_label">经度</string>
+    <string name="lat_label">纬度</string>
     <string name="altitude_label">飞行高度</string>
+    <string name="serial_num">编号</string>
     <string name="l_dop">LDop:</string>
     <string name="v_dop">VDop:</string>
     <string name="h_dop">HDop:</string>

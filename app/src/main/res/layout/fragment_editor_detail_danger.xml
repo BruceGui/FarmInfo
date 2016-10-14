@@ -11,6 +11,7 @@
         android:layout_margin="5dp"
         android:entries="@array/ExampleWaypointType" />
 
+    <!--
     <com.getpoint.farminfomanager.weights.spinners.SpinnerSelfSelect
         android:id="@+id/spinnerInnerIndex"
         android:layout_width="match_parent"
@@ -19,6 +20,7 @@
         android:layout_margin="5dp"
         android:layout_toEndOf="@id/spinnerWaypointType"
         android:entries="@array/ExampleWaypointType" />
+        -->
 
     <RelativeLayout
         android:id="@+id/title_rect"
@@ -75,12 +77,12 @@
 
         <TextView
             android:id="@+id/dangerInnerIndex"
-            style="@style/missionHeaderTitle"
-            android:layout_width="wrap_content"
+            style="@style/largeMissionDetailText"
+            android:layout_width="64dp"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginStart="12dp"
-            android:text="@string/frame_point"
+            android:text="22"
             android:textAllCaps="true" />
 
     </RelativeLayout>
@@ -96,6 +98,7 @@
         android:src="@drawable/ic_menu_hint"
         tools:ignore="ContentDescription" />
 
+    <!--
     <ImageView
         android:id="@+id/menuHintIndex"
         android:layout_width="wrap_content"
@@ -105,6 +108,7 @@
         android:layout_margin="10dp"
         android:src="@drawable/ic_menu_hint"
         tools:ignore="ContentDescription" />
+        -->
 
     <ScrollView
         android:id="@+id/altitudeScrollView"

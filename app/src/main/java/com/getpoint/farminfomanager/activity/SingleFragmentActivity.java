@@ -10,6 +10,7 @@ import com.getpoint.farminfomanager.R;
 /**
  * Created by lenovo on 2016/4/25.
  */
+
 public abstract class  SingleFragmentActivity extends AppCompatActivity {
     protected abstract Fragment createFragment();
 

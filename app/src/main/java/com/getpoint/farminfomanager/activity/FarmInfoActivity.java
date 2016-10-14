@@ -231,7 +231,6 @@ public class FarmInfoActivity extends AppCompatActivity implements
                  *   获取当前点的信息，
                  *   在地图上显示
                  */
-                //TODO
                 final LatLong coord = mapFragment.getCurrentCoord();
 
                 switch (currentType) {
@@ -285,7 +284,7 @@ public class FarmInfoActivity extends AppCompatActivity implements
 
     @Override
     public void onSaveMission(@NonNull String filepath, @NonNull String filename) {
-        //TODO
+
         Log.i(TAG, filepath + "/" + filename);
         final Context context = getApplicationContext();
         mSaveMissionFragment.dismiss();
@@ -333,7 +332,7 @@ public class FarmInfoActivity extends AppCompatActivity implements
     @Override
     public boolean onMarkerClick(MissionItemProxy m) {
 
-        //TODO 动态的标题栏，用来对打点的进行操作
+        //TODO 动态的标题栏，用来对点的进行操作
 
         Log.i(TAG, "Point Type:" + m.getPointInfo().getPointType().getLabel());
 
@@ -582,8 +581,10 @@ public class FarmInfoActivity extends AppCompatActivity implements
 
         final BypassPoint bypassPoint = bypassPointFragment.getBypassPoint();
 
-        MissionItemProxy newItem = new MissionItemProxy(missionProxy, bypassPoint);
-        missionProxy.addItem(newItem);
+        if(!bypassPoint.getInnerPoint().isEmpty()) {
+            MissionItemProxy newItem = new MissionItemProxy(missionProxy, bypassPoint);
+            missionProxy.addItem(newItem);
+        }
 
     }
 
@@ -591,8 +592,10 @@ public class FarmInfoActivity extends AppCompatActivity implements
 
         final ClimbPoint climbPoint = climbPointFragment.getClimbPoint();
 
-        MissionItemProxy newItem = new MissionItemProxy(missionProxy, climbPoint);
-        missionProxy.addItem(newItem);
+        if(!climbPoint.getInnerPoint().isEmpty()) {
+            MissionItemProxy newItem = new MissionItemProxy(missionProxy, climbPoint);
+            missionProxy.addItem(newItem);
+        }
 
     }
 
@@ -600,8 +603,10 @@ public class FarmInfoActivity extends AppCompatActivity implements
 
         final ForwardPoint forwardPoint = forwardPointFragment.getForwardPoint();
 
-        MissionItemProxy newItem = new MissionItemProxy(missionProxy, forwardPoint);
-        missionProxy.addItem(newItem);
+        if(!forwardPoint.getInnerPoint().isEmpty()) {
+            MissionItemProxy newItem = new MissionItemProxy(missionProxy, forwardPoint);
+            missionProxy.addItem(newItem);
+        }
 
     }
 
@@ -698,7 +703,6 @@ public class FarmInfoActivity extends AppCompatActivity implements
         return true;
     }
 
-    //TODO
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         Intent intent;
@@ -718,6 +722,11 @@ public class FarmInfoActivity extends AppCompatActivity implements
                 break;
             case R.id.id_menu_new_mission:
                 newMissionFile();
+                break;
+            case R.id.id_delete:
+                mMenu.setGroupVisible(R.id.menu_normal, true);
+                mMenu.setGroupVisible(R.id.menu_edit, false);
+                mMenu.setGroupEnabled(R.id.menu_edit, false);
                 break;
             default:
                 return super.onOptionsItemSelected(item);

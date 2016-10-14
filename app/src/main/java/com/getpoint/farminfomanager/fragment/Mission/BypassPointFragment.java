@@ -57,6 +57,7 @@ public class BypassPointFragment extends PointDetailFragment implements
         altitudePickerCentimeter.setCurrentValue(0);
 
         innerIndex = (TextView) view.findViewById(R.id.dangerInnerIndex);
+        innerIndex.setText(String.valueOf(0));
 
         pointIndex = (TextView) view.findViewById(R.id.dangerPointIndex);
         pointIndex.setText(String.valueOf(missionProxy.getCurrentBypassNumber()));
@@ -71,7 +72,7 @@ public class BypassPointFragment extends PointDetailFragment implements
             @Override
             public void onClick(View v) {
                 final DangerPoint bp = new DangerPoint(mapFragment.getCurrentCoord(),
-                       0);
+                        0);
 
                 bp.setPointType(PointItemType.BYPASSPOINT);
                 bp.setPointNum(BypassPoint.INDICATE_NUM);
@@ -83,6 +84,8 @@ public class BypassPointFragment extends PointDetailFragment implements
                 DangerPointMarker pointMarker = (DangerPointMarker) newItem.getMarker();
                 pointMarker.setMarkerNum(bypassPoint.getInnerPoint().indexOf(bp));
                 mapFragment.updateMarker(pointMarker);
+
+                innerIndex.setText(String.valueOf(bypassPoint.getInnerPoint().size()));
             }
         });
 
@@ -94,12 +97,13 @@ public class BypassPointFragment extends PointDetailFragment implements
     }
 
     public BypassPoint getBypassPoint() {
+        innerIndex.setText(String.valueOf(0));
         final BypassPoint byp = bypassPoint;
         return byp;
     }
 
     /**
-     *  由于Java对象赋值的特殊性，每次clear时都new一个新对象；
+     * 由于Java对象赋值的特殊性，每次clear时都new一个新对象；
      */
     public void clearInnerPoint() {
         this.bypassPoint = new BypassPoint();
@@ -109,11 +113,11 @@ public class BypassPointFragment extends PointDetailFragment implements
 
         float altitude;
 
-        if(altitudePickerMeter.getCurrentValue() < 0) {
-            altitude = altitudePickerMeter.getCurrentValue()*100
+        if (altitudePickerMeter.getCurrentValue() < 0) {
+            altitude = altitudePickerMeter.getCurrentValue() * 100
                     - altitudePickerCentimeter.getCurrentValue();
         } else {
-            altitude = altitudePickerMeter.getCurrentValue()*100
+            altitude = altitudePickerMeter.getCurrentValue() * 100
                     + altitudePickerCentimeter.getCurrentValue();
         }
 

@@ -26,11 +26,11 @@ public class GPS {
     public float alt_SD;
 
     public short used;
-
+/*
     public int ANTX;
     public int ANTY;
     public int ANTZ;
-
+*/
     public float gdop;
     public float pdop;
     public float hdop;

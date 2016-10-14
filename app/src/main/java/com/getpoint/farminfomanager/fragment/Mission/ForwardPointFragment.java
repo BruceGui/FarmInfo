@@ -23,28 +23,31 @@ import com.getpoint.farminfomanager.weights.spinnerWheel.adapters.NumericWheelAd
 /**
  * Created by Station on 2016/8/4.
  */
+
 public class ForwardPointFragment extends PointDetailFragment implements
-        CardWheelHorizontalView.OnCardWheelChangedListener{
+        CardWheelHorizontalView.OnCardWheelChangedListener {
 
     private TextView pointIndex;
+    private TextView innerIndex;
+    private ForwardPoint forwardPoint;
     private CardWheelHorizontalView altitudePickerMeter;
     private CardWheelHorizontalView altitudePickerCentimeter;
-    private ForwardPoint forwardPoint;
+
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         final View view = super.onCreateView(inflater, container, savedInstanceState);
 
-        final TextView pointType = (TextView)view.findViewById(R.id.WaypointType);
+        final TextView pointType = (TextView) view.findViewById(R.id.WaypointType);
         pointType.setText(R.string.forward_danger_poi);
 
         final Context context = getActivity().getApplicationContext();
 
         final NumericWheelAdapter altitudeAdapterMeter = new NumericWheelAdapter(context,
-                R.layout.wheel_text_centered, MIN_ALTITUDE,	MAX_ALTITUDE, "%d m");
+                R.layout.wheel_text_centered, MIN_ALTITUDE, MAX_ALTITUDE, "%d m");
         final NumericWheelAdapter altitudeAdapterCentimeter = new NumericWheelAdapter(context,
-                R.layout.wheel_text_centered, MIN_CENTIMETER,	MAX_CENTIMETER, "%d cm");
+                R.layout.wheel_text_centered, MIN_CENTIMETER, MAX_CENTIMETER, "%d cm");
         altitudePickerMeter = (CardWheelHorizontalView) view.findViewById(R.id
                 .altitudePickerMeter);
         altitudePickerMeter.setViewAdapter(altitudeAdapterMeter);
@@ -56,7 +59,10 @@ public class ForwardPointFragment extends PointDetailFragment implements
         altitudePickerCentimeter.setViewAdapter(altitudeAdapterCentimeter);
         altitudePickerCentimeter.setCurrentValue(0);
 
-        pointIndex = (TextView)view.findViewById(R.id.dangerPointIndex);
+        innerIndex = (TextView) view.findViewById(R.id.dangerInnerIndex);
+        innerIndex.setText(String.valueOf(0));
+
+        pointIndex = (TextView) view.findViewById(R.id.dangerPointIndex);
         pointIndex.setText(String.valueOf(missionProxy.getCurrentForwardNumber()));
 
         forwardPoint = new ForwardPoint();
@@ -64,7 +70,7 @@ public class ForwardPointFragment extends PointDetailFragment implements
         /**
          *  添加内点的监听函数
          */
-        Button addInerPoint = (Button)view.findViewById(R.id.id_add_danger_point);
+        Button addInerPoint = (Button) view.findViewById(R.id.id_add_danger_point);
         addInerPoint.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -81,6 +87,8 @@ public class ForwardPointFragment extends PointDetailFragment implements
                 DangerPointMarker pointMarker = new DangerPointMarker(newItem);
                 pointMarker.setMarkerNum(forwardPoint.getInnerPoint().indexOf(fp));
                 mapFragment.updateMarker(pointMarker);
+
+                innerIndex.setText(String.valueOf(forwardPoint.getInnerPoint().size()));
             }
         });
 
@@ -92,6 +100,7 @@ public class ForwardPointFragment extends PointDetailFragment implements
     }
 
     public ForwardPoint getForwardPoint() {
+        innerIndex.setText(String.valueOf(0));
         final ForwardPoint byp = forwardPoint;
         return byp;
     }
@@ -104,11 +113,11 @@ public class ForwardPointFragment extends PointDetailFragment implements
 
         float altitude;
 
-        if(altitudePickerMeter.getCurrentValue() < 0) {
-            altitude = altitudePickerMeter.getCurrentValue()*100
+        if (altitudePickerMeter.getCurrentValue() < 0) {
+            altitude = altitudePickerMeter.getCurrentValue() * 100
                     - altitudePickerCentimeter.getCurrentValue();
         } else {
-            altitude = altitudePickerMeter.getCurrentValue()*100
+            altitude = altitudePickerMeter.getCurrentValue() * 100
                     + altitudePickerCentimeter.getCurrentValue();
         }
 

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/pointSerialNum"
+        android:layout_weight="1"
+        style="@style/pointdetailheader"
+        android:text="@string/serial_num" />
+
+    <TextView
+        android:id="@+id/pointLongitude"
+        android:layout_weight="4"
+        style="@style/pointdetailheader"
+        android:text="@string/lon_label" />
+
+    <TextView
+        android:id="@+id/pointLatitude"
+        android:layout_weight="4"
+        style="@style/pointdetailheader"
+        android:text="@string/lat_label" />
+
+</LinearLayout>

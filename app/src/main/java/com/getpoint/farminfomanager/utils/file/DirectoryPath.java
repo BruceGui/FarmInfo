@@ -56,7 +56,6 @@ public class DirectoryPath {
                     in.close();
                 }
             } catch (IOException e) {
-// TODO Auto-generated catch block
                 e.printStackTrace();
             }
             try {
@@ -64,7 +63,6 @@ public class DirectoryPath {
                     inBr.close();
                 }
             } catch (IOException e) {
-// TODO Auto-generated catch block
                 e.printStackTrace();
             }
         }
@@ -111,7 +109,6 @@ public class DirectoryPath {
                 }
             }
         } catch (Exception e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
         Log.d("text", sdcard_path);
