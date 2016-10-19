@@ -102,6 +102,7 @@
     <string name="input_file_name">File name</string>
     <string name="please_input_file_name">Please Input File Name</string>
     <string name="delete_point">Delete</string>
+    <string name="editor_point">Editor</string>
     <string name="save_title">Save Mission</string>
 
     <string name="action_previous">Previous</string>

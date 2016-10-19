@@ -20,7 +20,7 @@ public class MissionItemProxy {
 
     private final MissionProxy mMission;
 
-    private final PointMarker mMarker;
+    private PointMarker mMarker;
 
     public MissionItemProxy(MissionProxy mission, PointInfo pointInfo) {
         mMission = mission;
@@ -38,5 +38,9 @@ public class MissionItemProxy {
 
     public PointMarker getMarker() {
         return this.mMarker;
+    }
+
+    public void setMarker(PointMarker marker) {
+        this.mMarker = marker;
     }
 }

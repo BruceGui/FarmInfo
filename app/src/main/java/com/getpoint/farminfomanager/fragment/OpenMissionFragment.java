@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DialogFragment;
 import android.app.Fragment;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
@@ -267,6 +268,8 @@ public class OpenMissionFragment extends DialogFragment {
         }
     }
 
+    //TODO http://stackoverflow.com/questions/32083053/android-fragment-onattach-deprecated
+    @SuppressWarnings("deprecation")
     @Override
     public void onAttach(final Activity activity) {
         super.onAttach(activity);

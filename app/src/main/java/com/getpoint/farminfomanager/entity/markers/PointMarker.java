@@ -14,6 +14,7 @@ import com.getpoint.farminfomanager.utils.proxy.MissionProxy;
 public abstract class PointMarker {
 
     private final MissionItemProxy mMarkerOrigin;
+    private Boolean isSelected = false;
     private int markerNum;
 
     public static PointMarker newInstance(MissionItemProxy origin) {
@@ -48,7 +49,7 @@ public abstract class PointMarker {
     }
 
     public boolean isDraggable() {
-        return true;
+        return false;
     }
 
     public boolean isVisible() {
@@ -65,15 +66,31 @@ public abstract class PointMarker {
         coordinate.setLongitude(coord.getLongitude());
     }
 
+    public void setState(Boolean state) {
+        this.isSelected = state;
+    }
+
     public Bitmap getIcon(Resources res) {
-        return MarkerWithText.getMarkerWithTextAndDetail(getIconResource(),
-                Integer.toString(markerNum), null, res);
+
+        if (isSelected) {
+            return MarkerWithText.getMarkerWithTextAndDetail(getIconSelected(),
+                    Integer.toString(markerNum), null, res);
+        } else {
+            return MarkerWithText.getMarkerWithTextAndDetail(getIconNormal(),
+                    Integer.toString(markerNum), null, res);
+        }
     }
 
     public void setMarkerNum(int markerNum) {
         this.markerNum = markerNum;
     }
 
-    protected abstract int getIconResource();
+    public int getMarkerNum() {
+        return this.markerNum;
+    }
+
+    protected abstract int getIconNormal();
+
+    protected abstract int getIconSelected();
 
 }

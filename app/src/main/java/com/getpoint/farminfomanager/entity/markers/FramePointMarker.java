@@ -12,9 +12,13 @@ public class FramePointMarker extends PointMarker {
         super(origin);
     }
 
+    @Override
+    protected int getIconNormal() {
+        return R.drawable.ic_frame_point;
+    }
 
     @Override
-    protected int getIconResource() {
-        return R.drawable.ic_frame_point;
+    protected int getIconSelected() {
+        return R.drawable.ic_frame_point_sel;
     }
 }

@@ -98,6 +98,7 @@
     <string name="input_file_name">文件名</string>
     <string name="please_input_file_name">请输入文件名</string>
     <string name="delete_point">删除</string>
+    <string name="editor_point">编辑</string>
     <string name="save_title">保存文件</string>
 
     <string name="action_previous">上一步</string>

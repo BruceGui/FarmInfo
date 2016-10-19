@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.baidu.mapapi.map.Marker;
 import com.getpoint.farminfomanager.R;
 import com.getpoint.farminfomanager.entity.markers.DangerPointMarker;
 import com.getpoint.farminfomanager.entity.points.BypassPoint;
@@ -20,50 +21,23 @@ import com.getpoint.farminfomanager.utils.proxy.MissionItemProxy;
 import com.getpoint.farminfomanager.weights.spinnerWheel.CardWheelHorizontalView;
 import com.getpoint.farminfomanager.weights.spinnerWheel.adapters.NumericWheelAdapter;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by Station on 2016/8/4.
  */
 
-public class ForwardPointFragment extends PointDetailFragment implements
+public class ForwardPointFragment extends DangerPointFragment implements
         CardWheelHorizontalView.OnCardWheelChangedListener {
 
-    private TextView pointIndex;
-    private TextView innerIndex;
     private ForwardPoint forwardPoint;
-    private CardWheelHorizontalView altitudePickerMeter;
-    private CardWheelHorizontalView altitudePickerCentimeter;
 
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         final View view = super.onCreateView(inflater, container, savedInstanceState);
-
-        final TextView pointType = (TextView) view.findViewById(R.id.WaypointType);
-        pointType.setText(R.string.forward_danger_poi);
-
-        final Context context = getActivity().getApplicationContext();
-
-        final NumericWheelAdapter altitudeAdapterMeter = new NumericWheelAdapter(context,
-                R.layout.wheel_text_centered, MIN_ALTITUDE, MAX_ALTITUDE, "%d m");
-        final NumericWheelAdapter altitudeAdapterCentimeter = new NumericWheelAdapter(context,
-                R.layout.wheel_text_centered, MIN_CENTIMETER, MAX_CENTIMETER, "%d cm");
-        altitudePickerMeter = (CardWheelHorizontalView) view.findViewById(R.id
-                .altitudePickerMeter);
-        altitudePickerMeter.setViewAdapter(altitudeAdapterMeter);
-        altitudePickerMeter.setCurrentValue(0);
-        altitudePickerMeter.addChangingListener(this);
-
-        altitudePickerCentimeter = (CardWheelHorizontalView) view.findViewById(R.id
-                .altitudePickerCentimeter);
-        altitudePickerCentimeter.setViewAdapter(altitudeAdapterCentimeter);
-        altitudePickerCentimeter.setCurrentValue(0);
-
-        innerIndex = (TextView) view.findViewById(R.id.dangerInnerIndex);
-        innerIndex.setText(String.valueOf(0));
-
-        pointIndex = (TextView) view.findViewById(R.id.dangerPointIndex);
-        pointIndex.setText(String.valueOf(missionProxy.getCurrentForwardNumber()));
 
         forwardPoint = new ForwardPoint();
 
@@ -86,7 +60,7 @@ public class ForwardPointFragment extends PointDetailFragment implements
 
                 DangerPointMarker pointMarker = new DangerPointMarker(newItem);
                 pointMarker.setMarkerNum(forwardPoint.getInnerPoint().indexOf(fp));
-                mapFragment.updateMarker(pointMarker);
+                markerToAdd.add(mapFragment.updateMarker(pointMarker));
 
                 innerIndex.setText(String.valueOf(forwardPoint.getInnerPoint().size()));
             }
@@ -95,38 +69,14 @@ public class ForwardPointFragment extends PointDetailFragment implements
         return view;
     }
 
-    public void setPointIndex(int index) {
-        pointIndex.setText(String.valueOf(index));
-    }
-
     public ForwardPoint getForwardPoint() {
-        innerIndex.setText(String.valueOf(0));
+        clearInnerVar();
         final ForwardPoint byp = forwardPoint;
         return byp;
     }
 
     public void clearInnerPoint() {
         this.forwardPoint = new ForwardPoint();
-    }
-
-    public float getFlyHeight() {
-
-        float altitude;
-
-        if (altitudePickerMeter.getCurrentValue() < 0) {
-            altitude = altitudePickerMeter.getCurrentValue() * 100
-                    - altitudePickerCentimeter.getCurrentValue();
-        } else {
-            altitude = altitudePickerMeter.getCurrentValue() * 100
-                    + altitudePickerCentimeter.getCurrentValue();
-        }
-
-        return altitude;
-    }
-
-    @Override
-    protected int getLayoutResource() {
-        return R.layout.fragment_editor_detail_danger;
     }
 
     @Override

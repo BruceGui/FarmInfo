@@ -27,10 +27,12 @@ import com.baidu.mapapi.map.MyLocationConfiguration;
 import com.baidu.mapapi.map.MyLocationData;
 import com.baidu.mapapi.map.Polygon;
 import com.baidu.mapapi.map.PolygonOptions;
+import com.baidu.mapapi.map.Polyline;
 import com.baidu.mapapi.map.PolylineOptions;
 import com.baidu.mapapi.map.SupportMapFragment;
 import com.baidu.mapapi.model.LatLng;
 import com.baidu.mapapi.model.LatLngBounds;
+import com.baidu.mapapi.model.inner.Point;
 import com.getpoint.farminfomanager.R;
 import com.getpoint.farminfomanager.activity.FarmInfoActivity;
 import com.getpoint.farminfomanager.entity.coordinate.LatLong;
@@ -62,10 +64,13 @@ public class BaiduMapFragment extends SupportMapFragment {
     public static final int MISSION_PATH_DEFAULT_COLOR = Color.WHITE;
     public static final int MISSION_PATH_DEFAULT_WIDTH = 4;
 
+    private Polyline framePointPath;
+
     private final HashBiMap<PointMarker, Marker> mBiMarkersMap = new HashBiMap<>();
     private List<Polygon> mPolygonsPaths = new ArrayList<>();
 
     private OnMarkerClickedListener markerClickListener;
+    private OnMapClickedListener mapClickedListener;
     protected MapView mMapView;
     protected LocationClient mLocClient;
     public MyLocationListener myListener = new MyLocationListener();
@@ -80,6 +85,7 @@ public class BaiduMapFragment extends SupportMapFragment {
         }
 
         markerClickListener = (OnMarkerClickedListener) activity;
+        mapClickedListener  = (OnMapClickedListener) activity;
     }
 
     @Override
@@ -129,7 +135,7 @@ public class BaiduMapFragment extends SupportMapFragment {
         final BaiduMap.OnMapClickListener onMapClickListener = new BaiduMap.OnMapClickListener() {
             @Override
             public void onMapClick(LatLng latLng) {
-
+                mapClickedListener.onMapClick(DroneHelper.BaiduLatLngToCoord(latLng));
             }
 
             @Override
@@ -144,7 +150,9 @@ public class BaiduMapFragment extends SupportMapFragment {
             @Override
             public boolean onMarkerClick(Marker marker) {
 
-                MissionItemProxy m = mBiMarkersMap.getKey(marker).getmMarkerOrigin();
+                //MissionItemProxy m = mBiMarkersMap.getKey(marker).getmMarkerOrigin();
+
+                PointMarker m = mBiMarkersMap.getKey(marker);
 
                 if (m != null) {
 
@@ -156,6 +164,7 @@ public class BaiduMapFragment extends SupportMapFragment {
                 return false;
             }
         });
+
     }
 
     public class MyLocationListener implements BDLocationListener {
@@ -180,29 +189,30 @@ public class BaiduMapFragment extends SupportMapFragment {
      * 一些在地图上标记点信息的函数
      */
 
-    public void updateMarker(PointMarker markerInfo) {
-        updateMarker(markerInfo, markerInfo.isDraggable());
+    public Marker updateMarker(PointMarker markerInfo) {
+        return updateMarker(markerInfo, markerInfo.isDraggable());
     }
 
-    public void updateMarker(PointMarker markerInfo, boolean isDraggable) {
+    public Marker updateMarker(PointMarker markerInfo, boolean isDraggable) {
 
         final LatLong coord = markerInfo.getPosition();
         if (coord == null) {
-            return;
+            return null;
         }
 
         final LatLng position = DroneHelper.CoordToBaiduLatLang(coord);
         Marker marker = mBiMarkersMap.getValue(markerInfo);
         if (marker == null) {
-            generateMarker(markerInfo, position, isDraggable);
             Log.i(TAG, "generate marker");
+            return generateMarker(markerInfo, position, isDraggable);
         } else {
-            updateMarker(marker, markerInfo, position, isDraggable);
+            Log.i(TAG, "marker num: " + markerInfo.getMarkerNum());
+            return updateMarker(marker, markerInfo, position, isDraggable);
         }
 
     }
 
-    private void generateMarker(PointMarker markerInfo, LatLng position, boolean isDraggable) {
+    private Marker generateMarker(PointMarker markerInfo, LatLng position, boolean isDraggable) {
 
         final MarkerOptions markerOptions = new MarkerOptions()
                 .position(position)
@@ -220,9 +230,11 @@ public class BaiduMapFragment extends SupportMapFragment {
 
         Marker marker = (Marker) getBaiduMap().addOverlay(markerOptions);
         mBiMarkersMap.put(markerInfo, marker);
+
+        return marker;
     }
 
-    private void updateMarker(Marker marker, PointMarker markerInfo, LatLng position,
+    private Marker updateMarker(Marker marker, PointMarker markerInfo, LatLng position,
                               boolean isDraggable) {
         final Bitmap markerIcon = markerInfo.getIcon(getResources());
         if (markerIcon != null) {
@@ -232,10 +244,13 @@ public class BaiduMapFragment extends SupportMapFragment {
         marker.setPosition(position);
         marker.setDraggable(isDraggable);
         marker.setVisible(markerInfo.isVisible());
+
+        return marker;
     }
 
     public void clearAllMarker() {
         getBaiduMap().clear();
+        framePointPath = null;
         mBiMarkersMap.clear();
     }
 
@@ -313,14 +328,15 @@ public class BaiduMapFragment extends SupportMapFragment {
 
         /**
          *  画边界点的线
-         */
+
         for (MissionItemProxy itemProxy : boundaryPoints) {
             pathCoords.add(itemProxy.getPointInfo().getPosition().getLatLong());
         }
         pathCoords.add(pathCoords.get(0));
 
         updatePolyline(pathCoords);
-
+        */
+        updateFramePointPath(boundaryPoints);
         /**
          *  画绕飞点的线
          */
@@ -387,7 +403,49 @@ public class BaiduMapFragment extends SupportMapFragment {
      * }
      */
 
-    //TODO 如何在添加点之后更新画的线
+    //TODO 如何在添加点之后更新画的线 在添加和删除边界点的时候更新
+
+    public void updateFramePointPath(List<MissionItemProxy> framepoints) {
+
+        List<LatLong> pathCoords = new ArrayList<>();
+
+        /**
+         *  画边界点的线
+         */
+        for (MissionItemProxy itemProxy : framepoints) {
+            pathCoords.add(itemProxy.getPointInfo().getPosition().getLatLong());
+        }
+        pathCoords.add(pathCoords.get(0));
+
+        final List<LatLng> pathPoints = new ArrayList<>(pathCoords.size());
+        for (LatLong coord : pathCoords) {
+            pathPoints.add(DroneHelper.CoordToBaiduLatLang(coord));
+        }
+
+        if (pathPoints.size() <2)
+        {
+            if(framePointPath != null)
+            {
+                framePointPath.remove();
+                framePointPath = null;
+            }
+            return;
+        }
+
+        if (framePointPath == null) {
+
+            PolylineOptions pathOptions = new PolylineOptions();
+            pathOptions.color(MISSION_PATH_DEFAULT_COLOR).width(
+                    MISSION_PATH_DEFAULT_WIDTH);
+            pathOptions.points(pathPoints);
+            framePointPath = (Polyline)getBaiduMap().addOverlay(pathOptions);
+        }
+
+
+        framePointPath.setPoints(pathPoints);
+
+    }
+
     /**
      * 画线的方法 首先存储点的集合，然后再画点线
      * @param pathCoords 点的集合
@@ -474,7 +532,11 @@ public class BaiduMapFragment extends SupportMapFragment {
      */
     public interface OnMarkerClickedListener {
 
-        boolean onMarkerClick(MissionItemProxy m);
+        boolean onMarkerClick(PointMarker m);
+    }
+
+    public interface OnMapClickedListener {
+        boolean onMapClick(LatLong latLong);
     }
 
 

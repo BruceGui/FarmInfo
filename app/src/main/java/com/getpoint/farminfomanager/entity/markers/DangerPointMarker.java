@@ -13,7 +13,12 @@ public class DangerPointMarker extends PointMarker {
     }
 
     @Override
-    protected int getIconResource() {
+    protected int getIconNormal() {
         return R.drawable.ic_danger_point;
+    }
+
+    @Override
+    protected int getIconSelected() {
+        return R.drawable.ic_danger_point_sel;
     }
 }

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <Button
+        android:id="@+id/id_delete_point"
+        style="@style/editordialogbutton"
+        android:text="@string/delete_point" />
+
+    <Button
+        android:id="@+id/id_editor_point"
+        style="@style/editordialogbutton"
+        android:text="@string/editor_point" />
+
+    <Button
+        android:id="@+id/id_cancel_point"
+        style="@style/editordialogbutton"
+        android:text="@string/cancel" />
+
+</LinearLayout>

@@ -24,6 +24,7 @@ import com.getpoint.farminfomanager.GPSDeviceManager;
 import com.getpoint.farminfomanager.R;
 import com.getpoint.farminfomanager.entity.coordinate.LatLong;
 import com.getpoint.farminfomanager.entity.markers.FramePointMarker;
+import com.getpoint.farminfomanager.entity.markers.PointMarker;
 import com.getpoint.farminfomanager.entity.points.BypassPoint;
 import com.getpoint.farminfomanager.entity.points.ClimbPoint;
 import com.getpoint.farminfomanager.entity.points.ForwardPoint;
@@ -45,6 +46,7 @@ import com.getpoint.farminfomanager.utils.proxy.MissionItemProxy;
 import com.getpoint.farminfomanager.utils.proxy.MissionProxy;
 import com.getpoint.farminfomanager.weights.FloatingActionButton;
 import com.getpoint.farminfomanager.weights.MorphLayout;
+import com.getpoint.farminfomanager.weights.dialogs.EditorChooseDialog;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -53,10 +55,13 @@ import java.util.List;
  * Created by Gui Zhou on 2016-07-05.
  */
 public class FarmInfoActivity extends AppCompatActivity implements
-        PointDetailFragment.OnPointDetailListener, MorphLayout.OnMorphListener,
+        PointDetailFragment.OnPointDetailListener,
+        MorphLayout.OnMorphListener,
         BaiduMapFragment.OnMarkerClickedListener,
+        BaiduMapFragment.OnMapClickedListener,
         SaveMissionFragment.OnFragmentInteractionListener,
-        OpenMissionFragment.OnFragmentInteractionListener {
+        OpenMissionFragment.OnFragmentInteractionListener,
+        EditorChooseDialog.EditorListener {
 
     private static final String TAG = "FarmInfoActivity";
 
@@ -68,6 +73,8 @@ public class FarmInfoActivity extends AppCompatActivity implements
     private SaveMissionFragment mSaveMissionFragment;
     private OpenMissionFragment mOpenMissionFragment;
 
+    private EditorChooseDialog mEditorChooseDialog;
+
     private PointItemType currentType = PointItemType.FRAMEPOINT;
 
     private BaiduMapFragment mapFragment;
@@ -75,6 +82,11 @@ public class FarmInfoActivity extends AppCompatActivity implements
     private MorphLayout mPointInfoLayout;
 
     private FragmentManager fragmentManager;
+
+    private List<PointMarker> mPointSel = new ArrayList<>();
+
+    private Boolean isEditing = false;
+    private Boolean onDeleting = false;
 
     private Menu mMenu;
     private ImageButton mGoToMyLocation;
@@ -158,7 +170,6 @@ public class FarmInfoActivity extends AppCompatActivity implements
         mPointInfoLayout.setFab(mFloatingAct);
 
 
-
         mGoToMyLocation = (ImageButton) findViewById(R.id.my_location_button);
         mZoomToFit = (ImageButton) findViewById(R.id.zoom_to_fit_button);
         mPointOkBtn = (Button) findViewById(R.id.point_ok_btn);
@@ -218,6 +229,24 @@ public class FarmInfoActivity extends AppCompatActivity implements
         mPointCancelBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                /**
+                 *  用于删除临时的点
+                 */
+                switch (currentType) {
+                    case BYPASSPOINT:
+                        bypassPointFragment.removeMarker();
+                        break;
+                    case FORWAEDPOINT:
+                        forwardPointFragment.removeMarker();
+                        break;
+                    case CLIMBPOINT:
+                        climbPointFragment.removeMarker();
+                        break;
+                    default:
+                        break;
+                }
+
                 if (mPointInfoLayout.getState() == MorphLayout.State.MORPHED) {
                     morphDestory();
                 }
@@ -277,7 +306,6 @@ public class FarmInfoActivity extends AppCompatActivity implements
                 PointDetailFragment.getFragmentTag(PointItemType.CLIMBPOINT)).commit();
     }
 
-
     /**
      * 保存和打开任务文件的相关函数
      */
@@ -327,24 +355,17 @@ public class FarmInfoActivity extends AppCompatActivity implements
      * 地图标记的点击监听函数
      *
      * @param m MissionItemProxy
-     * @return
+     * @return b
      */
     @Override
-    public boolean onMarkerClick(MissionItemProxy m) {
+    public boolean onMarkerClick(PointMarker m) {
 
-        //TODO 动态的标题栏，用来对点的进行操作
-
-        Log.i(TAG, "Point Type:" + m.getPointInfo().getPointType().getLabel());
-
-        final PointItemType itemType = m.getPointInfo().getPointType();
-        Log.i("TAG", "Altitude: " + m.getPointInfo().getPosition().getAltitude());
+        final PointItemType itemType = m.getmMarkerOrigin()
+                .getPointInfo()
+                .getPointType();
 
         switch (itemType) {
             case FRAMEPOINT:
-                Log.i(TAG, "Point Order: " + missionProxy.getOrder(m));
-                mMenu.setGroupVisible(R.id.menu_normal, false);
-                mMenu.setGroupVisible(R.id.menu_edit, true);
-                mMenu.setGroupEnabled(R.id.menu_edit, true);
                 break;
             case BYPASSPOINT:
                 break;
@@ -356,8 +377,96 @@ public class FarmInfoActivity extends AppCompatActivity implements
                 break;
         }
 
+        if(!onDeleting) {
+            mEditorChooseDialog = EditorChooseDialog.newInstance(this);
+            mEditorChooseDialog.show(getSupportFragmentManager(), null);
+        } else {
+            changeSelPointMarker(true);
+        }
+
+        mPointSel.add(m);
+
         return false;
     }
+
+    /**
+     *   点击地图的监听函数
+     * @return
+     */
+    @Override
+    public boolean onMapClick(LatLong latLong) {
+
+        if(!onDeleting) {
+            addFramePoint(latLong, 120);
+        }
+
+        return false;
+    }
+
+    /**
+     * 编辑点的监听函数
+     */
+    @Override
+    public void onDelete() {
+
+        onDeleting = true;
+        mEditorChooseDialog.dismiss();
+        setupEditorMenu();
+        changeSelPointMarker(true);
+
+    }
+
+    @Override
+    public void onEditor() {
+        mEditorChooseDialog.dismiss();
+    }
+
+    @Override
+    public void onCancel() {
+
+        mEditorChooseDialog.dismiss();
+
+    }
+
+    /**
+     *  根据选中与否，改变点的标记状态
+     * @param state true 表示选中 false 表示没有选择
+     */
+    private void changeSelPointMarker(Boolean state) {
+
+        for(PointMarker m : mPointSel) {
+            PointItemType type = m.getmMarkerOrigin().getPointInfo().getPointType();
+            Log.i(TAG, "marker num:" + m.getMarkerNum());
+
+            switch (type) {
+                case FRAMEPOINT:
+                    FramePointMarker marker = (FramePointMarker) m;
+                    marker.setState(state);
+                    mapFragment.updateMarker(marker);
+                    break;
+                default:
+                    break;
+            }
+        }
+
+    }
+
+    /**
+     *  删除选择的点
+     */
+    private void deleteSelPoint() {
+
+        List<MissionItemProxy> f = missionProxy.getBoundaryItemProxies();
+
+        for(PointMarker m : mPointSel) {
+            f.remove(m.getmMarkerOrigin());
+        }
+
+        mPointSel.clear();
+        mapFragment.updateInfoFromMission(missionProxy);
+
+    }
+
 
     private void saveMissionFile() {
 
@@ -405,25 +514,20 @@ public class FarmInfoActivity extends AppCompatActivity implements
         switch (itemType) {
 
             case FRAMEPOINT:
-                Log.i(TAG, "setup frame");
                 setupFrameDetailFragment();
                 break;
             case BYPASSPOINT:
-                Log.i(TAG, "setup bypass");
                 setupBypassDetailFragment();
                 break;
             case CLIMBPOINT:
-                Log.i(TAG, "setup climb");
                 setupClimbDetailFragment();
                 break;
             case FORWAEDPOINT:
-                Log.i(TAG, "setup forward");
                 setupForwardDetailFragment();
                 break;
             default:
                 break;
         }
-
 
     }
 
@@ -444,6 +548,8 @@ public class FarmInfoActivity extends AppCompatActivity implements
                 forwardPointFragment.setPointIndex(missionProxy.getCurrentForwardNumber());
                 forwardPointFragment.setPointType(PointItemType.FORWAEDPOINT.getLabel());
                 forwardPointFragment.clearInnerPoint();
+                Log.i(TAG, "forward point detail");
+                forwardPointFragment.setRelLayoutPar();
                 break;
             case BYPASSPOINT:
                 if (bypassPointFragment == null) {
@@ -454,6 +560,7 @@ public class FarmInfoActivity extends AppCompatActivity implements
                 bypassPointFragment.setPointIndex(missionProxy.getCurrentBypassNumber());
                 bypassPointFragment.setPointType(PointItemType.BYPASSPOINT.getLabel());
                 bypassPointFragment.clearInnerPoint();
+                bypassPointFragment.setRelLayoutPar();
                 break;
             case FRAMEPOINT:
                 if (framePointFragment == null) {
@@ -472,6 +579,7 @@ public class FarmInfoActivity extends AppCompatActivity implements
                 climbPointFragment.setPointIndex(missionProxy.getCurrentClimbNumber());
                 climbPointFragment.setPointType(PointItemType.CLIMBPOINT.getLabel());
                 climbPointFragment.clearInnerPoint();
+                climbPointFragment.setRelLayoutPar();
                 break;
             default:
                 break;
@@ -575,13 +683,14 @@ public class FarmInfoActivity extends AppCompatActivity implements
         FramePointMarker pointMarker = (FramePointMarker) newItem.getMarker();
         pointMarker.setMarkerNum(missionProxy.getOrder(newItem));
         mapFragment.updateMarker(pointMarker);
+        mapFragment.updateFramePointPath(missionProxy.getBoundaryItemProxies());
     }
 
     private void addBypassPoint(LatLong coord) {
 
         final BypassPoint bypassPoint = bypassPointFragment.getBypassPoint();
 
-        if(!bypassPoint.getInnerPoint().isEmpty()) {
+        if (!bypassPoint.getInnerPoint().isEmpty()) {
             MissionItemProxy newItem = new MissionItemProxy(missionProxy, bypassPoint);
             missionProxy.addItem(newItem);
         }
@@ -592,7 +701,7 @@ public class FarmInfoActivity extends AppCompatActivity implements
 
         final ClimbPoint climbPoint = climbPointFragment.getClimbPoint();
 
-        if(!climbPoint.getInnerPoint().isEmpty()) {
+        if (!climbPoint.getInnerPoint().isEmpty()) {
             MissionItemProxy newItem = new MissionItemProxy(missionProxy, climbPoint);
             missionProxy.addItem(newItem);
         }
@@ -603,7 +712,7 @@ public class FarmInfoActivity extends AppCompatActivity implements
 
         final ForwardPoint forwardPoint = forwardPointFragment.getForwardPoint();
 
-        if(!forwardPoint.getInnerPoint().isEmpty()) {
+        if (!forwardPoint.getInnerPoint().isEmpty()) {
             MissionItemProxy newItem = new MissionItemProxy(missionProxy, forwardPoint);
             missionProxy.addItem(newItem);
         }
@@ -677,13 +786,27 @@ public class FarmInfoActivity extends AppCompatActivity implements
 
         getMenuInflater().inflate(R.menu.menu_home_fragment, menu);
 
-        if(mMenu == null) {
+        if (mMenu == null) {
             mMenu = menu;
         }
 
         return super.onCreateOptionsMenu(menu);
     }
 
+
+    private void setupEditorMenu() {
+        mMenu.setGroupVisible(R.id.menu_normal, false);
+        mMenu.setGroupVisible(R.id.menu_edit, true);
+        mMenu.setGroupEnabled(R.id.menu_edit, true);
+        onDeleting = true;
+    }
+
+    private void setupNormalMenu() {
+        mMenu.setGroupVisible(R.id.menu_normal, true);
+        mMenu.setGroupVisible(R.id.menu_edit, false);
+        mMenu.setGroupEnabled(R.id.menu_edit, false);
+        onDeleting = false;
+    }
 
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
@@ -724,9 +847,8 @@ public class FarmInfoActivity extends AppCompatActivity implements
                 newMissionFile();
                 break;
             case R.id.id_delete:
-                mMenu.setGroupVisible(R.id.menu_normal, true);
-                mMenu.setGroupVisible(R.id.menu_edit, false);
-                mMenu.setGroupEnabled(R.id.menu_edit, false);
+                deleteSelPoint();
+                setupNormalMenu();
                 break;
             default:
                 return super.onOptionsItemSelected(item);
@@ -739,7 +861,13 @@ public class FarmInfoActivity extends AppCompatActivity implements
     @Override
     public void onBackPressed() {
 
-        if (mPointInfoLayout.getState() == MorphLayout.State.MORPHED) {
+        if (onDeleting) {
+
+            setupNormalMenu();
+            changeSelPointMarker(false);
+            mPointSel.clear();
+
+        } else if  (mPointInfoLayout.getState() == MorphLayout.State.MORPHED) {
             mFloatingAct.toggle();
             mPointInfoLayout.revert(true, true);
         } else {
