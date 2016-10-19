@@ -9,7 +9,6 @@ import com.MUHLink.Connection.MUHLinkClient;
 import com.MUHLink.Connection.MUHLinkConnection;
 import com.MUHLink.Connection.MUHLinkStream;
 import com.MUHLink.Protocol.GPSLinkPacket;
-import com.MUHLink.Protocol.MUHLinkPacket;
 import com.MUHLink.Protocol.common.msg_gps_bestpos;
 import com.MUHLink.Protocol.common.msg_gps_bestvel;
 import com.MUHLink.Protocol.common.msg_gps_psrdop;

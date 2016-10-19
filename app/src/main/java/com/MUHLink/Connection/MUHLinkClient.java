@@ -4,9 +4,7 @@ import android.content.Context;
 import android.util.Log;
 
 import com.MUHLink.Protocol.GPSLinkPacket;
-import com.MUHLink.Protocol.MUHLinkPacket;
 import com.getpoint.farminfomanager.FarmInfoAppPref;
-import com.getpoint.farminfomanager.GPSDeviceManager;
 
 /**
  * Created by Gui Zhou on 2016/3/17.
@@ -48,10 +46,12 @@ public class MUHLinkClient implements MUHLinkStream.MUHLinkOutputStream{
         //mAppPrefs = new DiygcsAPPPrefs(context);
     }
 
+    /*
     @Override
     public void sendMuhPacket(MUHLinkPacket packet) {
         droneConn.sendMuhPacket(packet);
     }
+    */
 
     @Override
     public boolean isConnected() {

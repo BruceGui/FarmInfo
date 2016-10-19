@@ -4,12 +4,9 @@ import android.util.Log;
 
 import com.MUHLink.Protocol.GPSLinkPacket;
 import com.MUHLink.Protocol.GPSParser;
-import com.MUHLink.Protocol.MUHLinkPacket;
-import com.MUHLink.Protocol.Parser;
 
 import java.io.IOException;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
@@ -40,8 +37,8 @@ public abstract class MUHLinkConnection {
     /**
      *  为要发送的数据包排队，如果没有数据发送这个进程将阻塞
      */
-    private final LinkedBlockingQueue<MUHLinkPacket> mPacketsToSend =
-            new LinkedBlockingQueue<MUHLinkPacket>();
+    //private final LinkedBlockingQueue<MUHLinkPacket> mPacketsToSend =
+     //       new LinkedBlockingQueue<MUHLinkPacket>();
 
     /*
     *  Listen for incoming data on the mavlink connection.
@@ -119,19 +116,19 @@ public abstract class MUHLinkConnection {
 
             try {
                 while(isConnected()) {
-                    final MUHLinkPacket packet = mPacketsToSend.take();
+                    //final MUHLinkPacket packet = mPacketsToSend.take();
                     //Log.i(TAG, "ERROR");
-                    packet.seq = (byte)msgSeqNumer;
-                    byte[] buffer = packet.encodePacket();
+                    //packet.seq = (byte)msgSeqNumer;
+                    //byte[] buffer = packet.encodePacket();
 
-                    try {
-                        sendBuffer(buffer);
-                    } catch (IOException e) {
-                        Log.i(TAG, e.getMessage());
-                    }
+                    //try {
+                        //sendBuffer(buffer);
+                    //} catch (IOException e) {
+                    //    Log.i(TAG, e.getMessage());
+                    //}
 
                 }
-            } catch (InterruptedException e) {
+            //} catch (InterruptedException e) {
                 //Log.i(TAG, e.getMessage());
             } finally {
                 disconnect();
@@ -189,11 +186,13 @@ public abstract class MUHLinkConnection {
      * 提供发送数据的队列
      * @param packet
      */
+    /*
     public void sendMuhPacket(MUHLinkPacket packet) {
         if(!mPacketsToSend.offer(packet)) {
             Log.i(TAG, "Unable to send muhlink packet. Packet queue is full!");
         }
     }
+    */
 
     /**
      *  添加一个监听者

@@ -1,7 +1,6 @@
 package com.MUHLink.Connection;
 
 import com.MUHLink.Protocol.GPSLinkPacket;
-import com.MUHLink.Protocol.MUHLinkPacket;
 
 /**
  * Created by Gui Zhou on 2016/3/17.

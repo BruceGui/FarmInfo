@@ -1,7 +1,6 @@
 package com.MUHLink.Protocol.Messages;
 
 import com.MUHLink.Protocol.GPSLinkPacket;
-import com.MUHLink.Protocol.MUHLinkPacket;
 
 import java.io.Serializable;
 
@@ -10,19 +9,19 @@ import java.io.Serializable;
  */
 public abstract class GPSMessage implements Serializable {
 
-    public int header_len;
-    public int msg_ID;
-    public int msg_type;
-    public int portAddr;
-    public int msg_len;
-    public int sequence;
-    public int idle_time;
-    public int time_status;
-    public int week;
+    protected int header_len;
+    protected int msg_ID;
+    protected int msg_type;
+    protected int portAddr;
+    protected int msg_len;
+    protected int sequence;
+    protected int idle_time;
+    protected int time_status;
+    protected int week;
     public int ms;
-    public int receiverStatus;
+    protected int receiverStatus;
     public int reserved;
-    public int receiverSWVersion;
+    protected int receiverSWVersion;
     
     public abstract GPSLinkPacket pack();
     public abstract void unpack(MUHLinkPayload payload);
