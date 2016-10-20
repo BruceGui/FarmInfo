@@ -1,8 +1,5 @@
-package com.getpoint.farminfomanager.weights.dialogs;
+package com.getpoint.farminfomanager.fragment;
 
-import android.app.AlertDialog;
-import android.app.Dialog;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
@@ -12,16 +9,19 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.getpoint.farminfomanager.R;
+import com.getpoint.farminfomanager.weights.spinnerWheel.CardWheelHorizontalView;
 
 /**
  * Created by Gui Zhou on 2016/10/19.
  */
 
-public class EditorChooseDialog extends DialogFragment {
+public class EditorChooseFragment extends DialogFragment {
 
     private Button mDeleteBtn;
     private Button mEditorBtn;
     private Button mCancelBtn;
+
+
 
     /**
      * 监听接口
@@ -36,9 +36,9 @@ public class EditorChooseDialog extends DialogFragment {
 
     }
 
-    public static EditorChooseDialog newInstance(EditorListener listener) {
+    public static EditorChooseFragment newInstance(EditorListener listener) {
 
-        EditorChooseDialog f = new EditorChooseDialog();
+        EditorChooseFragment f = new EditorChooseFragment();
         f.listener = listener;
         return f;
 

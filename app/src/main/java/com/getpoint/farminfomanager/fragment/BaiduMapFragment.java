@@ -415,7 +415,10 @@ public class BaiduMapFragment extends SupportMapFragment {
         for (MissionItemProxy itemProxy : framepoints) {
             pathCoords.add(itemProxy.getPointInfo().getPosition().getLatLong());
         }
-        pathCoords.add(pathCoords.get(0));
+
+        if(!pathCoords.isEmpty()) {
+            pathCoords.add(pathCoords.get(0));
+        }
 
         final List<LatLng> pathPoints = new ArrayList<>(pathCoords.size());
         for (LatLong coord : pathCoords) {

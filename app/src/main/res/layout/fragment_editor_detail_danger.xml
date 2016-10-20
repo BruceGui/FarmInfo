@@ -96,49 +96,6 @@
         </RelativeLayout>
 
     </RelativeLayout>
-<!--
-    <RelativeLayout
-        android:id="@+id/index_rect"
-        android:layout_width="64dp"
-        android:layout_height="64dp"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentTop="true"
-        android:background="@drawable/wp_title_rectangle">
-
-        <TextView
-            android:id="@+id/dangerInnerIndex"
-            style="@style/largeMissionDetailText"
-            android:layout_width="64dp"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginStart="12dp"
-            android:text="22"
-            android:textAllCaps="true" />
-
-    </RelativeLayout>
-
-    <ImageView
-        android:id="@+id/menuHintTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@id/title_rect"
-        android:layout_alignEnd="@id/title_rect"
-
-        android:layout_margin="10dp"
-        android:src="@drawable/ic_menu_hint"
-        tools:ignore="ContentDescription" />
-    -->
-    <!--
-    <ImageView
-        android:id="@+id/menuHintIndex"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@id/index_rect"
-        android:layout_alignEnd="@id/index_rect"
-        android:layout_margin="10dp"
-        android:src="@drawable/ic_menu_hint"
-        tools:ignore="ContentDescription" />
-        -->
 
     <ScrollView
         android:id="@+id/altitudeScrollView"

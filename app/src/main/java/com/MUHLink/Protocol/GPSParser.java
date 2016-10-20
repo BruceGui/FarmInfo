@@ -14,7 +14,7 @@ public class GPSParser {
     /**
      * 解包状态
      */
-    enum Datalink_states {
+    private enum Datalink_states {
         GPSLINK_PARSE_STATE_UNINIT,
         GPSLINK_PARSE_STATE_IDLE,
         GPSLINK_PARSE_STATE_GOT_STX1,
@@ -51,9 +51,9 @@ public class GPSParser {
         GPSLINK_PARSE_STATE_GOT_CK2
     }
 
-    Datalink_states state = Datalink_states.GPSLINK_PARSE_STATE_UNINIT;
+    private Datalink_states state = Datalink_states.GPSLINK_PARSE_STATE_UNINIT;
 
-    static boolean msg_received;
+    private static boolean msg_received;
     private GPSLinkPacket m;
 
     /**

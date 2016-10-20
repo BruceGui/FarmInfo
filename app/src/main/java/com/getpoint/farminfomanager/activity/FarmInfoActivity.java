@@ -37,6 +37,7 @@ import com.getpoint.farminfomanager.fragment.Mission.ForwardPointFragment;
 import com.getpoint.farminfomanager.fragment.Mission.FramePointFragment;
 import com.getpoint.farminfomanager.fragment.Mission.PointDetailFragment;
 import com.getpoint.farminfomanager.fragment.OpenMissionFragment;
+import com.getpoint.farminfomanager.fragment.PointEditorFragment;
 import com.getpoint.farminfomanager.fragment.SaveMissionFragment;
 import com.getpoint.farminfomanager.utils.AttributesEvent;
 import com.getpoint.farminfomanager.utils.DirectoryChooserConfig;
@@ -46,7 +47,7 @@ import com.getpoint.farminfomanager.utils.proxy.MissionItemProxy;
 import com.getpoint.farminfomanager.utils.proxy.MissionProxy;
 import com.getpoint.farminfomanager.weights.FloatingActionButton;
 import com.getpoint.farminfomanager.weights.MorphLayout;
-import com.getpoint.farminfomanager.weights.dialogs.EditorChooseDialog;
+import com.getpoint.farminfomanager.fragment.EditorChooseFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -61,7 +62,7 @@ public class FarmInfoActivity extends AppCompatActivity implements
         BaiduMapFragment.OnMapClickedListener,
         SaveMissionFragment.OnFragmentInteractionListener,
         OpenMissionFragment.OnFragmentInteractionListener,
-        EditorChooseDialog.EditorListener {
+        EditorChooseFragment.EditorListener {
 
     private static final String TAG = "FarmInfoActivity";
 
@@ -73,7 +74,7 @@ public class FarmInfoActivity extends AppCompatActivity implements
     private SaveMissionFragment mSaveMissionFragment;
     private OpenMissionFragment mOpenMissionFragment;
 
-    private EditorChooseDialog mEditorChooseDialog;
+    private EditorChooseFragment mEditorChooseFragment;
 
     private PointItemType currentType = PointItemType.FRAMEPOINT;
 
@@ -208,8 +209,6 @@ public class FarmInfoActivity extends AppCompatActivity implements
             @Override
             public void onClick(View v) {
                 mapFragment.goToMyLocation();
-                //LatLong latLong = new LatLong(gps.lat, gps.lon);
-                //mapFragment.goToLocation(latLong);
             }
         });
 
@@ -378,8 +377,8 @@ public class FarmInfoActivity extends AppCompatActivity implements
         }
 
         if(!onDeleting) {
-            mEditorChooseDialog = EditorChooseDialog.newInstance(this);
-            mEditorChooseDialog.show(getSupportFragmentManager(), null);
+            mEditorChooseFragment = EditorChooseFragment.newInstance(this);
+            mEditorChooseFragment.show(getSupportFragmentManager(), null);
         } else {
             changeSelPointMarker(true);
         }
@@ -410,7 +409,7 @@ public class FarmInfoActivity extends AppCompatActivity implements
     public void onDelete() {
 
         onDeleting = true;
-        mEditorChooseDialog.dismiss();
+        mEditorChooseFragment.dismiss();
         setupEditorMenu();
         changeSelPointMarker(true);
 
@@ -418,13 +417,16 @@ public class FarmInfoActivity extends AppCompatActivity implements
 
     @Override
     public void onEditor() {
-        mEditorChooseDialog.dismiss();
+
+        mEditorChooseFragment.dismiss();
+        PointEditorFragment p = PointEditorFragment.newInstance();
+        p.show(getSupportFragmentManager(), null);
     }
 
     @Override
     public void onCancel() {
 
-        mEditorChooseDialog.dismiss();
+        mEditorChooseFragment.dismiss();
 
     }
 

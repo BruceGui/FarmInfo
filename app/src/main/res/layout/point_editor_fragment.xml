@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+    <com.getpoint.farminfomanager.weights.spinnerWheel.CardWheelHorizontalView
+        android:id="@+id/altitudePickerMeter"
+        style="@style/missionItemDetailCard"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="@string/altitude_label" />
+
+    <com.getpoint.farminfomanager.weights.spinnerWheel.CardWheelHorizontalView
+        android:id="@+id/altitudePickerCentimeter"
+        style="@style/missionItemDetailCard"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="   " />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <Button
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            style="?android:attr/borderlessButtonStyle"
+            android:layout_height="wrap_content"
+            android:text="@string/cancel_label"/>
+
+        <Button
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            style="?android:attr/borderlessButtonStyle"
+            android:layout_height="wrap_content"
+            android:text="@string/confirm_label"/>
+
+    </LinearLayout>
+
+</LinearLayout>

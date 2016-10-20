@@ -20,9 +20,9 @@ public abstract class MUHLinkConnection {
     /*
     * MuhLink connection states.
     * */
-    public static final int MUHLINK_DISCONNECTED = 0;
-    public static final int MUHLINK_CONNECTING   = 1;
-    public static final int MUHLINK_CONNECTED    = 2;
+    private static final int MUHLINK_DISCONNECTED = 0;
+    private static final int MUHLINK_CONNECTING   = 1;
+    private static final int MUHLINK_CONNECTED    = 2;
 
     private Thread mTaskThread;
 
