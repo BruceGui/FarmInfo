@@ -38,18 +38,6 @@ public class MissionProxy {
             case FRAMEPOINT:
                 boundaryItemProxies.add(itemToAdd);
                 break;
-            case BYPASSPOINT:
-                bypassItemProxies.add(itemToAdd);
-                Log.i(TAG, "add bypass");
-                break;
-            case CLIMBPOINT:
-                climbItemProxies.add(itemToAdd);
-                Log.i(TAG, "add climb");
-                break;
-            case FORWAEDPOINT:
-                forwardItemProies.add(itemToAdd);
-                Log.i(TAG, "add forward");
-                break;
             default:
                 missionItemProxies.add(itemToAdd);
                 break;
@@ -109,12 +97,6 @@ public class MissionProxy {
         switch (item.getPointInfo().getPointType()) {
             case FRAMEPOINT:
                 return boundaryItemProxies.indexOf(item) + 1;
-            case BYPASSPOINT:
-                return bypassItemProxies.indexOf(item) + 1;
-            case CLIMBPOINT:
-                return climbItemProxies.indexOf(item) + 1;
-            case FORWAEDPOINT:
-                return forwardItemProies.indexOf(item) + 1;
             default:
                 return missionItemProxies.indexOf(item) + 1;
         }
@@ -151,6 +133,7 @@ public class MissionProxy {
 
             return true;
         }
+
         return false;
 
     }

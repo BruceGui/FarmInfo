@@ -92,8 +92,6 @@ public class PointDetailActivity extends AppCompatActivity implements
 
     private void saveMissionFile() {
 
-        //TODO 用 view pager 显示保存点的信息，然后下一步显示保存页面
-
         final DirectoryChooserConfig config = DirectoryChooserConfig.builder()
                 .newDirectoryName(getString(R.string.new_folder))
                 .allowNewDirectoryNameModification(true)
@@ -210,4 +208,6 @@ public class PointDetailActivity extends AppCompatActivity implements
             return convertView;
         }
     }
+
+    //TODO 显示危险标记点的信息
 }

@@ -9,6 +9,10 @@ public enum PointItemType {
 
     },
 
+    DANGERPOINT("") {
+
+    };
+/*
     BYPASSPOINT("") {
 
     },
@@ -20,7 +24,7 @@ public enum PointItemType {
     FORWAEDPOINT("") {
 
     };
-
+*/
     private String label;
 
     PointItemType(String label) {

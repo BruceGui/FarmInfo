@@ -46,10 +46,38 @@ public class MissionWriter {
             final List<MissionItemProxy> forwardPoints = mission.getForwardItemProies();
 
             /**
+             *  写入文件头部信息
+             *  refedge=6
+             *  spraywidth=5
+             *  vel=5
+             *  alt=-1000
+             *  safewidth=2
+             *  dangerwidth=2
+             */
+
+            out.write("refedge=6".getBytes());
+            newline(out);
+
+            out.write("spraywidth=5".getBytes());
+            newline(out);
+
+            out.write("vel=5".getBytes());
+            newline(out);
+
+            out.write("alt=-1000".getBytes());
+            newline(out);
+
+            out.write("safewidth=2".getBytes());
+            newline(out);
+
+            out.write("dangerwidth=2".getBytes());
+            newline(out);
+
+            /**
              *   向文件中写入边界点的信息
              */
             out.write(("frame points=" + boundaryPoints.size()).getBytes());
-            out.write("\r\n".getBytes());
+            newline(out);
 
             for (MissionItemProxy itemProxy : boundaryPoints) {
                 out.write(itemProxy.getPointInfo().toString().getBytes());
@@ -64,7 +92,7 @@ public class MissionWriter {
                     + climbPoints.size()
                     + forwardPoints.size())).getBytes());
 
-            out.write("\r\n".getBytes());
+            newline(out);
 
 
             /**
@@ -77,7 +105,7 @@ public class MissionWriter {
                     out.write(" ".getBytes());
                 }
                 Log.i(TAG, "write bypass");
-                out.write("\r\n".getBytes());
+                newline(out);
             }
 
             Log.i(TAG, "bypass.size = " + bypassPoints.size());
@@ -92,7 +120,7 @@ public class MissionWriter {
                     out.write(" ".getBytes());
                 }
                 Log.i(TAG, "write climb");
-                out.write("\r\n".getBytes());
+                newline(out);
             }
 
             /**
@@ -106,14 +134,17 @@ public class MissionWriter {
 
                 }
                 Log.i(TAG, "write forward");
-                out.write("\r\n".getBytes());
+                newline(out);
             }
 
+
+            out.write("Method=0".getBytes());
+            newline(out);
             /**
              *  写入结束信号
              */
-            out.write("end".getBytes());
-            out.write("\r\n".getBytes());
+            //out.write("end".getBytes());
+            //newline(out);
             out.close();
 
         } catch (Exception e) {
@@ -133,21 +164,38 @@ public class MissionWriter {
         File file = new File(filepath);
         MissionProxy missionProxy = null;
         MissionParser parser = new MissionParser();
+        int linenum = 0;
         try {
             String line;
             FileInputStream in = new FileInputStream(file);
 
             BufferedReader reader = new BufferedReader(new InputStreamReader(in));
-            while (!((line = reader.readLine()).equals("end"))) {
+            while (!((line = reader.readLine()).contains("Method"))) {
                 /**
-                 *  解析读取的行，成功则返回一个 mission 对象
+                 *  解析读取的行，成功则返回一个 mission 对象,
+                 *  跳过前六行的附属信息
                  */
-                missionProxy = parser.mission_parse_line(line);
+                linenum ++;
+                if(linenum == 1 && !line.contains("refedge")) {
+                    break;
+                }
+
+                if(linenum > 6) {
+                    missionProxy = parser.mission_parse_line(line);
+                }
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
 
         return missionProxy;
+    }
+
+    private static void newline(FileOutputStream o) {
+        try {
+            o.write("\r\n".getBytes());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

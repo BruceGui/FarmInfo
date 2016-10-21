@@ -39,7 +39,7 @@ public class ClimbPointFragment extends DangerPointFragment implements
                 final DangerPoint cp = new DangerPoint(mapFragment.getCurrentCoord(),
                         0);
 
-                cp.setPointType(PointItemType.CLIMBPOINT);
+                //cp.setPointType(PointItemType.CLIMBPOINT);
                 cp.setPointNum(ClimbPoint.INDICATE_NUM);
                 cp.setFlyheight(getFlyHeight());
 

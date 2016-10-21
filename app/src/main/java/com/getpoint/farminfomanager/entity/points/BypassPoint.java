@@ -16,7 +16,7 @@ public class BypassPoint extends DangerPoint implements Cloneable{
 
     public BypassPoint() {
         //super(position);
-        this.pointType = PointItemType.BYPASSPOINT;
+        //this.pointType = PointItemType.BYPASSPOINT;
     }
 
     public void addInnerPoint(DangerPoint point) {

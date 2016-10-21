@@ -119,7 +119,7 @@ public class MissionParser {
 
                         final DangerPoint dp = new DangerPoint(coord,
                                 Float.parseFloat(s[5 * i + 2]));
-                        dp.setPointType(PointItemType.BYPASSPOINT);
+                        //dp.setPointType(PointItemType.BYPASSPOINT);
                         dp.setPointNum((short) pointtype);
 
                         dps.add(dp);

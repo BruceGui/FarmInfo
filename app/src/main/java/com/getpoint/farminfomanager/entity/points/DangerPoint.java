@@ -26,12 +26,4 @@ public class DangerPoint extends PointInfo implements Cloneable{
         this.pointType = type;
     }
 
-    /*public Object clone() {
-
-        DangerPoint o = null;
-
-        o = (DangerPoint) super.clone();
-
-        return o;
-    }*/
 }

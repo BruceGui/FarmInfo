@@ -51,7 +51,7 @@ public class ForwardPointFragment extends DangerPointFragment implements
                 final DangerPoint fp = new DangerPoint(mapFragment.getCurrentCoord(),
                         0);
 
-                fp.setPointType(PointItemType.FORWAEDPOINT);
+                //fp.setPointType(PointItemType.FORWAEDPOINT);
                 fp.setPointNum(ForwardPoint.INDICATE_NUM);
                 fp.setFlyheight(getFlyHeight());
 

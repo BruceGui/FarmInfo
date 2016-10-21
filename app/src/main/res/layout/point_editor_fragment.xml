@@ -15,7 +15,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:text="@string/altitude_label" />
+        android:text="   " />
 
     <com.getpoint.farminfomanager.weights.spinnerWheel.CardWheelHorizontalView
         android:id="@+id/altitudePickerCentimeter"
@@ -33,6 +33,7 @@
         android:layout_height="match_parent">
 
         <Button
+            android:id="@+id/btnConfirm"
             android:layout_width="0dp"
             android:layout_weight="1"
             style="?android:attr/borderlessButtonStyle"
@@ -40,6 +41,7 @@
             android:text="@string/cancel_label"/>
 
         <Button
+            android:id="@+id/btnCancel"
             android:layout_width="0dp"
             android:layout_weight="1"
             style="?android:attr/borderlessButtonStyle"

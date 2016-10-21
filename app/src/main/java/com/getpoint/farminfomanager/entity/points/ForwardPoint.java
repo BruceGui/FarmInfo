@@ -16,7 +16,7 @@ public class ForwardPoint extends DangerPoint {
 
     public ForwardPoint() {
         //super(position);
-        this.pointType = PointItemType.FORWAEDPOINT;
+        //this.pointType = PointItemType.FORWAEDPOINT;
     }
 
     public void addInnerPoint(DangerPoint point) {

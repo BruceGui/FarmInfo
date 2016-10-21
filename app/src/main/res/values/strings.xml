@@ -104,6 +104,9 @@
     <string name="delete_point">Delete</string>
     <string name="editor_point">Editor</string>
     <string name="save_title">Save Mission</string>
+    <string name="change_f_height">Change Flight Height</string>
+    <string name="open_mission_success">Open Success</string>
+    <string name="open_mission_failed">Open Fail</string>
 
     <string name="action_previous">Previous</string>
     <string name="action_next">Next</string>

@@ -33,6 +33,7 @@ import com.getpoint.farminfomanager.entity.points.PointItemType;
 import com.getpoint.farminfomanager.fragment.BaiduMapFragment;
 import com.getpoint.farminfomanager.fragment.Mission.BypassPointFragment;
 import com.getpoint.farminfomanager.fragment.Mission.ClimbPointFragment;
+import com.getpoint.farminfomanager.fragment.Mission.DangerPointFragment;
 import com.getpoint.farminfomanager.fragment.Mission.ForwardPointFragment;
 import com.getpoint.farminfomanager.fragment.Mission.FramePointFragment;
 import com.getpoint.farminfomanager.fragment.Mission.PointDetailFragment;
@@ -62,7 +63,8 @@ public class FarmInfoActivity extends AppCompatActivity implements
         BaiduMapFragment.OnMapClickedListener,
         SaveMissionFragment.OnFragmentInteractionListener,
         OpenMissionFragment.OnFragmentInteractionListener,
-        EditorChooseFragment.EditorListener {
+        EditorChooseFragment.EditorListener,
+        PointEditorFragment.PointEditorListener{
 
     private static final String TAG = "FarmInfoActivity";
 
@@ -70,11 +72,14 @@ public class FarmInfoActivity extends AppCompatActivity implements
     private BypassPointFragment bypassPointFragment;
     private ClimbPointFragment climbPointFragment;
     private ForwardPointFragment forwardPointFragment;
+    private DangerPointFragment dangerPointFragment;
     private PointDetailFragment pointDetailFragment;
+
     private SaveMissionFragment mSaveMissionFragment;
     private OpenMissionFragment mOpenMissionFragment;
 
     private EditorChooseFragment mEditorChooseFragment;
+    private PointEditorFragment  mPointEditorFragment;
 
     private PointItemType currentType = PointItemType.FRAMEPOINT;
 
@@ -86,7 +91,7 @@ public class FarmInfoActivity extends AppCompatActivity implements
 
     private List<PointMarker> mPointSel = new ArrayList<>();
 
-    private Boolean isEditing = false;
+    //private Boolean isEditing = false;
     private Boolean onDeleting = false;
 
     private Menu mMenu;
@@ -231,7 +236,7 @@ public class FarmInfoActivity extends AppCompatActivity implements
 
                 /**
                  *  用于删除临时的点
-                 */
+
                 switch (currentType) {
                     case BYPASSPOINT:
                         bypassPointFragment.removeMarker();
@@ -245,7 +250,7 @@ public class FarmInfoActivity extends AppCompatActivity implements
                     default:
                         break;
                 }
-
+                */
                 if (mPointInfoLayout.getState() == MorphLayout.State.MORPHED) {
                     morphDestory();
                 }
@@ -265,7 +270,7 @@ public class FarmInfoActivity extends AppCompatActivity implements
                     case FRAMEPOINT:
                         addFramePoint(coord, framePointFragment.getAltitude());
                         break;
-                    case BYPASSPOINT:
+                    /*case BYPASSPOINT:
                         addBypassPoint(coord);
                         break;
                     case CLIMBPOINT:
@@ -273,7 +278,7 @@ public class FarmInfoActivity extends AppCompatActivity implements
                         break;
                     case FORWAEDPOINT:
                         addForwardPoint(coord);
-                        break;
+                        break;*/
                     default:
                         break;
                 }
@@ -294,7 +299,7 @@ public class FarmInfoActivity extends AppCompatActivity implements
         fragmentManager.beginTransaction().add(R.id.point_detail_fragment, PointDetailFragment.
                         newInstance(PointItemType.FRAMEPOINT),
                 PointDetailFragment.getFragmentTag(PointItemType.FRAMEPOINT)).commit();
-        fragmentManager.beginTransaction().add(R.id.point_detail_fragment, PointDetailFragment.
+        /*fragmentManager.beginTransaction().add(R.id.point_detail_fragment, PointDetailFragment.
                         newInstance(PointItemType.BYPASSPOINT),
                 PointDetailFragment.getFragmentTag(PointItemType.BYPASSPOINT)).commit();
         fragmentManager.beginTransaction().add(R.id.point_detail_fragment, PointDetailFragment.
@@ -303,6 +308,11 @@ public class FarmInfoActivity extends AppCompatActivity implements
         fragmentManager.beginTransaction().add(R.id.point_detail_fragment, PointDetailFragment.
                         newInstance(PointItemType.CLIMBPOINT),
                 PointDetailFragment.getFragmentTag(PointItemType.CLIMBPOINT)).commit();
+    */
+        fragmentManager.beginTransaction().add(R.id.point_detail_fragment, PointDetailFragment.
+                        newInstance(PointItemType.DANGERPOINT),
+                PointDetailFragment.getFragmentTag(PointItemType.DANGERPOINT)).commit();
+
     }
 
     /**
@@ -338,8 +348,13 @@ public class FarmInfoActivity extends AppCompatActivity implements
         /**
          *   如果成功读取 mission ，然后就在地图上画 marker.
          */
+        final Context c = getApplicationContext();
+
         if (missionProxy.readMissionFromFile(path)) {
+            Toast.makeText(c, R.string.open_mission_success,Toast.LENGTH_SHORT).show();
             mapFragment.updateInfoFromMission(missionProxy);
+        } else {
+            Toast.makeText(c, R.string.open_mission_failed,Toast.LENGTH_SHORT).show();
         }
 
         mOpenMissionFragment.dismiss();
@@ -366,12 +381,6 @@ public class FarmInfoActivity extends AppCompatActivity implements
         switch (itemType) {
             case FRAMEPOINT:
                 break;
-            case BYPASSPOINT:
-                break;
-            case CLIMBPOINT:
-                break;
-            case FORWAEDPOINT:
-                break;
             default:
                 break;
         }
@@ -396,7 +405,7 @@ public class FarmInfoActivity extends AppCompatActivity implements
     public boolean onMapClick(LatLong latLong) {
 
         if(!onDeleting) {
-            addFramePoint(latLong, 120);
+             addFramePoint(latLong, 120);
         }
 
         return false;
@@ -419,8 +428,8 @@ public class FarmInfoActivity extends AppCompatActivity implements
     public void onEditor() {
 
         mEditorChooseFragment.dismiss();
-        PointEditorFragment p = PointEditorFragment.newInstance();
-        p.show(getSupportFragmentManager(), null);
+        mPointEditorFragment= PointEditorFragment.newInstance(this);
+        mPointEditorFragment.show(getSupportFragmentManager(), null);
     }
 
     @Override
@@ -428,6 +437,21 @@ public class FarmInfoActivity extends AppCompatActivity implements
 
         mEditorChooseFragment.dismiss();
 
+    }
+
+    /**
+     *  修改点高度的监听函数
+     */
+    @Override
+    public void onPConfirm() {
+        //TODO 如何修改点的高度
+
+        mPointEditorFragment.dismiss();
+    }
+
+    @Override
+    public void onPCancel() {
+        mPointEditorFragment.dismiss();
     }
 
     /**
@@ -472,8 +496,6 @@ public class FarmInfoActivity extends AppCompatActivity implements
 
     private void saveMissionFile() {
 
-        //TODO 用 view pager 显示保存点的信息，然后下一步显示保存页面
-
         final DirectoryChooserConfig config = DirectoryChooserConfig.builder()
                 .newDirectoryName(getString(R.string.new_folder))
                 .allowNewDirectoryNameModification(true)
@@ -502,8 +524,11 @@ public class FarmInfoActivity extends AppCompatActivity implements
 
     }
 
+    /**
+     *  清除所有的标记点信息
+     */
     private void newMissionFile() {
-        missionProxy = new MissionProxy();
+        missionProxy.missionClear();
         mapFragment.clearAllMarker();
     }
 
@@ -518,14 +543,8 @@ public class FarmInfoActivity extends AppCompatActivity implements
             case FRAMEPOINT:
                 setupFrameDetailFragment();
                 break;
-            case BYPASSPOINT:
-                setupBypassDetailFragment();
-                break;
-            case CLIMBPOINT:
-                setupClimbDetailFragment();
-                break;
-            case FORWAEDPOINT:
-                setupForwardDetailFragment();
+            case DANGERPOINT:
+                setupDangerPointFragment();
                 break;
             default:
                 break;
@@ -541,29 +560,6 @@ public class FarmInfoActivity extends AppCompatActivity implements
     private void updatePointInfo(PointItemType itemType) {
 
         switch (itemType) {
-            case FORWAEDPOINT:
-                if (forwardPointFragment == null) {
-                    forwardPointFragment = (ForwardPointFragment) fragmentManager.findFragmentByTag(PointDetailFragment.getFragmentTag(
-                            PointItemType.FORWAEDPOINT));
-                    forwardPointFragment.setMapFragment(mapFragment);
-                }
-                forwardPointFragment.setPointIndex(missionProxy.getCurrentForwardNumber());
-                forwardPointFragment.setPointType(PointItemType.FORWAEDPOINT.getLabel());
-                forwardPointFragment.clearInnerPoint();
-                Log.i(TAG, "forward point detail");
-                forwardPointFragment.setRelLayoutPar();
-                break;
-            case BYPASSPOINT:
-                if (bypassPointFragment == null) {
-                    bypassPointFragment = (BypassPointFragment) fragmentManager.findFragmentByTag(PointDetailFragment.getFragmentTag(
-                            PointItemType.BYPASSPOINT));
-                    bypassPointFragment.setMapFragment(mapFragment);
-                }
-                bypassPointFragment.setPointIndex(missionProxy.getCurrentBypassNumber());
-                bypassPointFragment.setPointType(PointItemType.BYPASSPOINT.getLabel());
-                bypassPointFragment.clearInnerPoint();
-                bypassPointFragment.setRelLayoutPar();
-                break;
             case FRAMEPOINT:
                 if (framePointFragment == null) {
                     framePointFragment = (FramePointFragment) fragmentManager.findFragmentByTag(PointDetailFragment.getFragmentTag(
@@ -571,17 +567,14 @@ public class FarmInfoActivity extends AppCompatActivity implements
                 }
                 framePointFragment.setPointIndex(missionProxy.getCurrentFrameNumber());
                 framePointFragment.setPointType(PointItemType.FRAMEPOINT.getLabel());
+                framePointFragment.updatePointNum(missionProxy);
                 break;
-            case CLIMBPOINT:
-                if (climbPointFragment == null) {
-                    climbPointFragment = (ClimbPointFragment) fragmentManager.findFragmentByTag(PointDetailFragment.getFragmentTag(
-                            PointItemType.CLIMBPOINT));
-                    climbPointFragment.setMapFragment(mapFragment);
+            case DANGERPOINT:
+                if (dangerPointFragment == null) {
+                    dangerPointFragment = (DangerPointFragment) fragmentManager.findFragmentByTag(PointDetailFragment.getFragmentTag(
+                            PointItemType.DANGERPOINT));
                 }
-                climbPointFragment.setPointIndex(missionProxy.getCurrentClimbNumber());
-                climbPointFragment.setPointType(PointItemType.CLIMBPOINT.getLabel());
-                climbPointFragment.clearInnerPoint();
-                climbPointFragment.setRelLayoutPar();
+                dangerPointFragment.setPointType(PointItemType.DANGERPOINT.getLabel());
                 break;
             default:
                 break;
@@ -594,55 +587,19 @@ public class FarmInfoActivity extends AppCompatActivity implements
         fragmentManager.beginTransaction().show(fragmentManager.findFragmentByTag(
                 PointDetailFragment.getFragmentTag(PointItemType.FRAMEPOINT)))
                 .hide(fragmentManager.findFragmentByTag(
-                        PointDetailFragment.getFragmentTag(PointItemType.BYPASSPOINT)))
-                .hide(fragmentManager.findFragmentByTag(
-                        PointDetailFragment.getFragmentTag(PointItemType.FORWAEDPOINT)))
-                .hide(fragmentManager.findFragmentByTag(
-                        PointDetailFragment.getFragmentTag(PointItemType.CLIMBPOINT)))
+                        PointDetailFragment.getFragmentTag(PointItemType.DANGERPOINT)))
                 .commit();
 
     }
 
-    private void setupBypassDetailFragment() {
+    private void setupDangerPointFragment() {
 
         fragmentManager.beginTransaction().show(fragmentManager.findFragmentByTag(
-                PointDetailFragment.getFragmentTag(PointItemType.BYPASSPOINT)))
-                .hide(fragmentManager.findFragmentByTag(
-                        PointDetailFragment.getFragmentTag(PointItemType.FRAMEPOINT)))
-                .hide(fragmentManager.findFragmentByTag(
-                        PointDetailFragment.getFragmentTag(PointItemType.FORWAEDPOINT)))
-                .hide(fragmentManager.findFragmentByTag(
-                        PointDetailFragment.getFragmentTag(PointItemType.CLIMBPOINT)))
-                .commit();
-        bypassPointFragment.clearInnerPoint();
-    }
-
-    private void setupClimbDetailFragment() {
-
-        fragmentManager.beginTransaction().show(fragmentManager.findFragmentByTag(
-                PointDetailFragment.getFragmentTag(PointItemType.CLIMBPOINT)))
-                .hide(fragmentManager.findFragmentByTag(
-                        PointDetailFragment.getFragmentTag(PointItemType.BYPASSPOINT)))
-                .hide(fragmentManager.findFragmentByTag(
-                        PointDetailFragment.getFragmentTag(PointItemType.FORWAEDPOINT)))
-                .hide(fragmentManager.findFragmentByTag(
+                PointDetailFragment.getFragmentTag(PointItemType.DANGERPOINT)))
+                 .hide(fragmentManager.findFragmentByTag(
                         PointDetailFragment.getFragmentTag(PointItemType.FRAMEPOINT)))
                 .commit();
-        climbPointFragment.clearInnerPoint();
-    }
 
-    private void setupForwardDetailFragment() {
-
-        fragmentManager.beginTransaction().show(fragmentManager.findFragmentByTag(
-                PointDetailFragment.getFragmentTag(PointItemType.FORWAEDPOINT)))
-                .hide(fragmentManager.findFragmentByTag(
-                        PointDetailFragment.getFragmentTag(PointItemType.BYPASSPOINT)))
-                .hide(fragmentManager.findFragmentByTag(
-                        PointDetailFragment.getFragmentTag(PointItemType.FRAMEPOINT)))
-                .hide(fragmentManager.findFragmentByTag(
-                        PointDetailFragment.getFragmentTag(PointItemType.CLIMBPOINT)))
-                .commit();
-        forwardPointFragment.clearInnerPoint();
     }
 
     /**
@@ -686,6 +643,11 @@ public class FarmInfoActivity extends AppCompatActivity implements
         pointMarker.setMarkerNum(missionProxy.getOrder(newItem));
         mapFragment.updateMarker(pointMarker);
         mapFragment.updateFramePointPath(missionProxy.getBoundaryItemProxies());
+
+        if(framePointFragment != null) {
+            framePointFragment.updatePointNum(missionProxy);
+        }
+
     }
 
     private void addBypassPoint(LatLong coord) {
@@ -817,12 +779,8 @@ public class FarmInfoActivity extends AppCompatActivity implements
 
         if (gpsDeviceManager.isconnect()) {
             toggleConnectionItem.setTitle(R.string.disconnect);
-            //menu.setGroupEnabled(R.id.id_menu_connected, true);
-            //menu.setGroupVisible(R.id.id_menu_connected, true);
         } else {
             toggleConnectionItem.setTitle(R.string.connect);
-            //menu.setGroupEnabled(R.id.id_menu_connected, false);
-            //menu.setGroupVisible(R.id.id_menu_connected, false);
         }
 
         return true;

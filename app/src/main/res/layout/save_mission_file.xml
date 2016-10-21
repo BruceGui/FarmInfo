@@ -9,6 +9,8 @@
         android:layout_height="wrap_content"
         android:layout_above="@id/footer"
         android:hint="@string/input_file_name"
+        android:inputType="text"
+        android:maxLines="1"
         android:textSize="20sp" />
 
     <RelativeLayout

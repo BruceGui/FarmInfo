@@ -26,6 +26,7 @@ import java.util.List;
 /**
  * Created by Station on 2016/8/2.
  */
+
 public class DangerPointFragment extends PointDetailFragment implements
         CardWheelHorizontalView.OnCardWheelChangedListener {
 
@@ -34,17 +35,18 @@ public class DangerPointFragment extends PointDetailFragment implements
     private TextView pointIndex;
     protected TextView innerIndex;
     protected List<Marker> markerToAdd;
-    private RelativeLayout titleContent;
     private CardWheelHorizontalView altitudePickerMeter;
     private CardWheelHorizontalView altitudePickerCentimeter;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+    }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         final View view = super.onCreateView(inflater, container, savedInstanceState);
-
-        final TextView pointType = (TextView) view.findViewById(R.id.WaypointType);
-        pointType.setText(R.string.bypass_danger_poi);
 
         final Context context = getActivity().getApplicationContext();
 
@@ -70,10 +72,6 @@ public class DangerPointFragment extends PointDetailFragment implements
         pointIndex.setText(String.valueOf(missionProxy.getCurrentBypassNumber()));
 
         markerToAdd = new ArrayList<>();
-
-        //TODO 动态调整 View 的宽度
-
-        titleContent = (RelativeLayout) view.findViewById(R.id.title_content_danger);
         return view;
     }
 
@@ -112,22 +110,6 @@ public class DangerPointFragment extends PointDetailFragment implements
 
         return altitude;
     }
-
-    public void setRelLayoutPar() {
-        final Context context = getActivity().getApplicationContext();
-        WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
-        Display display = wm.getDefaultDisplay();
-        Point size = new Point();
-        display.getSize(size);
-        Log.i(TAG, "width: " + size.x);
-
-        float widthByDp = convertPixelToDp(size.x, context);
-        Log.i(TAG, "width dp: " + widthByDp);
-        ViewGroup.LayoutParams lp = titleContent.getLayoutParams();
-        lp.width = (int)widthByDp - 128;
-        titleContent.setLayoutParams(lp);
-    }
-
 
     @Override
     protected int getLayoutResource() {

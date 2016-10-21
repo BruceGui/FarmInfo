@@ -3,13 +3,33 @@
     xmlns:tools="http://schemas.android.com/tools"
     style="@style/missionItemDetailLayout">
 
+    <!-- 三个分别选择 障碍点 障碍点内部点  点的类型-->
+
     <com.getpoint.farminfomanager.weights.spinners.SpinnerSelfSelect
-        android:id="@+id/spinnerWaypointType"
-        android:layout_width="320dp"
+        android:id="@+id/spinnerDPIndex"
+        android:layout_width="64dp"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:layout_margin="5dp"
         android:entries="@array/ExampleWaypointType" />
+
+    <com.getpoint.farminfomanager.weights.spinners.SpinnerSelfSelect
+        android:id="@+id/spinnerDPInnerIndex"
+        android:layout_width="64dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_toEndOf="@id/spinnerDPIndex"
+        android:entries="@array/ExampleWaypointType" />
+
+    <com.getpoint.farminfomanager.weights.spinners.SpinnerSelfSelect
+        android:id="@+id/spinnerWaypointType"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_toEndOf="@id/spinnerDPInnerIndex"
+        android:layout_alignParentEnd="true"
+        android:entries="@array/ExampleWaypointType" />
+
+    <!-- -->
 
     <RelativeLayout
         android:id="@+id/title_rect"
@@ -36,50 +56,10 @@
             android:background="@drawable/wp_title_div" />
 
         <RelativeLayout
-            android:id="@+id/title_content_danger"
-            android:layout_width="192dp"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_toEndOf="@id/title_div"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/WaypointType"
-                style="@style/missionHeaderTitle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="12dp"
-                android:text="@string/frame_point"
-                android:textAllCaps="true" />
-
-        </RelativeLayout>
-
-        <ImageView
-            android:id="@+id/menuHintTitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_alignEnd="@id/title_content_danger"
-
-            android:layout_margin="10dp"
-            android:src="@drawable/ic_menu_hint"
-            tools:ignore="ContentDescription" />
-
-        <View
-            android:id="@+id/index_div"
-            android:layout_width="1dp"
-            android:layout_height="54dp"
-            android:layout_alignParentTop="true"
-            android:layout_marginTop="5dp"
-            android:layout_toEndOf="@id/title_content_danger"
-            android:background="@drawable/wp_title_div" />
-
-        <RelativeLayout
             android:id="@+id/index_rect"
             android:layout_width="64dp"
             android:layout_height="64dp"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentTop="true"
+            android:layout_toEndOf="@id/title_div"
             android:background="@drawable/wp_title_rectangle">
 
             <TextView
@@ -95,7 +75,71 @@
 
         </RelativeLayout>
 
+        <!--
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignEnd="@id/dangerPointIndex"
+            android:layout_margin="10dp"
+            android:src="@drawable/ic_menu_hint"
+            tools:ignore="ContentDescription" />
+
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignEnd="@id/index_rect"
+            android:layout_margin="10dp"
+            android:src="@drawable/ic_menu_hint"
+            tools:ignore="ContentDescription" />
+        -->
+
+        <View
+            android:id="@+id/index_div"
+            android:layout_width="1dp"
+            android:layout_height="54dp"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="5dp"
+            android:layout_toEndOf="@id/index_rect"
+            android:background="@drawable/wp_title_div" />
+
+        <RelativeLayout
+            android:id="@+id/title_content_danger"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toEndOf="@id/index_div"
+            android:layout_alignParentEnd="true"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/WaypointType"
+                style="@style/missionHeaderTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                android:text="@string/frame_point"
+                android:textAllCaps="true" />
+
+        </RelativeLayout>
+
+        <!--
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignEnd="@id/title_content_danger"
+            android:layout_margin="10dp"
+            android:src="@drawable/ic_menu_hint"
+            tools:ignore="ContentDescription" />
+
+         -->
+
     </RelativeLayout>
+
+    <!-- 编辑点的高度信息 -->
 
     <ScrollView
         android:id="@+id/altitudeScrollView"
@@ -106,12 +150,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
+            android:orientation="horizontal">
 
                 <com.getpoint.farminfomanager.weights.spinnerWheel.CardWheelHorizontalView
                     android:id="@+id/altitudePickerMeter"
@@ -128,10 +167,10 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="   " />
-
-            </LinearLayout>
         </LinearLayout>
     </ScrollView>
+
+    <!-- 选择障碍点的类型 -->
 
     <View
         android:id="@+id/button_div"
@@ -148,5 +187,6 @@
         android:background="@drawable/btn_add_point_background"
         android:text="@string/btn_add"
         android:textSize="44sp" />
+
 
 </RelativeLayout>

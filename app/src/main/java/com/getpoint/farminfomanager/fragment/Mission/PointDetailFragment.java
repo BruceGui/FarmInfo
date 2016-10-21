@@ -37,14 +37,10 @@ public class PointDetailFragment extends Fragment implements SpinnerSelfSelect.
         switch (itemType) {
             case FRAMEPOINT:
                 return "FRAMEPOINT";
-            case BYPASSPOINT:
-                return "BYPASSPOINT";
-            case CLIMBPOINT:
-                return "CLIMBPOINT";
-            case FORWAEDPOINT:
-                return "FORWAEDPOINT";
+            case DANGERPOINT:
+                return "DANGERPOINT";
             default:
-                return "FRAMEPOINT";
+                return null;
         }
     }
 
@@ -55,14 +51,8 @@ public class PointDetailFragment extends Fragment implements SpinnerSelfSelect.
             case FRAMEPOINT:
                 fragment = new FramePointFragment();
                 break;
-            case BYPASSPOINT:
-                fragment = new BypassPointFragment();
-                break;
-            case CLIMBPOINT:
-                fragment = new ClimbPointFragment();
-                break;
-            case FORWAEDPOINT:
-                fragment = new ForwardPointFragment();
+            case DANGERPOINT:
+                fragment = new DangerPointFragment();
                 break;
             default:
                 fragment = new FramePointFragment();
@@ -106,12 +96,12 @@ public class PointDetailFragment extends Fragment implements SpinnerSelfSelect.
 
             if (currentType.equals(PointItemType.FRAMEPOINT.getLabel())) {
                 return PointItemType.FRAMEPOINT;
-            } else if (currentType.equals(PointItemType.BYPASSPOINT.getLabel())) {
+            } /*else if (currentType.equals(PointItemType.BYPASSPOINT.getLabel())) {
                 return PointItemType.BYPASSPOINT;
             } else if (currentType.equals(PointItemType.CLIMBPOINT.getLabel())) {
                 return PointItemType.CLIMBPOINT;
-            } else if (currentType.equals(PointItemType.FORWAEDPOINT.getLabel())) {
-                return PointItemType.FORWAEDPOINT;
+            }*/ else if (currentType.equals(PointItemType.DANGERPOINT.getLabel())) {
+                return PointItemType.DANGERPOINT;
             }
 
         }
@@ -136,16 +126,8 @@ public class PointDetailFragment extends Fragment implements SpinnerSelfSelect.
         PointItemType.FRAMEPOINT.setLabel(getActivity().getApplicationContext().getResources().getString(
                 R.string.frame_point
         ));
-
-        PointItemType.BYPASSPOINT.setLabel(getActivity().getApplicationContext().getResources().getString(
-                R.string.bypass_danger_poi
-        ));
-
-        PointItemType.CLIMBPOINT.setLabel(getActivity().getApplicationContext().getResources().getString(
-                R.string.climb_danger_poi
-        ));
-        PointItemType.FORWAEDPOINT.setLabel(getActivity().getApplicationContext().getResources().getString(
-                R.string.forward_danger_poi
+        PointItemType.DANGERPOINT.setLabel(getActivity().getApplicationContext().getResources().getString(
+                R.string.danger_point
         ));
 
         List<PointItemType> list = new LinkedList<>(Arrays.asList(PointItemType.values()));

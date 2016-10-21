@@ -26,15 +26,13 @@ public class PointEditorFragment extends DialogFragment {
     protected static final int MIN_CENTIMETER = 0;
     protected static final int MAX_CENTIMETER = 99;
 
-    private Button mConfirmBtn;
-    private Button mCancelBtn;
+    PointEditorListener listener;
 
-    private CardWheelHorizontalView altitudePickerMeter;
-    private CardWheelHorizontalView altitudePickerCentimeter;
-
-    public static PointEditorFragment newInstance(   ) {
+    public static PointEditorFragment newInstance(PointEditorListener listener) {
 
         PointEditorFragment p = new PointEditorFragment();
+
+        p.listener = listener;
 
         return p;
 
@@ -42,9 +40,9 @@ public class PointEditorFragment extends DialogFragment {
 
     public interface PointEditorListener {
 
-        void onConfirm();
+        void onPConfirm();
 
-        void onCancel();
+        void onPCancel();
 
     }
 
@@ -59,6 +57,8 @@ public class PointEditorFragment extends DialogFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
+        getDialog().setTitle(R.string.change_f_height);
+
         final View rootview = inflater.inflate(R.layout.point_editor_fragment, container, false);
 
         final Context context = getActivity().getApplicationContext();
@@ -68,15 +68,34 @@ public class PointEditorFragment extends DialogFragment {
         final NumericWheelAdapter altitudeAdapterCentimeter = new NumericWheelAdapter(context,
                 R.layout.wheel_text_centered, MIN_CENTIMETER, MAX_CENTIMETER, "%d cm");
 
-        altitudePickerMeter = (CardWheelHorizontalView) rootview.findViewById(R.id
+        CardWheelHorizontalView altitudePickerMeter = (CardWheelHorizontalView) rootview.findViewById(R.id
                 .altitudePickerMeter);
         altitudePickerMeter.setViewAdapter(altitudeAdapterMeter);
         altitudePickerMeter.setCurrentValue(0);
 
-        altitudePickerCentimeter = (CardWheelHorizontalView) rootview.findViewById(R.id
+        CardWheelHorizontalView altitudePickerCentimeter = (CardWheelHorizontalView) rootview.findViewById(R.id
                 .altitudePickerCentimeter);
         altitudePickerCentimeter.setViewAdapter(altitudeAdapterCentimeter);
         altitudePickerCentimeter.setCurrentValue(0);
+
+        /**
+         *   按钮监听函数
+         */
+        Button mConfirm = (Button) rootview.findViewById(R.id.btnConfirm);
+        mConfirm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                listener.onPConfirm();
+            }
+        });
+
+        Button mCancel = (Button) rootview.findViewById(R.id.btnCancel);
+        mCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                listener.onPCancel();
+            }
+        });
 
         return rootview;
     }

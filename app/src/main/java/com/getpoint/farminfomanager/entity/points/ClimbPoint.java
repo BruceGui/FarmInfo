@@ -16,7 +16,7 @@ public class ClimbPoint extends DangerPoint {
 
     public ClimbPoint() {
         //super(position);
-        this.pointType = PointItemType.CLIMBPOINT;
+        //this.pointType = PointItemType.CLIMBPOINT;
     }
 
     public void addInnerPoint(DangerPoint point) {

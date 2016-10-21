@@ -43,7 +43,7 @@ public class BypassPointFragment extends DangerPointFragment implements
                 final DangerPoint bp = new DangerPoint(mapFragment.getCurrentCoord(),
                         0);
 
-                bp.setPointType(PointItemType.BYPASSPOINT);
+                //bp.setPointType(PointItemType.BYPASSPOINT);
                 bp.setPointNum(BypassPoint.INDICATE_NUM);
                 bp.setFlyheight(getFlyHeight());
 
