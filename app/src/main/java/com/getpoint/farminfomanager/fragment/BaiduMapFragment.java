@@ -36,6 +36,7 @@ import com.getpoint.farminfomanager.entity.coordinate.LatLong;
 import com.getpoint.farminfomanager.entity.markers.DangerPointMarker;
 import com.getpoint.farminfomanager.entity.markers.FramePointMarker;
 import com.getpoint.farminfomanager.entity.markers.PointMarker;
+import com.getpoint.farminfomanager.entity.markers.StationPointMarker;
 import com.getpoint.farminfomanager.entity.points.DangerPoint;
 import com.getpoint.farminfomanager.entity.points.PointInfo;
 import com.getpoint.farminfomanager.entity.points.enumc.PointItemType;
@@ -283,8 +284,21 @@ public class BaiduMapFragment extends SupportMapFragment {
 
         clearAllMarker();
 
+        final List<MissionItemProxy> stationPoints = mission.getBaseStationProxies();
         final List<MissionItemProxy> boundaryPoints = mission.getBoundaryItemProxies();
         final List<MissionItemProxy> dangerPoints = mission.getDangerItemProxies();
+
+        /**
+         *   基站 marker
+         */
+        for (MissionItemProxy itemProxy : stationPoints) {
+            itemProxy.getPointInfo().setPointType(PointItemType.STATIONPOINT);
+            StationPointMarker pointMarker = new StationPointMarker(itemProxy.getPointInfo(),
+                    itemProxy);
+            pointMarker.setMarkerNum(mission.getOrder(itemProxy));
+            updateMarker(pointMarker);
+        }
+
         /**
          *   边界点的 marker
          */

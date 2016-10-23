@@ -120,6 +120,7 @@ public class PointDetailFragment extends Fragment implements SpinnerSelfSelect.
 
         farmApp = (FarmInfoManagerApp) getActivity().getApplication();
         missionProxy = farmApp.getMissionProxy();
+
     }
 
     @Nullable

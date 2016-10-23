@@ -26,6 +26,9 @@ public abstract class PointMarker {
             case FRAMEPOINT:
                 pointMarker = new FramePointMarker(origin, m);
                 break;
+            case STATIONPOINT:
+                pointMarker = new StationPointMarker(origin, m);
+                break;
             default:
                 pointMarker = new DangerPointMarker(origin, m);
                 break;

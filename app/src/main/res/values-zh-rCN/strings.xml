@@ -15,6 +15,9 @@
     <string name="lon_label">经度</string>
     <string name="lat_label">纬度</string>
     <string name="altitude_label">飞行高度</string>
+    <string name="get_point">打点</string>
+    <string name="please_add_point_first">请先添加障碍点</string>
+    <string name="del_point">删除</string>
     <string name="serial_num">编号</string>
     <string name="l_dop">LDop:</string>
     <string name="v_dop">VDop:</string>

@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
 
     <!-- style the list navigation -->
     <style name="DropDownItem" parent="Widget.AppCompat.DropDownItem.Spinner">
@@ -225,6 +225,13 @@
         <item name="android:layout_width">0dp</item>
         <item name="android:layout_height">match_parent</item>
         <item name="android:layout_weight">1</item>
+        <item name="android:textSize">20sp</item>
+    </style>
+
+    <style name="getDelPointBtn" parent="Widget.AppCompat.Button.Borderless">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:layout_height">wrap_content</item>
         <item name="android:textSize">20sp</item>
     </style>
 

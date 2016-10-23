@@ -25,9 +25,12 @@ import com.getpoint.farminfomanager.R;
 import com.getpoint.farminfomanager.entity.coordinate.LatLong;
 import com.getpoint.farminfomanager.entity.markers.FramePointMarker;
 import com.getpoint.farminfomanager.entity.markers.PointMarker;
+import com.getpoint.farminfomanager.entity.markers.StationPointMarker;
 import com.getpoint.farminfomanager.entity.points.DangerPoint;
 import com.getpoint.farminfomanager.entity.points.FramePoint;
 import com.getpoint.farminfomanager.entity.points.PointInfo;
+import com.getpoint.farminfomanager.entity.points.StationPoint;
+import com.getpoint.farminfomanager.entity.points.enumc.DangerPointType;
 import com.getpoint.farminfomanager.entity.points.enumc.PointItemType;
 import com.getpoint.farminfomanager.fragment.BaiduMapFragment;
 import com.getpoint.farminfomanager.fragment.Mission.BSPointFragment;
@@ -177,6 +180,7 @@ public class FarmInfoActivity extends AppCompatActivity implements
         mPointCancelBtn = (Button) findViewById(R.id.point_cancel_btn);
 
         setupMapFragment();
+        farmApp.setMapFragment(mapFragment);
 
         /**
          *  添加所有的fragment,并隐藏所有的fragment
@@ -263,7 +267,11 @@ public class FarmInfoActivity extends AppCompatActivity implements
 
                 switch (currentType) {
                     case STATIONPOINT:
-                        addBasePoint();
+                        if(bsPointFragment.isAddNew()) {
+                            addBasePoint(coord);
+                        } else {
+
+                        }
                         break;
                     case FRAMEPOINT:
                         if(framePointFragment.isAddNew()) {
@@ -274,7 +282,7 @@ public class FarmInfoActivity extends AppCompatActivity implements
                         break;
                     case DANGERPOINT:
                         if(dangerPointFragment.isAddNew()) {
-                            addDangerPoint(coord, dangerPointFragment.getFlyHeight());
+                            addDangerPoint(dangerPointFragment.getCurrentDPType());
                         } else {
                             dangerPointFragment.updateCurrentDP();
                         }
@@ -285,8 +293,8 @@ public class FarmInfoActivity extends AppCompatActivity implements
 
                 /**
                  * 关闭取点的界面
-                 */
                 morphDestory();
+                 */
             }
         });
     }
@@ -307,6 +315,11 @@ public class FarmInfoActivity extends AppCompatActivity implements
         fragmentManager.beginTransaction().add(R.id.point_detail_fragment, PointDetailFragment.
                         newInstance(PointItemType.DANGERPOINT),
                 PointDetailFragment.getFragmentTag(PointItemType.DANGERPOINT)).commit();
+
+
+        //bsPointFragment.setMapFragment(mapFragment);
+        //framePointFragment.setMapFragment(mapFragment);
+        //dangerPointFragment.setMapFragment(mapFragment);
 
     }
 
@@ -561,6 +574,7 @@ public class FarmInfoActivity extends AppCompatActivity implements
                 if (framePointFragment == null) {
                     framePointFragment = (FramePointFragment) fragmentManager.findFragmentByTag(PointDetailFragment.getFragmentTag(
                             PointItemType.FRAMEPOINT));
+                    framePointFragment.setMapFragment(mapFragment);
                 }
                 framePointFragment.setPointIndex(missionProxy.getCurrentFrameNumber());
                 framePointFragment.setPointType(PointItemType.FRAMEPOINT.getLabel());
@@ -570,23 +584,22 @@ public class FarmInfoActivity extends AppCompatActivity implements
                 if (dangerPointFragment == null) {
                     dangerPointFragment = (DangerPointFragment) fragmentManager.findFragmentByTag(PointDetailFragment.getFragmentTag(
                             PointItemType.DANGERPOINT));
+                    dangerPointFragment.setMapFragment(mapFragment);
                 }
                 final int currnum = missionProxy.getCurrentDangerNumber();
                 dangerPointFragment.setPointIndex(currnum);
                 dangerPointFragment.setPointType(PointItemType.DANGERPOINT.getLabel());
                 dangerPointFragment.updatePointIND(missionProxy);
                 dangerPointFragment.clearInnerVar();
-                if(currnum != 0) {
-                    dangerPointFragment.updateInnerIndex(missionProxy.getDangerItemProxies()
-                            .get(currnum - 1));
-                }
                 break;
             case STATIONPOINT:
                 if (bsPointFragment == null) {
                     bsPointFragment = (BSPointFragment) fragmentManager.findFragmentByTag(PointDetailFragment.getFragmentTag(
                             PointItemType.STATIONPOINT));
+                    bsPointFragment.setMapFragment(mapFragment);
                 }
                 bsPointFragment.setPointType(PointItemType.STATIONPOINT.getLabel());
+                bsPointFragment.updatePointNum(missionProxy);
                 break;
             default:
                 break;
@@ -676,35 +689,56 @@ public class FarmInfoActivity extends AppCompatActivity implements
             framePointFragment.updatePointNum(missionProxy);
         }
 
+        framePointFragment.setPointIndex(missionProxy.getCurrentFrameNumber());
+        framePointFragment.updatePointNum(missionProxy);
+
     }
 
-    private void addBasePoint() {
+    private void addBasePoint(LatLong coord) {
 
+        final StationPoint stationPoint = new StationPoint(coord);
+
+        /**
+         *   把当前点添加到任务中去
+         */
+        MissionItemProxy newItem = new MissionItemProxy(missionProxy, stationPoint);
+        missionProxy.addItem(newItem);
+
+        /**
+         *  在地图上产生当前点的标志
+         */
+        StationPointMarker pointMarker = (StationPointMarker) newItem.getMarker();
+        pointMarker.setMarkerNum(missionProxy.getOrder(newItem));
+        mapFragment.updateMarker(pointMarker);
+
+        if(bsPointFragment != null) {
+            bsPointFragment.updatePointNum(missionProxy);
+        }
+
+        bsPointFragment.setPointIndex(missionProxy.getCurrentBaseNumber());
+        bsPointFragment.updatePointNum(missionProxy);
     }
 
-    private void addDangerPoint(LatLong coord, float fhight) {
+    private void addDangerPoint(DangerPointType dPType) {
 
         List<PointInfo> p = new ArrayList<>();
 
         final DangerPoint dangerPoint = new DangerPoint(p);
-
+        dangerPoint.setdPType(dPType);
         /**
          *   把当前点添加到任务中去
          */
         MissionItemProxy newItem = new MissionItemProxy(missionProxy, dangerPoint);
         missionProxy.addItem(newItem);
 
+        final int currnum = missionProxy.getCurrentDangerNumber();
+        dangerPointFragment.setPointIndex(currnum);
+        dangerPointFragment.updatePointIND(missionProxy);
+        dangerPointFragment.clearInnerVar();
+
         /**
          *  在地图上产生当前点的标志
          */
-        FramePointMarker pointMarker = (FramePointMarker) newItem.getMarker();
-        pointMarker.setMarkerNum(missionProxy.getOrder(newItem));
-        mapFragment.updateMarker(pointMarker);
-        mapFragment.updateFramePointPath(missionProxy.getBoundaryItemProxies());
-
-        if(dangerPointFragment != null) {
-            dangerPointFragment.updatePointIND(missionProxy);
-        }
 
     }
 

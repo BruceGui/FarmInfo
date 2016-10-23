@@ -10,6 +10,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -18,6 +20,7 @@ import com.getpoint.farminfomanager.R;
 import com.getpoint.farminfomanager.entity.coordinate.LatLong;
 import com.getpoint.farminfomanager.entity.points.FramePoint;
 import com.getpoint.farminfomanager.utils.adapters.IndexAdapter;
+import com.getpoint.farminfomanager.utils.proxy.MissionItemProxy;
 import com.getpoint.farminfomanager.utils.proxy.MissionProxy;
 import com.getpoint.farminfomanager.weights.spinnerWheel.CardWheelHorizontalView;
 import com.getpoint.farminfomanager.weights.spinnerWheel.adapters.NumericWheelAdapter;
@@ -35,11 +38,12 @@ public class FramePointFragment extends PointDetailFragment implements
     private static final String TAG = "FramePoint";
 
     private TextView pointIndex;
-    private CardWheelHorizontalView altitudePickerMeter;
-    private CardWheelHorizontalView altitudePickerCentimeter;
+    private EditText altitudeEdt;
+    private Button delBSPoint;
+
     private List<String> pointNum = new ArrayList<>();
 
-    private FramePoint currFP;
+    private MissionItemProxy currFP;
 
     @Override
     protected int getLayoutResource() {
@@ -59,23 +63,25 @@ public class FramePointFragment extends PointDetailFragment implements
 
         final Context context = getActivity().getApplicationContext();
 
-        final NumericWheelAdapter altitudeAdapterMeter = new NumericWheelAdapter(context,
-                R.layout.wheel_text_centered, MIN_ALTITUDE, MAX_ALTITUDE, "%d m");
-        final NumericWheelAdapter altitudeAdapterCentimeter = new NumericWheelAdapter(context,
-                R.layout.wheel_text_centered, MIN_CENTIMETER, MAX_CENTIMETER, "%d cm");
-        altitudePickerMeter = (CardWheelHorizontalView) view.findViewById(R.id
-                .altitudePickerMeter);
-        altitudePickerMeter.setViewAdapter(altitudeAdapterMeter);
-        altitudePickerMeter.setCurrentValue(0);
-        altitudePickerMeter.addChangingListener(this);
-
-        altitudePickerCentimeter = (CardWheelHorizontalView) view.findViewById(R.id
-                .altitudePickerCentimeter);
-        altitudePickerCentimeter.setViewAdapter(altitudeAdapterCentimeter);
-        altitudePickerCentimeter.setCurrentValue(0);
-
         pointIndex = (TextView) view.findViewById(R.id.WaypointIndex);
         pointIndex.setText(String.valueOf(missionProxy.getCurrentFrameNumber()));
+
+        altitudeEdt = (EditText) view.findViewById(R.id.altitudePickEdit);
+
+        delBSPoint = (Button) view.findViewById(R.id.delPointBtn);
+        delBSPoint.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if(currFP != null) {
+                    missionProxy.getBoundaryItemProxies().remove(currFP);
+                    updatePointNum(missionProxy);
+                    setPointIndex(missionProxy.getCurrentFrameNumber());
+                    mapFragment.updateInfoFromMission(missionProxy);
+                }
+
+            }
+        });
 
         final SpinnerSelfSelect mFPIndexSel = (SpinnerSelfSelect) view.findViewById(R.id.spinnerFPIndex);
         mFPIndexSel.setOnSpinnerItemSelectedListener(new SpinnerSelfSelect.OnSpinnerItemSelectedListener() {
@@ -83,13 +89,16 @@ public class FramePointFragment extends PointDetailFragment implements
             public void onSpinnerItemSelected(Spinner spinner, int position) {
 
                 setPointIndex(position+1);
-                addNew = false;
-                currFP = (FramePoint)missionProxy.getBoundaryItemProxies()
-                            .get(position).getPointInfo();
-                int fh = (int)currFP.getPosition().getAltitude();
 
-                altitudePickerMeter.setCurrentValue(fh/100);
-                altitudePickerCentimeter.setCurrentValue(fh%100);
+                if(position < missionProxy.getBoundaryItemProxies().size()) {
+                    addNew = false;
+                    currFP = missionProxy.getBoundaryItemProxies()
+                            .get(position);
+                    int fh = (int) currFP.getPointInfo().getPosition().getAltitude();
+                } else {
+                    addNew = true;
+                    currFP = null;
+                }
             }
         });
 
@@ -110,7 +119,7 @@ public class FramePointFragment extends PointDetailFragment implements
 
         pointNum.clear();
 
-        int length = m.getBoundaryItemProxies().size();
+        int length = m.getBoundaryItemProxies().size() + 1;
 
         for (int i = 0; i < length; i++) {
             pointNum.add(String.valueOf(i + 1));
@@ -121,18 +130,17 @@ public class FramePointFragment extends PointDetailFragment implements
      *  更新当前点的信息
      */
     public void updateCurrentFP() {
-        int fh = altitudePickerMeter.getCurrentValue()*100
-                + altitudePickerCentimeter.getCurrentValue();
+        int fh =  0;
 
-        currFP.getPosition().setAltitude(fh);
+        currFP.getPointInfo().getPosition().setAltitude(fh);
 
         addNew = true;
     }
 
     public float getAltitude() {
 
-        float altitude;
-
+        float altitude = 0;
+/*
         if (altitudePickerMeter.getCurrentValue() < 0) {
             altitude = altitudePickerMeter.getCurrentValue() * 100
                     - altitudePickerCentimeter.getCurrentValue();
@@ -140,14 +148,13 @@ public class FramePointFragment extends PointDetailFragment implements
             altitude = altitudePickerMeter.getCurrentValue() * 100
                     + altitudePickerCentimeter.getCurrentValue();
         }
-
+*/
         return altitude;
     }
 
     public void setPointIndex(int index) {
         pointIndex.setText(String.valueOf(index));
     }
-
 
     @Override
     public void onChanged(CardWheelHorizontalView cardWheel, int oldValue, int newValue) {

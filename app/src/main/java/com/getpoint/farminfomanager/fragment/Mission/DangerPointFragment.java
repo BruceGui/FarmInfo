@@ -4,16 +4,20 @@ import android.content.Context;
 import android.graphics.Point;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import static com.getpoint.farminfomanager.utils.PixDPConvert.*;
 
@@ -46,14 +50,16 @@ public class DangerPointFragment extends PointDetailFragment implements
     protected TextView innerIndex;
     protected List<Marker> markerToAdd;
     private RadioGroup dPointTypeSel;
-    private CardWheelHorizontalView altitudePickerMeter;
-    private CardWheelHorizontalView altitudePickerCentimeter;
+
+    private EditText altitudeEdt;
+    private Button getPointBtn;
+    private Button delPointBtn;
 
     private List<String> pointIND = new ArrayList<>();
     private List<String> innerInList = new ArrayList<>();
 
     private DangerPoint currDP;
-    private PointInfo   currInP;
+    private PointInfo currInP;
 
     private boolean addInP = true;
 
@@ -69,25 +75,42 @@ public class DangerPointFragment extends PointDetailFragment implements
 
         final Context context = getActivity().getApplicationContext();
 
-        final NumericWheelAdapter altitudeAdapterMeter = new NumericWheelAdapter(context,
-                R.layout.wheel_text_centered, MIN_ALTITUDE, MAX_ALTITUDE, "%d m");
-        final NumericWheelAdapter altitudeAdapterCentimeter = new NumericWheelAdapter(context,
-                R.layout.wheel_text_centered, MIN_CENTIMETER, MAX_CENTIMETER, "%d cm");
-        altitudePickerMeter = (CardWheelHorizontalView) view.findViewById(R.id
-                .altitudePickerMeter);
-        altitudePickerMeter.setViewAdapter(altitudeAdapterMeter);
-        altitudePickerMeter.setCurrentValue(0);
-        altitudePickerMeter.addChangingListener(this);
-
-        altitudePickerCentimeter = (CardWheelHorizontalView) view.findViewById(R.id
-                .altitudePickerCentimeter);
-        altitudePickerCentimeter.setViewAdapter(altitudeAdapterCentimeter);
-        altitudePickerCentimeter.setCurrentValue(0);
-
+        pointIndex = (TextView) view.findViewById(R.id.dangerPointIndex);
         innerIndex = (TextView) view.findViewById(R.id.dangerInnerIndex);
         innerIndex.setText(String.valueOf(0));
 
-        pointIndex = (TextView) view.findViewById(R.id.dangerPointIndex);
+        altitudeEdt = (EditText) view.findViewById(R.id.altitudePickEdit);
+        getPointBtn = (Button) view.findViewById(R.id.getPointBtn);
+        delPointBtn = (Button) view.findViewById(R.id.delPointBtn);
+
+        /**
+         *   添加 删除障碍点 内部点的监听函数
+         */
+        getPointBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if (addNew) {
+                    Toast.makeText(getActivity(), getString(R.string.please_add_point_first),
+                            Toast.LENGTH_SHORT).show();
+                } else {
+                    //TODO 添加障碍点 的 内部点
+                    if(addInP) {
+
+                    } else {
+                        addInP = true;
+                    }
+                }
+            }
+        });
+
+        delPointBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+
+            }
+        });
 
         /**
          *  障碍点类型的选择
@@ -103,28 +126,35 @@ public class DangerPointFragment extends PointDetailFragment implements
             @Override
             public void onSpinnerItemSelected(Spinner spinner, int position) {
 
+                if (position <= missionProxy.getDangerItemProxies().size() - 1) {
+                    addNew = false;
+
+                    updateInnerIndex(missionProxy.getDangerItemProxies().get(position));
+
+                    currDP = (DangerPoint) missionProxy.getDangerItemProxies()
+                            .get(position).getPointInfo();
+
+                    switch (currDP.getdPType()) {
+                        case BYPASS:
+                            dPointTypeSel.check(R.id.bypass_point_radio);
+                            break;
+                        case CLIMB:
+                            dPointTypeSel.check(R.id.climb_point_radio);
+                            break;
+                        case FORWARD:
+                            dPointTypeSel.check(R.id.forward_point_radio);
+                            break;
+                        default:
+                            break;
+                    }
+
+                } else {
+                    addNew = true;
+                    clearInnerVar();
+                }
+
                 setPointIndex(position);
 
-                addNew = false;
-
-                updateInnerIndex(missionProxy.getDangerItemProxies().get(position));
-
-                currDP = (DangerPoint) missionProxy.getDangerItemProxies()
-                        .get(position).getPointInfo();
-
-                switch (currDP.getdPType()) {
-                    case BYPASS:
-                        dPointTypeSel.check(R.id.bypass_point_radio);
-                        break;
-                    case CLIMB:
-                        dPointTypeSel.check(R.id.climb_point_radio);
-                        break;
-                    case FORWARD:
-                        dPointTypeSel.check(R.id.forward_point_radio);
-                        break;
-                    default:
-                        break;
-                }
 
             }
         });
@@ -138,8 +168,11 @@ public class DangerPointFragment extends PointDetailFragment implements
             @Override
             public void onSpinnerItemSelected(Spinner spinner, int position) {
                 //TODO
-                innerIndex.setText(String.valueOf(position+1));
+                setInPointIndex(position + 1);
                 addInP = false;
+
+                currInP = currDP.getInnerPoints().get(position);
+
             }
         });
         final IndexAdapter innerSelAdapter = new IndexAdapter(getActivity(), innerInList);
@@ -162,7 +195,8 @@ public class DangerPointFragment extends PointDetailFragment implements
     }
 
     /**
-     *   获取当前障碍点的 类型
+     * 获取当前障碍点的 类型
+     *
      * @return 障碍点类型
      */
 
@@ -182,13 +216,14 @@ public class DangerPointFragment extends PointDetailFragment implements
     }
 
     /**
-     *  更新障碍点的 索引
+     * 更新障碍点的 索引
+     *
      * @param m
      */
     public void updatePointIND(MissionProxy m) {
         pointIND.clear();
 
-        int length = m.getDangerItemProxies().size();
+        int length = m.getDangerItemProxies().size() + 1;
 
         for (int i = 0; i < length; i++) {
             pointIND.add(String.valueOf(DangerPointMarker.IND[i]));
@@ -199,22 +234,23 @@ public class DangerPointFragment extends PointDetailFragment implements
 
         innerInList.clear();
 
-        List<PointInfo> p = ((DangerPoint)m.getPointInfo()).getInnerPoints();
+        List<PointInfo> p = ((DangerPoint) m.getPointInfo()).getInnerPoints();
 
-        int length = p.size();
+        int length = p.size() + 1;
 
         for (int i = 0; i < length; i++) {
-            innerInList.add(String.valueOf(i+1));
+            innerInList.add(String.valueOf(i + 1));
         }
 
+        setInPointIndex(length);
     }
 
     /**
-     *  更新当前障碍点 的信息
+     * 更新当前障碍点 的信息
      */
     public void updateCurrentDP() {
 
-        if(addInP) {
+        if (addInP) {
             //TODO 添加障碍点的内部点
         } else {
             updateCurrentInP();
@@ -230,28 +266,31 @@ public class DangerPointFragment extends PointDetailFragment implements
     }
 
     public void clearInnerVar() {
-        markerToAdd.clear();
+        //markerToAdd.clear();
         innerInList.clear();
-        innerIndex.setText(String.valueOf(0));
+        innerInList.add(String.valueOf(1));
+        innerIndex.setText(String.valueOf(1));
     }
 
     public void setPointIndex(int index) {
         pointIndex.setText(String.valueOf(DangerPointMarker.IND[index]));
     }
 
+    public void setInPointIndex(int index) {
+        innerIndex.setText(String.valueOf(index));
+    }
+
     public float getFlyHeight() {
 
-        float altitude;
+        float al = 0;
 
-        if (altitudePickerMeter.getCurrentValue() < 0) {
-            altitude = altitudePickerMeter.getCurrentValue() * 100
-                    - altitudePickerCentimeter.getCurrentValue();
+        if (TextUtils.isEmpty(altitudeEdt.getText())) {
+
         } else {
-            altitude = altitudePickerMeter.getCurrentValue() * 100
-                    + altitudePickerCentimeter.getCurrentValue();
+            al += Float.valueOf(altitudeEdt.getText().toString());
         }
 
-        return altitude;
+        return al;
     }
 
     @Override
