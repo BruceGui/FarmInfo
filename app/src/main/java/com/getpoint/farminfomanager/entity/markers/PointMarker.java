@@ -4,6 +4,7 @@ import android.content.res.Resources;
 import android.graphics.Bitmap;
 
 import com.getpoint.farminfomanager.entity.coordinate.LatLong;
+import com.getpoint.farminfomanager.entity.points.PointInfo;
 import com.getpoint.farminfomanager.utils.MarkerWithText;
 import com.getpoint.farminfomanager.utils.proxy.MissionItemProxy;
 import com.getpoint.farminfomanager.utils.proxy.MissionProxy;
@@ -13,31 +14,37 @@ import com.getpoint.farminfomanager.utils.proxy.MissionProxy;
  */
 public abstract class PointMarker {
 
-    private final MissionItemProxy mMarkerOrigin;
-    private Boolean isSelected = false;
-    private int markerNum;
+    private final PointInfo mPointInfo;
+    private MissionItemProxy mMIP;
+    protected Boolean isSelected = false;
+    protected int markerNum;
 
-    public static PointMarker newInstance(MissionItemProxy origin) {
+    public static PointMarker newInstance(PointInfo origin, MissionItemProxy m) {
 
         PointMarker pointMarker;
-        switch (origin.getPointInfo().getPointType()) {
+        switch (origin.getPointType()) {
             case FRAMEPOINT:
-                pointMarker = new FramePointMarker(origin);
+                pointMarker = new FramePointMarker(origin, m);
                 break;
             default:
-                pointMarker = new DangerPointMarker(origin);
+                pointMarker = new DangerPointMarker(origin, m);
                 break;
         }
 
         return pointMarker;
     }
 
-    public PointMarker(MissionItemProxy origin) {
-        mMarkerOrigin = origin;
+    public PointMarker(PointInfo p, MissionItemProxy m) {
+        mPointInfo = p;
+        mMIP = m;
     }
 
-    public MissionItemProxy getmMarkerOrigin() {
-        return this.mMarkerOrigin;
+    public MissionItemProxy getMissionProxy() {
+        return mMIP;
+    }
+
+    public PointInfo getPointInfo() {
+        return mPointInfo;
     }
 
     public float getAnchorU() {
@@ -57,11 +64,11 @@ public abstract class PointMarker {
     }
 
     public LatLong getPosition() {
-        return mMarkerOrigin.getPointInfo().getPosition().getLatLong();
+        return mPointInfo.getPosition().getLatLong();
     }
 
     public void setPosition(LatLong coord) {
-        LatLong coordinate = mMarkerOrigin.getPointInfo().getPosition().getLatLong();
+        LatLong coordinate = mPointInfo.getPosition().getLatLong();
         coordinate.setLatitude(coord.getLatitude());
         coordinate.setLongitude(coord.getLongitude());
     }
@@ -70,16 +77,7 @@ public abstract class PointMarker {
         this.isSelected = state;
     }
 
-    public Bitmap getIcon(Resources res) {
 
-        if (isSelected) {
-            return MarkerWithText.getMarkerWithTextAndDetail(getIconSelected(),
-                    Integer.toString(markerNum), null, res);
-        } else {
-            return MarkerWithText.getMarkerWithTextAndDetail(getIconNormal(),
-                    Integer.toString(markerNum), null, res);
-        }
-    }
 
     public void setMarkerNum(int markerNum) {
         this.markerNum = markerNum;
@@ -88,6 +86,8 @@ public abstract class PointMarker {
     public int getMarkerNum() {
         return this.markerNum;
     }
+
+    protected abstract Bitmap getIcon(Resources res);
 
     protected abstract int getIconNormal();
 

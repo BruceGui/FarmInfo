@@ -5,7 +5,7 @@ import android.os.Parcel;
 /**
  * Stores latitude, longitude, and altitude information for a coordinate.
  */
-public class LatLongAlt extends LatLong implements Cloneable{
+public class LatLongAlt extends LatLong {
 
     /**
      * Stores the altitude in meters.
@@ -41,17 +41,6 @@ public class LatLongAlt extends LatLong implements Cloneable{
 
     public void setAltitude(int altitude) {
         this.mAltitude = altitude;
-    }
-
-    public Object clone() {
-
-        LatLongAlt o;
-
-        o = (LatLongAlt)super.clone();
-        o.latLong = (LatLong)latLong.clone();
-
-        return o;
-
     }
 
     @Override

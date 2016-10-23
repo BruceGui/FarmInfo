@@ -78,11 +78,12 @@
     <!-- 航线点 字符串 -->
     <string name="frame_point">边界点</string>
     <string name="danger_point">障碍点</string>
+    <string name="base_station_point">基站点</string>
 
     <!-- 这是三种类型的障碍点 -->
     <string name="bypass_danger_poi">绕飞点</string>
-    <string name="climb_danger_poi">爬升点</string>
-    <string name="forward_danger_poi">直飞点</string>
+    <string name="climb_danger_poi">越飞点</string>
+    <string name="forward_danger_poi">通飞点</string>
 
     <!-- 任务打开关闭相关 -->
     <string name="cancel_label">取消</string>

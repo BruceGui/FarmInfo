@@ -6,14 +6,14 @@
     <com.getpoint.farminfomanager.weights.spinners.SpinnerSelfSelect
         android:id="@+id/spinnerFPIndex"
         android:layout_width="64dp"
-        android:layout_height="wrap_content"
+        android:layout_height="64dp"
         android:layout_alignParentTop="true"
         android:entries="@array/ExampleWaypointType" />
 
     <com.getpoint.farminfomanager.weights.spinners.SpinnerSelfSelect
         android:id="@+id/spinnerWaypointType"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="64dp"
         android:layout_alignParentTop="true"
         android:layout_toEndOf="@id/spinnerFPIndex"
         android:entries="@array/ExampleWaypointType" />
@@ -41,16 +41,6 @@
             android:layout_marginTop="5dp"
             android:layout_toEndOf="@id/WaypointIndex"
             android:background="@drawable/wp_title_div" />
-    <!--
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_alignEnd="@id/WaypointIndex"
-            android:layout_margin="10dp"
-            android:src="@drawable/ic_menu_hint"
-            tools:ignore="ContentDescription" />
-    -->
 
         <RelativeLayout
             android:id="@+id/title_content"
@@ -71,17 +61,6 @@
         </RelativeLayout>
 
     </RelativeLayout>
-
-    <!--
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@id/title_rect"
-        android:layout_alignParentEnd="true"
-        android:layout_margin="10dp"
-        android:src="@drawable/ic_menu_hint"
-        tools:ignore="ContentDescription" />
-       -->
 
     <ScrollView
         android:layout_width="match_parent"

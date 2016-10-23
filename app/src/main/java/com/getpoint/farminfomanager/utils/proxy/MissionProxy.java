@@ -26,17 +26,21 @@ public class MissionProxy {
 
     private List<MissionItemProxy> boundaryItemProxies = new ArrayList<>();
 
-    private List<MissionItemProxy> bypassItemProxies = new ArrayList<>();
+    private List<MissionItemProxy> dangerItemProxies = new ArrayList<>();
 
-    private List<MissionItemProxy> climbItemProxies = new ArrayList<>();
-
-    private List<MissionItemProxy> forwardItemProies = new ArrayList<>();
+    private List<MissionItemProxy> baseStationProxies = new ArrayList<>();
 
     public void addItem(MissionItemProxy itemToAdd) {
 
         switch (itemToAdd.getPointInfo().getPointType()) {
             case FRAMEPOINT:
                 boundaryItemProxies.add(itemToAdd);
+                break;
+            case DANGERPOINT:
+                dangerItemProxies.add(itemToAdd);
+                break;
+            case STATIONPOINT:
+                baseStationProxies.add(itemToAdd);
                 break;
             default:
                 missionItemProxies.add(itemToAdd);
@@ -52,18 +56,13 @@ public class MissionProxy {
         return this.boundaryItemProxies;
     }
 
-    public List<MissionItemProxy> getBypassItemProxies() {
-        return this.bypassItemProxies;
+    public List<MissionItemProxy> getDangerItemProxies() {
+        return this.dangerItemProxies;
     }
 
-    public List<MissionItemProxy> getClimbItemProxies() {
-        return this.climbItemProxies;
+    public List<MissionItemProxy> getBaseStationProxies() {
+        return this.baseStationProxies;
     }
-
-    public List<MissionItemProxy> getForwardItemProies() {
-        return this.forwardItemProies;
-    }
-
     /**
      * 返回当前边界点总数
      *
@@ -73,18 +72,13 @@ public class MissionProxy {
         return this.boundaryItemProxies.size() + 1;
     }
 
-    public int getCurrentBypassNumber() {
-        return this.bypassItemProxies.size() + 1;
+    public int getCurrentBaseNumber() {
+        return this.baseStationProxies.size() + 1;
     }
 
-    public int getCurrentClimbNumber() {
-        return this.climbItemProxies.size() + 1;
+    public int getCurrentDangerNumber() {
+        return this.dangerItemProxies.size();
     }
-
-    public int getCurrentForwardNumber() {
-        return this.forwardItemProies.size() + 1;
-    }
-
 
     /**
      * 返回给定点的序号
@@ -97,6 +91,10 @@ public class MissionProxy {
         switch (item.getPointInfo().getPointType()) {
             case FRAMEPOINT:
                 return boundaryItemProxies.indexOf(item) + 1;
+            case DANGERPOINT:
+                return dangerItemProxies.indexOf(item) + 1;
+            case STATIONPOINT:
+                return baseStationProxies.indexOf(item) + 1;
             default:
                 return missionItemProxies.indexOf(item) + 1;
         }
@@ -109,9 +107,8 @@ public class MissionProxy {
     public void missionClear() {
 
         this.boundaryItemProxies.clear();
-        this.bypassItemProxies.clear();
-        this.climbItemProxies.clear();
-        this.forwardItemProies.clear();
+        this.dangerItemProxies.clear();
+        this.baseStationProxies.clear();
 
     }
 
@@ -125,12 +122,9 @@ public class MissionProxy {
         MissionProxy missionProxy = MissionWriter.read(filepath);
         if (missionProxy != null) {
 
-            Log.i(TAG, "read mission success");
             this.boundaryItemProxies = missionProxy.getBoundaryItemProxies();
-            this.bypassItemProxies = missionProxy.getBypassItemProxies();
-            this.forwardItemProies = missionProxy.getForwardItemProies();
-            this.climbItemProxies = missionProxy.getClimbItemProxies();
-
+            this.dangerItemProxies   = missionProxy.getDangerItemProxies();
+            this.baseStationProxies = missionProxy.getBaseStationProxies();
             return true;
         }
 

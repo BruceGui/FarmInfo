@@ -3,15 +3,6 @@
 
     <item
         is-multidex="false"
-        jar="E:\programming\android\GetPoint\app\build\intermediates\exploded-aar\com.android.support\animated-vector-drawable\24.2.1\jars\classes.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="23.0.3"
-        sha1="94bc1dfb84dcc8b6f6f8f7cc726d7b2dd39c1574">
-        <dex dex="E:\programming\android\GetPoint\app\build\intermediates\pre-dexed\release\com.android.support-animated-vector-drawable-24.2.1_82994406a60b2efcf954b8bf1caeb4604fac34af.jar" />
-    </item>
-    <item
-        is-multidex="false"
         jar="E:\programming\android\GetPoint\app\build\intermediates\exploded-aar\com.android.support\support-fragment\24.2.1\jars\classes.jar"
         jumboMode="false"
         optimize="true"
@@ -27,6 +18,69 @@
         revision="23.0.3"
         sha1="43b2dba6b5a0b14527961b75329d0b90025f15ea">
         <dex dex="E:\programming\android\GetPoint\app\build\intermediates\pre-dexed\release\com.android.support-appcompat-v7-24.2.1_c955c0ec751836261ea1e9b826383de37992fa9e.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="E:\programming\android\GetPoint\app\build\intermediates\exploded-aar\com.android.support\support-v13\24.2.1\jars\libs\internal_impl-24.2.1.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="23.0.3"
+        sha1="c07fb99b729345908dda75fadbbf882e300631ff">
+        <dex dex="E:\programming\android\GetPoint\app\build\intermediates\pre-dexed\release\internal_impl-24.2.1_c37e9f2a566167d51f92e97fccf94bdcf0dd9eaa.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="E:\programming\android\GetPoint\app\build\intermediates\exploded-aar\com.android.support\support-compat\24.2.1\jars\libs\internal_impl-24.2.1.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="23.0.3"
+        sha1="7e4389bd133359a2ff88623ff1e4ff93d6e6f780">
+        <dex dex="E:\programming\android\GetPoint\app\build\intermediates\pre-dexed\release\internal_impl-24.2.1_5db4f6e82f7c1d6da4007238a51ba44c928a965d.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\win\.gradle\caches\modules-2\files-2.1\com.github.frankiesardo\auto-parcel\0.3.1\501393158454717fef27cba8d177f32a158b8955\auto-parcel-0.3.1.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="23.0.3"
+        sha1="501393158454717fef27cba8d177f32a158b8955">
+        <dex dex="E:\programming\android\GetPoint\app\build\intermediates\pre-dexed\release\auto-parcel-0.3.1_c735573814643df88a0c8470a962449637e17d6e.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="E:\programming\android\GetPoint\app\build\intermediates\exploded-aar\com.android.support\support-core-ui\24.2.1\jars\libs\internal_impl-24.2.1.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="23.0.3"
+        sha1="867dad63c33388ff8c7644b236579355036d075f">
+        <dex dex="E:\programming\android\GetPoint\app\build\intermediates\pre-dexed\release\internal_impl-24.2.1_f4c9c1bfc3c2ef25d1094638a33082520425bce5.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="E:\programming\android\GetPoint\app\build\intermediates\exploded-aar\com.android.support\support-media-compat\24.2.1\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="23.0.3"
+        sha1="09b462bbcb77650284bd6614f1a32f360ef369f8">
+        <dex dex="E:\programming\android\GetPoint\app\build\intermediates\pre-dexed\release\com.android.support-support-media-compat-24.2.1_c5f48125bef414d96f53dc253c8211558fb397f4.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="E:\programming\android\GetPoint\app\build\intermediates\exploded-aar\com.android.support\support-core-ui\24.2.1\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="23.0.3"
+        sha1="e7f3132168957eefc46229fc32c3bd464642b71e">
+        <dex dex="E:\programming\android\GetPoint\app\build\intermediates\pre-dexed\release\com.android.support-support-core-ui-24.2.1_bfb3178954671bc9653a45b27de08b921082eea5.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="E:\programming\android\GetPoint\app\build\intermediates\exploded-aar\com.android.support\animated-vector-drawable\24.2.1\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="23.0.3"
+        sha1="94bc1dfb84dcc8b6f6f8f7cc726d7b2dd39c1574">
+        <dex dex="E:\programming\android\GetPoint\app\build\intermediates\pre-dexed\release\com.android.support-animated-vector-drawable-24.2.1_82994406a60b2efcf954b8bf1caeb4604fac34af.jar" />
     </item>
     <item
         is-multidex="false"
@@ -75,15 +129,6 @@
     </item>
     <item
         is-multidex="false"
-        jar="E:\programming\android\GetPoint\app\build\intermediates\exploded-aar\com.android.support\support-v13\24.2.1\jars\libs\internal_impl-24.2.1.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="23.0.3"
-        sha1="c07fb99b729345908dda75fadbbf882e300631ff">
-        <dex dex="E:\programming\android\GetPoint\app\build\intermediates\pre-dexed\release\internal_impl-24.2.1_c37e9f2a566167d51f92e97fccf94bdcf0dd9eaa.jar" />
-    </item>
-    <item
-        is-multidex="false"
         jar="E:\programming\android\GetPoint\app\build\intermediates\exploded-aar\com.android.support\support-core-utils\24.2.1\jars\libs\internal_impl-24.2.1.jar"
         jumboMode="false"
         optimize="true"
@@ -99,15 +144,6 @@
         revision="23.0.3"
         sha1="9c4c3bc902450c39ed54de170db4fb12aea20a35">
         <dex dex="E:\programming\android\GetPoint\app\build\intermediates\pre-dexed\release\com.android.support-support-core-utils-24.2.1_7667ab36ed22f260f37c324285b95d50d8477aab.jar" />
-    </item>
-    <item
-        is-multidex="false"
-        jar="E:\programming\android\GetPoint\app\build\intermediates\exploded-aar\com.android.support\support-compat\24.2.1\jars\libs\internal_impl-24.2.1.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="23.0.3"
-        sha1="7e4389bd133359a2ff88623ff1e4ff93d6e6f780">
-        <dex dex="E:\programming\android\GetPoint\app\build\intermediates\pre-dexed\release\internal_impl-24.2.1_5db4f6e82f7c1d6da4007238a51ba44c928a965d.jar" />
     </item>
     <item
         is-multidex="false"
@@ -144,42 +180,6 @@
         revision="23.0.3"
         sha1="0ecb4b595fa0f0f8018a149ace3ea6525624f94e">
         <dex dex="E:\programming\android\GetPoint\app\build\intermediates\pre-dexed\release\com.android.support-support-compat-24.2.1_d6c63fe21d4c653274b330abd0f9cc7f1cc25fea.jar" />
-    </item>
-    <item
-        is-multidex="false"
-        jar="C:\Users\win\.gradle\caches\modules-2\files-2.1\com.github.frankiesardo\auto-parcel\0.3.1\501393158454717fef27cba8d177f32a158b8955\auto-parcel-0.3.1.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="23.0.3"
-        sha1="501393158454717fef27cba8d177f32a158b8955">
-        <dex dex="E:\programming\android\GetPoint\app\build\intermediates\pre-dexed\release\auto-parcel-0.3.1_c735573814643df88a0c8470a962449637e17d6e.jar" />
-    </item>
-    <item
-        is-multidex="false"
-        jar="E:\programming\android\GetPoint\app\build\intermediates\exploded-aar\com.android.support\support-core-ui\24.2.1\jars\libs\internal_impl-24.2.1.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="23.0.3"
-        sha1="867dad63c33388ff8c7644b236579355036d075f">
-        <dex dex="E:\programming\android\GetPoint\app\build\intermediates\pre-dexed\release\internal_impl-24.2.1_f4c9c1bfc3c2ef25d1094638a33082520425bce5.jar" />
-    </item>
-    <item
-        is-multidex="false"
-        jar="E:\programming\android\GetPoint\app\build\intermediates\exploded-aar\com.android.support\support-media-compat\24.2.1\jars\classes.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="23.0.3"
-        sha1="09b462bbcb77650284bd6614f1a32f360ef369f8">
-        <dex dex="E:\programming\android\GetPoint\app\build\intermediates\pre-dexed\release\com.android.support-support-media-compat-24.2.1_c5f48125bef414d96f53dc253c8211558fb397f4.jar" />
-    </item>
-    <item
-        is-multidex="false"
-        jar="E:\programming\android\GetPoint\app\build\intermediates\exploded-aar\com.android.support\support-core-ui\24.2.1\jars\classes.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="23.0.3"
-        sha1="e7f3132168957eefc46229fc32c3bd464642b71e">
-        <dex dex="E:\programming\android\GetPoint\app\build\intermediates\pre-dexed\release\com.android.support-support-core-ui-24.2.1_bfb3178954671bc9653a45b27de08b921082eea5.jar" />
     </item>
     <item
         is-multidex="false"

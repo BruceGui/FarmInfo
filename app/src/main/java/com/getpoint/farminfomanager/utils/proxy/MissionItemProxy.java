@@ -25,7 +25,7 @@ public class MissionItemProxy {
     public MissionItemProxy(MissionProxy mission, PointInfo pointInfo) {
         mMission = mission;
         mPointInfo = pointInfo;
-        mMarker = PointMarker.newInstance(this);
+        mMarker = PointMarker.newInstance(this.getPointInfo(), this);
     }
 
     public PointInfo getPointInfo() {

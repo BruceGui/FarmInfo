@@ -82,6 +82,7 @@
     <!-- Point Category String -->
     <string name="frame_point">Boundary Point</string>
     <string name="danger_point">Barrier Point</string>
+    <string name="base_station_point">Base Station</string>
 
     <!-- This are three kind of danger point -->
     <string name="bypass_danger_poi">Bypass Point</string>

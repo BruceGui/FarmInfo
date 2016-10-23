@@ -3,12 +3,10 @@ package com.getpoint.farminfomanager.utils.file.IO;
 import android.util.Log;
 
 import com.getpoint.farminfomanager.entity.coordinate.LatLong;
-import com.getpoint.farminfomanager.entity.points.BypassPoint;
-import com.getpoint.farminfomanager.entity.points.ClimbPoint;
 import com.getpoint.farminfomanager.entity.points.DangerPoint;
-import com.getpoint.farminfomanager.entity.points.ForwardPoint;
 import com.getpoint.farminfomanager.entity.points.FramePoint;
-import com.getpoint.farminfomanager.entity.points.PointItemType;
+import com.getpoint.farminfomanager.entity.points.PointInfo;
+import com.getpoint.farminfomanager.entity.points.enumc.DangerPointType;
 import com.getpoint.farminfomanager.utils.proxy.MissionItemProxy;
 import com.getpoint.farminfomanager.utils.proxy.MissionProxy;
 
@@ -68,10 +66,6 @@ public class MissionParser {
                     final String[] s = line.split(" ");
                     LatLong coord = new LatLong(Double.parseDouble(s[1]),
                             Double.parseDouble(s[0]));
-                    Log.i(TAG, "" + coord.getLongitude() + " " + coord.getLatitude());
-
-
-
                     /**
                      *   把当前点添加到任务中去
                      */
@@ -111,42 +105,36 @@ public class MissionParser {
                     /**
                      *  首先获取行内的所有点
                      */
-                    List<DangerPoint> dps = new ArrayList<>();
+                    List<PointInfo> dps = new ArrayList<>();
                     for (int i = 0; i < pointnum; i++) {
                         LatLong coord = new LatLong(Double.parseDouble(s[5 * i + 1]),
                                 Double.parseDouble(s[5 * i + 0]));
-                        Log.i(TAG, "" + coord.getLongitude() + " " + coord.getLatitude());
 
-                        final DangerPoint dp = new DangerPoint(coord,
+                        final PointInfo dp = new PointInfo(coord,
                                 Float.parseFloat(s[5 * i + 2]));
-                        //dp.setPointType(PointItemType.BYPASSPOINT);
                         dp.setPointNum((short) pointtype);
 
                         dps.add(dp);
                     }
 
+                    final DangerPoint dangerPoint = new DangerPoint(dps);
 
-                    if (pointtype == BypassPoint.INDICATE_NUM) {
-
-                        BypassPoint bypassPoint = new BypassPoint();
-                        bypassPoint.setPoints(dps);
-                        MissionItemProxy newItem = new MissionItemProxy(m, bypassPoint);
-                        m.addItem(newItem);
-
-                    } else if (pointtype == ClimbPoint.INDICATE_NUM) {
-
-                        ClimbPoint climbPoint = new ClimbPoint();
-                        climbPoint.setPoints(dps);
-                        MissionItemProxy newItem = new MissionItemProxy(m, climbPoint);
-                        m.addItem(newItem);
-
-                    } else if (pointtype == ForwardPoint.INDICATE_NUM) {
-
-                        ForwardPoint forwardPoint = new ForwardPoint();
-                        forwardPoint.setPoints(dps);
-                        MissionItemProxy newItem = new MissionItemProxy(m, forwardPoint);
-                        m.addItem(newItem);
+                    switch (pointtype) {
+                        case 6:
+                            dangerPoint.setdPType(DangerPointType.BYPASS);
+                            break;
+                        case 7:
+                            dangerPoint.setdPType(DangerPointType.CLIMB);
+                            break;
+                        case 8:
+                            dangerPoint.setdPType(DangerPointType.FORWARD);
+                            break;
+                        default:
+                            break;
                     }
+
+                    MissionItemProxy newItem = new MissionItemProxy(m, dangerPoint);
+                    m.addItem(newItem);
 
                     mCurDangerPoi++;
 

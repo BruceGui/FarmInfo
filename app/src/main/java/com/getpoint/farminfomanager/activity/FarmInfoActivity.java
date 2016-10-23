@@ -25,16 +25,13 @@ import com.getpoint.farminfomanager.R;
 import com.getpoint.farminfomanager.entity.coordinate.LatLong;
 import com.getpoint.farminfomanager.entity.markers.FramePointMarker;
 import com.getpoint.farminfomanager.entity.markers.PointMarker;
-import com.getpoint.farminfomanager.entity.points.BypassPoint;
-import com.getpoint.farminfomanager.entity.points.ClimbPoint;
-import com.getpoint.farminfomanager.entity.points.ForwardPoint;
+import com.getpoint.farminfomanager.entity.points.DangerPoint;
 import com.getpoint.farminfomanager.entity.points.FramePoint;
-import com.getpoint.farminfomanager.entity.points.PointItemType;
+import com.getpoint.farminfomanager.entity.points.PointInfo;
+import com.getpoint.farminfomanager.entity.points.enumc.PointItemType;
 import com.getpoint.farminfomanager.fragment.BaiduMapFragment;
-import com.getpoint.farminfomanager.fragment.Mission.BypassPointFragment;
-import com.getpoint.farminfomanager.fragment.Mission.ClimbPointFragment;
+import com.getpoint.farminfomanager.fragment.Mission.BSPointFragment;
 import com.getpoint.farminfomanager.fragment.Mission.DangerPointFragment;
-import com.getpoint.farminfomanager.fragment.Mission.ForwardPointFragment;
 import com.getpoint.farminfomanager.fragment.Mission.FramePointFragment;
 import com.getpoint.farminfomanager.fragment.Mission.PointDetailFragment;
 import com.getpoint.farminfomanager.fragment.OpenMissionFragment;
@@ -69,11 +66,9 @@ public class FarmInfoActivity extends AppCompatActivity implements
     private static final String TAG = "FarmInfoActivity";
 
     private FramePointFragment framePointFragment;
-    private BypassPointFragment bypassPointFragment;
-    private ClimbPointFragment climbPointFragment;
-    private ForwardPointFragment forwardPointFragment;
     private DangerPointFragment dangerPointFragment;
     private PointDetailFragment pointDetailFragment;
+    private BSPointFragment bsPointFragment;
 
     private SaveMissionFragment mSaveMissionFragment;
     private OpenMissionFragment mOpenMissionFragment;
@@ -267,18 +262,23 @@ public class FarmInfoActivity extends AppCompatActivity implements
                 final LatLong coord = mapFragment.getCurrentCoord();
 
                 switch (currentType) {
+                    case STATIONPOINT:
+                        addBasePoint();
+                        break;
                     case FRAMEPOINT:
-                        addFramePoint(coord, framePointFragment.getAltitude());
+                        if(framePointFragment.isAddNew()) {
+                            addFramePoint(coord, framePointFragment.getAltitude());
+                        } else {
+                            framePointFragment.updateCurrentFP();
+                        }
                         break;
-                    /*case BYPASSPOINT:
-                        addBypassPoint(coord);
+                    case DANGERPOINT:
+                        if(dangerPointFragment.isAddNew()) {
+                            addDangerPoint(coord, dangerPointFragment.getFlyHeight());
+                        } else {
+                            dangerPointFragment.updateCurrentDP();
+                        }
                         break;
-                    case CLIMBPOINT:
-                        addClimbPoint(coord);
-                        break;
-                    case FORWAEDPOINT:
-                        addForwardPoint(coord);
-                        break;*/
                     default:
                         break;
                 }
@@ -299,16 +299,11 @@ public class FarmInfoActivity extends AppCompatActivity implements
         fragmentManager.beginTransaction().add(R.id.point_detail_fragment, PointDetailFragment.
                         newInstance(PointItemType.FRAMEPOINT),
                 PointDetailFragment.getFragmentTag(PointItemType.FRAMEPOINT)).commit();
-        /*fragmentManager.beginTransaction().add(R.id.point_detail_fragment, PointDetailFragment.
-                        newInstance(PointItemType.BYPASSPOINT),
-                PointDetailFragment.getFragmentTag(PointItemType.BYPASSPOINT)).commit();
+
         fragmentManager.beginTransaction().add(R.id.point_detail_fragment, PointDetailFragment.
-                        newInstance(PointItemType.FORWAEDPOINT),
-                PointDetailFragment.getFragmentTag(PointItemType.FORWAEDPOINT)).commit();
-        fragmentManager.beginTransaction().add(R.id.point_detail_fragment, PointDetailFragment.
-                        newInstance(PointItemType.CLIMBPOINT),
-                PointDetailFragment.getFragmentTag(PointItemType.CLIMBPOINT)).commit();
-    */
+                        newInstance(PointItemType.STATIONPOINT),
+                PointDetailFragment.getFragmentTag(PointItemType.STATIONPOINT)).commit();
+
         fragmentManager.beginTransaction().add(R.id.point_detail_fragment, PointDetailFragment.
                         newInstance(PointItemType.DANGERPOINT),
                 PointDetailFragment.getFragmentTag(PointItemType.DANGERPOINT)).commit();
@@ -374,8 +369,7 @@ public class FarmInfoActivity extends AppCompatActivity implements
     @Override
     public boolean onMarkerClick(PointMarker m) {
 
-        final PointItemType itemType = m.getmMarkerOrigin()
-                .getPointInfo()
+        final PointItemType itemType = m.getPointInfo()
                 .getPointType();
 
         switch (itemType) {
@@ -461,7 +455,7 @@ public class FarmInfoActivity extends AppCompatActivity implements
     private void changeSelPointMarker(Boolean state) {
 
         for(PointMarker m : mPointSel) {
-            PointItemType type = m.getmMarkerOrigin().getPointInfo().getPointType();
+            PointItemType type = m.getPointInfo().getPointType();
             Log.i(TAG, "marker num:" + m.getMarkerNum());
 
             switch (type) {
@@ -485,7 +479,7 @@ public class FarmInfoActivity extends AppCompatActivity implements
         List<MissionItemProxy> f = missionProxy.getBoundaryItemProxies();
 
         for(PointMarker m : mPointSel) {
-            f.remove(m.getmMarkerOrigin());
+            f.remove(m.getMissionProxy());
         }
 
         mPointSel.clear();
@@ -546,6 +540,9 @@ public class FarmInfoActivity extends AppCompatActivity implements
             case DANGERPOINT:
                 setupDangerPointFragment();
                 break;
+            case STATIONPOINT:
+                setupBStationFragment();
+                break;
             default:
                 break;
         }
@@ -574,7 +571,22 @@ public class FarmInfoActivity extends AppCompatActivity implements
                     dangerPointFragment = (DangerPointFragment) fragmentManager.findFragmentByTag(PointDetailFragment.getFragmentTag(
                             PointItemType.DANGERPOINT));
                 }
+                final int currnum = missionProxy.getCurrentDangerNumber();
+                dangerPointFragment.setPointIndex(currnum);
                 dangerPointFragment.setPointType(PointItemType.DANGERPOINT.getLabel());
+                dangerPointFragment.updatePointIND(missionProxy);
+                dangerPointFragment.clearInnerVar();
+                if(currnum != 0) {
+                    dangerPointFragment.updateInnerIndex(missionProxy.getDangerItemProxies()
+                            .get(currnum - 1));
+                }
+                break;
+            case STATIONPOINT:
+                if (bsPointFragment == null) {
+                    bsPointFragment = (BSPointFragment) fragmentManager.findFragmentByTag(PointDetailFragment.getFragmentTag(
+                            PointItemType.STATIONPOINT));
+                }
+                bsPointFragment.setPointType(PointItemType.STATIONPOINT.getLabel());
                 break;
             default:
                 break;
@@ -588,6 +600,8 @@ public class FarmInfoActivity extends AppCompatActivity implements
                 PointDetailFragment.getFragmentTag(PointItemType.FRAMEPOINT)))
                 .hide(fragmentManager.findFragmentByTag(
                         PointDetailFragment.getFragmentTag(PointItemType.DANGERPOINT)))
+                .hide(fragmentManager.findFragmentByTag(
+                        PointDetailFragment.getFragmentTag(PointItemType.STATIONPOINT)))
                 .commit();
 
     }
@@ -596,8 +610,22 @@ public class FarmInfoActivity extends AppCompatActivity implements
 
         fragmentManager.beginTransaction().show(fragmentManager.findFragmentByTag(
                 PointDetailFragment.getFragmentTag(PointItemType.DANGERPOINT)))
-                 .hide(fragmentManager.findFragmentByTag(
+                .hide(fragmentManager.findFragmentByTag(
                         PointDetailFragment.getFragmentTag(PointItemType.FRAMEPOINT)))
+                .hide(fragmentManager.findFragmentByTag(
+                        PointDetailFragment.getFragmentTag(PointItemType.STATIONPOINT)))
+                .commit();
+
+    }
+
+    private void setupBStationFragment() {
+
+        fragmentManager.beginTransaction().show(fragmentManager.findFragmentByTag(
+                PointDetailFragment.getFragmentTag(PointItemType.STATIONPOINT)))
+                .hide(fragmentManager.findFragmentByTag(
+                        PointDetailFragment.getFragmentTag(PointItemType.FRAMEPOINT)))
+                .hide(fragmentManager.findFragmentByTag(
+                        PointDetailFragment.getFragmentTag(PointItemType.DANGERPOINT)))
                 .commit();
 
     }
@@ -650,35 +678,32 @@ public class FarmInfoActivity extends AppCompatActivity implements
 
     }
 
-    private void addBypassPoint(LatLong coord) {
-
-        final BypassPoint bypassPoint = bypassPointFragment.getBypassPoint();
-
-        if (!bypassPoint.getInnerPoint().isEmpty()) {
-            MissionItemProxy newItem = new MissionItemProxy(missionProxy, bypassPoint);
-            missionProxy.addItem(newItem);
-        }
+    private void addBasePoint() {
 
     }
 
-    private void addClimbPoint(LatLong coord) {
+    private void addDangerPoint(LatLong coord, float fhight) {
 
-        final ClimbPoint climbPoint = climbPointFragment.getClimbPoint();
+        List<PointInfo> p = new ArrayList<>();
 
-        if (!climbPoint.getInnerPoint().isEmpty()) {
-            MissionItemProxy newItem = new MissionItemProxy(missionProxy, climbPoint);
-            missionProxy.addItem(newItem);
-        }
+        final DangerPoint dangerPoint = new DangerPoint(p);
 
-    }
+        /**
+         *   把当前点添加到任务中去
+         */
+        MissionItemProxy newItem = new MissionItemProxy(missionProxy, dangerPoint);
+        missionProxy.addItem(newItem);
 
-    private void addForwardPoint(LatLong coord) {
+        /**
+         *  在地图上产生当前点的标志
+         */
+        FramePointMarker pointMarker = (FramePointMarker) newItem.getMarker();
+        pointMarker.setMarkerNum(missionProxy.getOrder(newItem));
+        mapFragment.updateMarker(pointMarker);
+        mapFragment.updateFramePointPath(missionProxy.getBoundaryItemProxies());
 
-        final ForwardPoint forwardPoint = forwardPointFragment.getForwardPoint();
-
-        if (!forwardPoint.getInnerPoint().isEmpty()) {
-            MissionItemProxy newItem = new MissionItemProxy(missionProxy, forwardPoint);
-            missionProxy.addItem(newItem);
+        if(dangerPointFragment != null) {
+            dangerPointFragment.updatePointIND(missionProxy);
         }
 
     }

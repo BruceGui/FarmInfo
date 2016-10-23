@@ -26,23 +26,19 @@ import com.baidu.mapapi.map.MarkerOptions;
 import com.baidu.mapapi.map.MyLocationConfiguration;
 import com.baidu.mapapi.map.MyLocationData;
 import com.baidu.mapapi.map.Polygon;
-import com.baidu.mapapi.map.PolygonOptions;
 import com.baidu.mapapi.map.Polyline;
 import com.baidu.mapapi.map.PolylineOptions;
 import com.baidu.mapapi.map.SupportMapFragment;
 import com.baidu.mapapi.model.LatLng;
 import com.baidu.mapapi.model.LatLngBounds;
-import com.baidu.mapapi.model.inner.Point;
 import com.getpoint.farminfomanager.R;
-import com.getpoint.farminfomanager.activity.FarmInfoActivity;
 import com.getpoint.farminfomanager.entity.coordinate.LatLong;
 import com.getpoint.farminfomanager.entity.markers.DangerPointMarker;
 import com.getpoint.farminfomanager.entity.markers.FramePointMarker;
 import com.getpoint.farminfomanager.entity.markers.PointMarker;
-import com.getpoint.farminfomanager.entity.points.BypassPoint;
-import com.getpoint.farminfomanager.entity.points.ClimbPoint;
 import com.getpoint.farminfomanager.entity.points.DangerPoint;
-import com.getpoint.farminfomanager.entity.points.ForwardPoint;
+import com.getpoint.farminfomanager.entity.points.PointInfo;
+import com.getpoint.farminfomanager.entity.points.enumc.PointItemType;
 import com.getpoint.farminfomanager.utils.DroneHelper;
 
 import com.getpoint.farminfomanager.utils.collections.HashBiMap;
@@ -203,10 +199,8 @@ public class BaiduMapFragment extends SupportMapFragment {
         final LatLng position = DroneHelper.CoordToBaiduLatLang(coord);
         Marker marker = mBiMarkersMap.getValue(markerInfo);
         if (marker == null) {
-            Log.i(TAG, "generate marker");
             return generateMarker(markerInfo, position, isDraggable);
         } else {
-            Log.i(TAG, "marker num: " + markerInfo.getMarkerNum());
             return updateMarker(marker, markerInfo, position, isDraggable);
         }
 
@@ -219,7 +213,19 @@ public class BaiduMapFragment extends SupportMapFragment {
                 .draggable(isDraggable)
                 .anchor(markerInfo.getAnchorU(), markerInfo.getAnchorV());
 
-        final Bitmap markerIcon = markerInfo.getIcon(getResources());
+        Bitmap markerIcon = null;
+
+        switch (markerInfo.getPointInfo().getPointType()) {
+            case FRAMEPOINT:
+                 markerIcon = ((FramePointMarker)markerInfo).getIcon(getResources());
+                break;
+            case DANGERPOINT:
+                 markerIcon = ((DangerPointMarker)markerInfo).getIcon(getResources());
+                break;
+            default:
+                break;
+        }
+
 
         if (markerIcon != null) {
             markerOptions.icon(BitmapDescriptorFactory.fromBitmap(markerIcon));
@@ -236,7 +242,20 @@ public class BaiduMapFragment extends SupportMapFragment {
 
     private Marker updateMarker(Marker marker, PointMarker markerInfo, LatLng position,
                               boolean isDraggable) {
-        final Bitmap markerIcon = markerInfo.getIcon(getResources());
+
+        Bitmap markerIcon = null;
+
+        switch (markerInfo.getPointInfo().getPointType()) {
+            case FRAMEPOINT:
+                markerIcon = ((FramePointMarker)markerInfo).getIcon(getResources());
+                break;
+            case DANGERPOINT:
+                markerIcon = ((DangerPointMarker)markerInfo).getIcon(getResources());
+                break;
+            default:
+                break;
+        }
+
         if (markerIcon != null) {
             marker.setIcon(BitmapDescriptorFactory.fromBitmap(markerIcon));
         }
@@ -265,57 +284,31 @@ public class BaiduMapFragment extends SupportMapFragment {
         clearAllMarker();
 
         final List<MissionItemProxy> boundaryPoints = mission.getBoundaryItemProxies();
-        final List<MissionItemProxy> bypassPoints = mission.getBypassItemProxies();
-        final List<MissionItemProxy> climbPoints = mission.getClimbItemProxies();
-        final List<MissionItemProxy> forwardPoints = mission.getForwardItemProies();
-
+        final List<MissionItemProxy> dangerPoints = mission.getDangerItemProxies();
         /**
-         *   边界点的marker
+         *   边界点的 marker
          */
         for (MissionItemProxy itemProxy : boundaryPoints) {
-            FramePointMarker pointMarker = new FramePointMarker(itemProxy);
+            itemProxy.getPointInfo().setPointType(PointItemType.FRAMEPOINT);
+            FramePointMarker pointMarker = new FramePointMarker(itemProxy.getPointInfo(),
+                                            itemProxy);
             pointMarker.setMarkerNum(mission.getOrder(itemProxy));
             updateMarker(pointMarker);
         }
 
         /**
-         *  绕飞点marker
+         *  障碍点的 marker
          */
-        for (MissionItemProxy itemProxy : bypassPoints) {
-            final List<DangerPoint> dps = ((BypassPoint) itemProxy.getPointInfo())
-                    .getInnerPoint();
-            for (DangerPoint innerPoint : dps) {
-                MissionItemProxy newItem = new MissionItemProxy(mission, innerPoint);
-                DangerPointMarker pointMarker = new DangerPointMarker(newItem);
-                pointMarker.setMarkerNum(dps.indexOf(innerPoint) + 1);
-                updateMarker(pointMarker);
-            }
-        }
+        for (MissionItemProxy itemProxy : dangerPoints) {
 
-        /**
-         *  爬升点的marker
-         */
-        for (MissionItemProxy itemProxy : climbPoints) {
-            final List<DangerPoint> dps = ((ClimbPoint) itemProxy.getPointInfo())
-                    .getInnerPoint();
-            for (DangerPoint innerPoint : dps) {
-                MissionItemProxy newItem = new MissionItemProxy(mission, innerPoint);
-                DangerPointMarker pointMarker = new DangerPointMarker(newItem);
-                pointMarker.setMarkerNum(dps.indexOf(innerPoint) + 1);
-                updateMarker(pointMarker);
-            }
-        }
+            final List<PointInfo> ips = ((DangerPoint)itemProxy.getPointInfo())
+                    .getInnerPoints();
 
-        /**
-         *  前飞点的marker
-         */
-        for (MissionItemProxy itemProxy : forwardPoints) {
-            final List<DangerPoint> dps = ((ForwardPoint) itemProxy.getPointInfo())
-                    .getInnerPoint();
-            for (DangerPoint innerPoint : dps) {
-                MissionItemProxy newItem = new MissionItemProxy(mission, innerPoint);
-                DangerPointMarker pointMarker = new DangerPointMarker(newItem);
-                pointMarker.setMarkerNum(dps.indexOf(innerPoint) + 1);
+            for(PointInfo ip : ips) {
+                ip.setPointType(PointItemType.DANGERPOINT);
+                DangerPointMarker pointMarker = new DangerPointMarker(ip, itemProxy);
+                pointMarker.setMarkerNum(ips.indexOf(ip)+1);
+                pointMarker.setOrderNum(dangerPoints.indexOf(itemProxy));
                 updateMarker(pointMarker);
             }
         }
@@ -328,66 +321,8 @@ public class BaiduMapFragment extends SupportMapFragment {
 
         /**
          *  画边界点的线
-
-        for (MissionItemProxy itemProxy : boundaryPoints) {
-            pathCoords.add(itemProxy.getPointInfo().getPosition().getLatLong());
-        }
-        pathCoords.add(pathCoords.get(0));
-
-        updatePolyline(pathCoords);
-        */
+         */
         updateFramePointPath(boundaryPoints);
-        /**
-         *  画绕飞点的线
-         */
-        pathCoords.clear();
-        for (MissionItemProxy itemProxy : bypassPoints) {
-            final List<DangerPoint> dps = ((BypassPoint) itemProxy.getPointInfo())
-                    .getInnerPoint();
-            for (DangerPoint innerPoint : dps) {
-                pathCoords.add(innerPoint.getPosition().getLatLong());
-            }
-
-            if(!pathCoords.isEmpty()) {
-                pathCoords.add(pathCoords.get(0));
-            }
-            updatePolyline(pathCoords);
-        }
-
-
-        /**
-         *  画前飞点的线
-         */
-        pathCoords.clear();
-        for (MissionItemProxy itemProxy : forwardPoints) {
-            final List<DangerPoint> dps = ((ForwardPoint) itemProxy.getPointInfo())
-                    .getInnerPoint();
-            for (DangerPoint innerPoint : dps) {
-                pathCoords.add(innerPoint.getPosition().getLatLong());
-            }
-
-            if(!pathCoords.isEmpty()) {
-                pathCoords.add(pathCoords.get(0));
-            }
-            updatePolyline(pathCoords);
-        }
-
-        /**
-         *  画爬升点的线
-         */
-        pathCoords.clear();
-        for (MissionItemProxy itemProxy : climbPoints) {
-            final List<DangerPoint> dps = ((ClimbPoint) itemProxy.getPointInfo())
-                    .getInnerPoint();
-            for (DangerPoint innerPoint : dps) {
-                pathCoords.add(innerPoint.getPosition().getLatLong());
-            }
-
-            if(!pathCoords.isEmpty()) {
-                pathCoords.add(pathCoords.get(0));
-            }
-            updatePolyline(pathCoords);
-        }
     }
 
     /**
@@ -402,9 +337,6 @@ public class BaiduMapFragment extends SupportMapFragment {
      * <p>
      * }
      */
-
-    //TODO 如何在添加点之后更新画的线 在添加和删除边界点的时候更新
-
     public void updateFramePointPath(List<MissionItemProxy> framepoints) {
 
         List<LatLong> pathCoords = new ArrayList<>();

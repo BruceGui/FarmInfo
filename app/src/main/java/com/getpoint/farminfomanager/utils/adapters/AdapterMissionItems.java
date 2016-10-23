@@ -6,7 +6,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
-import com.getpoint.farminfomanager.entity.points.PointItemType;
+import com.getpoint.farminfomanager.entity.points.enumc.PointItemType;
 
 
 public class AdapterMissionItems extends ArrayAdapter<PointItemType> {

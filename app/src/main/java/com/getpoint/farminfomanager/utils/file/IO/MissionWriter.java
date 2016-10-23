@@ -2,10 +2,8 @@ package com.getpoint.farminfomanager.utils.file.IO;
 
 import android.util.Log;
 
-import com.getpoint.farminfomanager.entity.points.BypassPoint;
-import com.getpoint.farminfomanager.entity.points.ClimbPoint;
 import com.getpoint.farminfomanager.entity.points.DangerPoint;
-import com.getpoint.farminfomanager.entity.points.ForwardPoint;
+import com.getpoint.farminfomanager.entity.points.PointInfo;
 import com.getpoint.farminfomanager.utils.file.FileList;
 import com.getpoint.farminfomanager.utils.file.FileStream;
 import com.getpoint.farminfomanager.utils.proxy.MissionItemProxy;
@@ -41,9 +39,7 @@ public class MissionWriter {
              *  把当前任务点写进文件中
              */
             final List<MissionItemProxy> boundaryPoints = mission.getBoundaryItemProxies();
-            final List<MissionItemProxy> bypassPoints = mission.getBypassItemProxies();
-            final List<MissionItemProxy> climbPoints = mission.getClimbItemProxies();
-            final List<MissionItemProxy> forwardPoints = mission.getForwardItemProies();
+            final List<MissionItemProxy> dangerPoints = mission.getDangerItemProxies();
 
             /**
              *  写入文件头部信息
@@ -87,64 +83,22 @@ public class MissionWriter {
             /**
              *  向文件中写入障碍点的信息
              */
-            out.write(("danger num="
-                    + (bypassPoints.size()
-                    + climbPoints.size()
-                    + forwardPoints.size())).getBytes());
-
+            out.write(("danger points=" + dangerPoints.size()).getBytes());
             newline(out);
 
-
-            /**
-             *  写入绕飞点
-             */
-            for (MissionItemProxy itemProxy : bypassPoints) {
-                for (DangerPoint innerPoint : ((BypassPoint) itemProxy.getPointInfo())
-                        .getInnerPoint()) {
-                    out.write(innerPoint.toString().getBytes());
+            for (MissionItemProxy itemProxy : dangerPoints) {
+                List<PointInfo> ips = ((DangerPoint)itemProxy.getPointInfo())
+                                    .getInnerPoints();
+                for(PointInfo ip : ips) {
+                    out.write(ip.toString().getBytes());
                     out.write(" ".getBytes());
                 }
-                Log.i(TAG, "write bypass");
-                newline(out);
-            }
-
-            Log.i(TAG, "bypass.size = " + bypassPoints.size());
-
-            /**
-             *  写入爬升点
-             */
-            for (MissionItemProxy itemProxy : climbPoints) {
-                for (DangerPoint innerPoint : ((ClimbPoint) itemProxy.getPointInfo())
-                        .getInnerPoint()) {
-                    out.write(innerPoint.toString().getBytes());
-                    out.write(" ".getBytes());
-                }
-                Log.i(TAG, "write climb");
-                newline(out);
-            }
-
-            /**
-             *  写入直飞点
-             */
-            for (MissionItemProxy itemProxy : forwardPoints) {
-                for (DangerPoint innerPoint : ((ForwardPoint) itemProxy.getPointInfo())
-                        .getInnerPoint()) {
-                    out.write(innerPoint.toString().getBytes());
-                    out.write(" ".getBytes());
-
-                }
-                Log.i(TAG, "write forward");
-                newline(out);
+                out.write("\r\n".getBytes());
             }
 
 
             out.write("Method=0".getBytes());
             newline(out);
-            /**
-             *  写入结束信号
-             */
-            //out.write("end".getBytes());
-            //newline(out);
             out.close();
 
         } catch (Exception e) {

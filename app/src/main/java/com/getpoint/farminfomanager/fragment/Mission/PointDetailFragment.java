@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,7 +13,7 @@ import android.widget.TextView;
 
 import com.getpoint.farminfomanager.FarmInfoManagerApp;
 import com.getpoint.farminfomanager.R;
-import com.getpoint.farminfomanager.entity.points.PointItemType;
+import com.getpoint.farminfomanager.entity.points.enumc.PointItemType;
 import com.getpoint.farminfomanager.fragment.BaiduMapFragment;
 import com.getpoint.farminfomanager.utils.adapters.AdapterMissionItems;
 import com.getpoint.farminfomanager.utils.proxy.MissionProxy;
@@ -33,12 +32,16 @@ public class PointDetailFragment extends Fragment implements SpinnerSelfSelect.
 
     private static final String TAG = "PointDetailFragment";
 
+    protected boolean addNew = true;
+
     public static String getFragmentTag(PointItemType itemType) {
         switch (itemType) {
             case FRAMEPOINT:
                 return "FRAMEPOINT";
             case DANGERPOINT:
                 return "DANGERPOINT";
+            case STATIONPOINT:
+                return "STATIONPOINT";
             default:
                 return null;
         }
@@ -53,6 +56,9 @@ public class PointDetailFragment extends Fragment implements SpinnerSelfSelect.
                 break;
             case DANGERPOINT:
                 fragment = new DangerPointFragment();
+                break;
+            case STATIONPOINT:
+                fragment = new BSPointFragment();
                 break;
             default:
                 fragment = new FramePointFragment();
@@ -96,12 +102,10 @@ public class PointDetailFragment extends Fragment implements SpinnerSelfSelect.
 
             if (currentType.equals(PointItemType.FRAMEPOINT.getLabel())) {
                 return PointItemType.FRAMEPOINT;
-            } /*else if (currentType.equals(PointItemType.BYPASSPOINT.getLabel())) {
-                return PointItemType.BYPASSPOINT;
-            } else if (currentType.equals(PointItemType.CLIMBPOINT.getLabel())) {
-                return PointItemType.CLIMBPOINT;
-            }*/ else if (currentType.equals(PointItemType.DANGERPOINT.getLabel())) {
+            } else if (currentType.equals(PointItemType.DANGERPOINT.getLabel())) {
                 return PointItemType.DANGERPOINT;
+            } else if(currentType.equals(PointItemType.STATIONPOINT.getLabel())) {
+                return PointItemType.STATIONPOINT;
             }
 
         }
@@ -123,6 +127,9 @@ public class PointDetailFragment extends Fragment implements SpinnerSelfSelect.
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         final View view = inflater.inflate(getLayoutResource(), container, false);
 
+        PointItemType.STATIONPOINT.setLabel(getActivity().getApplicationContext().getResources().getString(
+                R.string.base_station_point
+        ));
         PointItemType.FRAMEPOINT.setLabel(getActivity().getApplicationContext().getResources().getString(
                 R.string.frame_point
         ));
@@ -142,6 +149,10 @@ public class PointDetailFragment extends Fragment implements SpinnerSelfSelect.
         pointType = (TextView) view.findViewById(R.id.WaypointType);
 
         return view;
+    }
+
+    public boolean isAddNew() {
+        return addNew;
     }
 
     public void setPointType(String type) {
@@ -177,7 +188,6 @@ public class PointDetailFragment extends Fragment implements SpinnerSelfSelect.
     @Override
     public void onSpinnerItemSelected(Spinner spinner, int position) {
 
-        Log.i(TAG, "POS " + position);
         final PointItemType selectType = commandAdapter.getItem(position);
         pointType.setText(selectType.getLabel());
 

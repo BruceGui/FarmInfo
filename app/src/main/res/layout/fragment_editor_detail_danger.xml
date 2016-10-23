@@ -8,14 +8,14 @@
     <com.getpoint.farminfomanager.weights.spinners.SpinnerSelfSelect
         android:id="@+id/spinnerDPIndex"
         android:layout_width="64dp"
-        android:layout_height="wrap_content"
+        android:layout_height="64dp"
         android:layout_alignParentTop="true"
         android:entries="@array/ExampleWaypointType" />
 
     <com.getpoint.farminfomanager.weights.spinners.SpinnerSelfSelect
         android:id="@+id/spinnerDPInnerIndex"
         android:layout_width="64dp"
-        android:layout_height="wrap_content"
+        android:layout_height="64dp"
         android:layout_alignParentTop="true"
         android:layout_toEndOf="@id/spinnerDPIndex"
         android:entries="@array/ExampleWaypointType" />
@@ -23,7 +23,7 @@
     <com.getpoint.farminfomanager.weights.spinners.SpinnerSelfSelect
         android:id="@+id/spinnerWaypointType"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="64dp"
         android:layout_alignParentTop="true"
         android:layout_toEndOf="@id/spinnerDPInnerIndex"
         android:layout_alignParentEnd="true"
@@ -75,27 +75,6 @@
 
         </RelativeLayout>
 
-        <!--
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_alignEnd="@id/dangerPointIndex"
-            android:layout_margin="10dp"
-            android:src="@drawable/ic_menu_hint"
-            tools:ignore="ContentDescription" />
-
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_alignEnd="@id/index_rect"
-            android:layout_margin="10dp"
-            android:src="@drawable/ic_menu_hint"
-            tools:ignore="ContentDescription" />
-        -->
-
         <View
             android:id="@+id/index_div"
             android:layout_width="1dp"
@@ -124,18 +103,6 @@
                 android:textAllCaps="true" />
 
         </RelativeLayout>
-
-        <!--
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_alignEnd="@id/title_content_danger"
-            android:layout_margin="10dp"
-            android:src="@drawable/ic_menu_hint"
-            tools:ignore="ContentDescription" />
-
-         -->
 
     </RelativeLayout>
 
@@ -179,14 +146,30 @@
         android:layout_below="@id/altitudeScrollView"
         android:background="@drawable/wp_title_div" />
 
-    <Button
-        android:id="@+id/id_add_danger_point"
+    <!-- 用 RadioGroup 来选择障碍点的类型 -->
+
+    <RadioGroup
+        android:id="@+id/danger_point_type_rgroup"
         android:layout_width="match_parent"
         android:layout_height="56dp"
-        android:layout_below="@id/button_div"
-        android:background="@drawable/btn_add_point_background"
-        android:text="@string/btn_add"
-        android:textSize="44sp" />
+        android:orientation="horizontal"
+        android:layout_below="@id/button_div">
 
+        <RadioButton
+            android:id="@+id/forward_point_radio"
+            style="@style/radioDangerPType"
+            android:text="@string/forward_danger_poi"/>
+
+        <RadioButton
+            android:id="@+id/bypass_point_radio"
+            style="@style/radioDangerPType"
+            android:text="@string/bypass_danger_poi"/>
+
+        <RadioButton
+            android:id="@+id/climb_point_radio"
+            style="@style/radioDangerPType"
+            android:text="@string/climb_danger_poi"/>
+
+    </RadioGroup>
 
 </RelativeLayout>

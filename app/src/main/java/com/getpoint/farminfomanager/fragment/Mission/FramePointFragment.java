@@ -15,6 +15,8 @@ import android.widget.TextView;
 
 import com.baidu.mapapi.map.Text;
 import com.getpoint.farminfomanager.R;
+import com.getpoint.farminfomanager.entity.coordinate.LatLong;
+import com.getpoint.farminfomanager.entity.points.FramePoint;
 import com.getpoint.farminfomanager.utils.adapters.IndexAdapter;
 import com.getpoint.farminfomanager.utils.proxy.MissionProxy;
 import com.getpoint.farminfomanager.weights.spinnerWheel.CardWheelHorizontalView;
@@ -36,6 +38,8 @@ public class FramePointFragment extends PointDetailFragment implements
     private CardWheelHorizontalView altitudePickerMeter;
     private CardWheelHorizontalView altitudePickerCentimeter;
     private List<String> pointNum = new ArrayList<>();
+
+    private FramePoint currFP;
 
     @Override
     protected int getLayoutResource() {
@@ -70,8 +74,6 @@ public class FramePointFragment extends PointDetailFragment implements
         altitudePickerCentimeter.setViewAdapter(altitudeAdapterCentimeter);
         altitudePickerCentimeter.setCurrentValue(0);
 
-        //updatePointNum(missionProxy);
-
         pointIndex = (TextView) view.findViewById(R.id.WaypointIndex);
         pointIndex.setText(String.valueOf(missionProxy.getCurrentFrameNumber()));
 
@@ -80,6 +82,14 @@ public class FramePointFragment extends PointDetailFragment implements
             @Override
             public void onSpinnerItemSelected(Spinner spinner, int position) {
 
+                setPointIndex(position+1);
+                addNew = false;
+                currFP = (FramePoint)missionProxy.getBoundaryItemProxies()
+                            .get(position).getPointInfo();
+                int fh = (int)currFP.getPosition().getAltitude();
+
+                altitudePickerMeter.setCurrentValue(fh/100);
+                altitudePickerCentimeter.setCurrentValue(fh%100);
             }
         });
 
@@ -107,6 +117,18 @@ public class FramePointFragment extends PointDetailFragment implements
         }
     }
 
+    /**
+     *  更新当前点的信息
+     */
+    public void updateCurrentFP() {
+        int fh = altitudePickerMeter.getCurrentValue()*100
+                + altitudePickerCentimeter.getCurrentValue();
+
+        currFP.getPosition().setAltitude(fh);
+
+        addNew = true;
+    }
+
     public float getAltitude() {
 
         float altitude;
@@ -125,6 +147,7 @@ public class FramePointFragment extends PointDetailFragment implements
     public void setPointIndex(int index) {
         pointIndex.setText(String.valueOf(index));
     }
+
 
     @Override
     public void onChanged(CardWheelHorizontalView cardWheel, int oldValue, int newValue) {
