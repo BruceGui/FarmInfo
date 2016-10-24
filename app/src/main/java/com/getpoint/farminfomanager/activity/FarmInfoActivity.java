@@ -14,6 +14,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.Toast;
@@ -169,10 +170,15 @@ public class FarmInfoActivity extends AppCompatActivity implements
         fragmentManager = getSupportFragmentManager();
         mFloatingAct = (FloatingActionButton) findViewById(R.id.farm_info_fab);
 
+        //TODO 根据有无虚拟键盘动态调整高度布局
+        /**
+         *  动态调整 虚拟 键盘的布局
+         */
         mPointInfoLayout = (MorphLayout) findViewById(R.id.point_info_morph);
         mPointInfoLayout.setMorphListener(this);
         mPointInfoLayout.setFab(mFloatingAct);
 
+        ViewGroup.LayoutParams mlp = mPointInfoLayout.getLayoutParams();
 
         mGoToMyLocation = (ImageButton) findViewById(R.id.my_location_button);
         mZoomToFit = (ImageButton) findViewById(R.id.zoom_to_fit_button);
@@ -270,7 +276,7 @@ public class FarmInfoActivity extends AppCompatActivity implements
                         if(bsPointFragment.isAddNew()) {
                             addBasePoint(coord);
                         } else {
-
+                            bsPointFragment.updateCurrentBSP();
                         }
                         break;
                     case FRAMEPOINT:
@@ -315,11 +321,6 @@ public class FarmInfoActivity extends AppCompatActivity implements
         fragmentManager.beginTransaction().add(R.id.point_detail_fragment, PointDetailFragment.
                         newInstance(PointItemType.DANGERPOINT),
                 PointDetailFragment.getFragmentTag(PointItemType.DANGERPOINT)).commit();
-
-
-        //bsPointFragment.setMapFragment(mapFragment);
-        //framePointFragment.setMapFragment(mapFragment);
-        //dangerPointFragment.setMapFragment(mapFragment);
 
     }
 

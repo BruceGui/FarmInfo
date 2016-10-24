@@ -132,7 +132,7 @@ public class BaiduMapFragment extends SupportMapFragment {
         final BaiduMap.OnMapClickListener onMapClickListener = new BaiduMap.OnMapClickListener() {
             @Override
             public void onMapClick(LatLng latLng) {
-                mapClickedListener.onMapClick(DroneHelper.BaiduLatLngToCoord(latLng));
+               // mapClickedListener.onMapClick(DroneHelper.BaiduLatLngToCoord(latLng));
             }
 
             @Override

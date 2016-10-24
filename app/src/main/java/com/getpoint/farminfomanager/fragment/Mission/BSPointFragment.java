@@ -120,6 +120,17 @@ public class BSPointFragment extends PointDetailFragment implements
         }
     }
 
+    /**
+     *  更新当前点的信息
+     */
+    public void updateCurrentBSP() {
+        int fh =  0;
+
+        currBSP.getPointInfo().getPosition().setAltitude(fh);
+
+        addNew = true;
+    }
+
     public float getAltitude() {
 
         float altitude = 0;

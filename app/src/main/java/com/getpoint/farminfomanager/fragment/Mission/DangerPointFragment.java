@@ -52,13 +52,12 @@ public class DangerPointFragment extends PointDetailFragment implements
     private RadioGroup dPointTypeSel;
 
     private EditText altitudeEdt;
-    private Button getPointBtn;
-    private Button delPointBtn;
 
     private List<String> pointIND = new ArrayList<>();
     private List<String> innerInList = new ArrayList<>();
 
-    private DangerPoint currDP;
+    private MissionItemProxy currDP;
+    private List<PointInfo> currInPlist = null;
     private PointInfo currInP;
 
     private boolean addInP = true;
@@ -80,8 +79,8 @@ public class DangerPointFragment extends PointDetailFragment implements
         innerIndex.setText(String.valueOf(0));
 
         altitudeEdt = (EditText) view.findViewById(R.id.altitudePickEdit);
-        getPointBtn = (Button) view.findViewById(R.id.getPointBtn);
-        delPointBtn = (Button) view.findViewById(R.id.delPointBtn);
+        final Button getPointBtn = (Button) view.findViewById(R.id.getPointBtn);
+        final Button delPointBtn = (Button) view.findViewById(R.id.delPointBtn);
 
         /**
          *   添加 删除障碍点 内部点的监听函数
@@ -95,7 +94,7 @@ public class DangerPointFragment extends PointDetailFragment implements
                             Toast.LENGTH_SHORT).show();
                 } else {
                     //TODO 添加障碍点 的 内部点
-                    if(addInP) {
+                    if (addInP) {
 
                     } else {
                         addInP = true;
@@ -108,6 +107,27 @@ public class DangerPointFragment extends PointDetailFragment implements
             @Override
             public void onClick(View v) {
 
+                /**
+                 *  首先删除障碍点内部点的信息，障碍点内部点为空
+                 *  那么就删除整个障碍点。
+                 */
+                if (currInPlist != null) {
+                    if (!currInPlist.isEmpty()) {
+                        if(currInP != null) {
+                            currInPlist.remove(currInP);
+                            //删除后更新一些信息
+                            updateInnerIndex(currDP);
+                            setInPointIndex(currInPlist.size() + 1);
+                        }
+                    } else {
+                        missionProxy.getDangerItemProxies().remove(currDP);
+                        updatePointIND(missionProxy);
+                        setPointIndex(missionProxy.getCurrentDangerNumber());
+                    }
+
+                    // 删除点后更新 marker 的信息
+                    mapFragment.updateInfoFromMission(missionProxy);
+                }
 
             }
         });
@@ -126,15 +146,17 @@ public class DangerPointFragment extends PointDetailFragment implements
             @Override
             public void onSpinnerItemSelected(Spinner spinner, int position) {
 
-                if (position <= missionProxy.getDangerItemProxies().size() - 1) {
+                if (position < missionProxy.getDangerItemProxies().size()) {
                     addNew = false;
 
                     updateInnerIndex(missionProxy.getDangerItemProxies().get(position));
 
-                    currDP = (DangerPoint) missionProxy.getDangerItemProxies()
-                            .get(position).getPointInfo();
+                    currDP = missionProxy.getDangerItemProxies()
+                            .get(position);
+                    final DangerPoint dp = (DangerPoint) currDP.getPointInfo();
+                    currInPlist = dp.getInnerPoints();
 
-                    switch (currDP.getdPType()) {
+                    switch (dp.getdPType()) {
                         case BYPASS:
                             dPointTypeSel.check(R.id.bypass_point_radio);
                             break;
@@ -169,9 +191,16 @@ public class DangerPointFragment extends PointDetailFragment implements
             public void onSpinnerItemSelected(Spinner spinner, int position) {
                 //TODO
                 setInPointIndex(position + 1);
-                addInP = false;
 
-                currInP = currDP.getInnerPoints().get(position);
+                if (currInPlist != null) {
+                    if (position < currInPlist.size()) {
+                        addInP = false;
+                        currInP = currInPlist.get(position);
+                    } else {
+                        addInP = true;
+                        currInP = null;
+                    }
+                }
 
             }
         });
