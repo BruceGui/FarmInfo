@@ -54,9 +54,12 @@ import com.getpoint.farminfomanager.fragment.EditorChooseFragment;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.getpoint.farminfomanager.utils.virtualnavbar.VirtualNavBar.getNavigationBarHeight;
+
 /**
  * Created by Gui Zhou on 2016-07-05.
  */
+
 public class FarmInfoActivity extends AppCompatActivity implements
         PointDetailFragment.OnPointDetailListener,
         MorphLayout.OnMorphListener,
@@ -65,7 +68,7 @@ public class FarmInfoActivity extends AppCompatActivity implements
         SaveMissionFragment.OnFragmentInteractionListener,
         OpenMissionFragment.OnFragmentInteractionListener,
         EditorChooseFragment.EditorListener,
-        PointEditorFragment.PointEditorListener{
+        PointEditorFragment.PointEditorListener {
 
     private static final String TAG = "FarmInfoActivity";
 
@@ -78,7 +81,7 @@ public class FarmInfoActivity extends AppCompatActivity implements
     private OpenMissionFragment mOpenMissionFragment;
 
     private EditorChooseFragment mEditorChooseFragment;
-    private PointEditorFragment  mPointEditorFragment;
+    private PointEditorFragment mPointEditorFragment;
 
     private PointItemType currentType = PointItemType.FRAMEPOINT;
 
@@ -117,6 +120,9 @@ public class FarmInfoActivity extends AppCompatActivity implements
         eventFilter.addAction(AttributesEvent.GPS_MSG_PSRDOP);
     }
 
+    /**
+     *  接受来自 GPS 设备的信息并更新
+     */
     private final BroadcastReceiver eventReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -150,7 +156,6 @@ public class FarmInfoActivity extends AppCompatActivity implements
 
         farmApp.getLocalBroadcastManager().registerReceiver(eventReceiver, eventFilter);
 
-        Log.i(TAG, "ACtivity FarmInfo");
     }
 
 
@@ -171,14 +176,19 @@ public class FarmInfoActivity extends AppCompatActivity implements
         mFloatingAct = (FloatingActionButton) findViewById(R.id.farm_info_fab);
 
         //TODO 根据有无虚拟键盘动态调整高度布局
-        /**
-         *  动态调整 虚拟 键盘的布局
-         */
+
         mPointInfoLayout = (MorphLayout) findViewById(R.id.point_info_morph);
         mPointInfoLayout.setMorphListener(this);
         mPointInfoLayout.setFab(mFloatingAct);
+        /**
+          *   根据虚拟键盘 动态调整布局
+          */
+        ViewGroup.MarginLayoutParams mvm = (ViewGroup.MarginLayoutParams) mPointInfoLayout.getLayoutParams();
 
-        ViewGroup.LayoutParams mlp = mPointInfoLayout.getLayoutParams();
+        mvm.bottomMargin += getNavigationBarHeight(this);
+        mvm.setMargins(mvm.leftMargin, mvm.topMargin,
+                mvm.rightMargin, mvm.bottomMargin);
+        mPointInfoLayout.requestLayout();
 
         mGoToMyLocation = (ImageButton) findViewById(R.id.my_location_button);
         mZoomToFit = (ImageButton) findViewById(R.id.zoom_to_fit_button);
@@ -208,7 +218,6 @@ public class FarmInfoActivity extends AppCompatActivity implements
             @Override
             public void onClick(View v) {
                 morphCreate();
-                //setupPointDetailFragment();
                 addPointDetail(currentType);
                 updatePointInfo(currentType);
 
@@ -239,23 +248,6 @@ public class FarmInfoActivity extends AppCompatActivity implements
             @Override
             public void onClick(View v) {
 
-                /**
-                 *  用于删除临时的点
-
-                switch (currentType) {
-                    case BYPASSPOINT:
-                        bypassPointFragment.removeMarker();
-                        break;
-                    case FORWAEDPOINT:
-                        forwardPointFragment.removeMarker();
-                        break;
-                    case CLIMBPOINT:
-                        climbPointFragment.removeMarker();
-                        break;
-                    default:
-                        break;
-                }
-                */
                 if (mPointInfoLayout.getState() == MorphLayout.State.MORPHED) {
                     morphDestory();
                 }
@@ -273,34 +265,33 @@ public class FarmInfoActivity extends AppCompatActivity implements
 
                 switch (currentType) {
                     case STATIONPOINT:
-                        if(bsPointFragment.isAddNew()) {
+                        /*
+                        if (bsPointFragment.isAddNew()) {
                             addBasePoint(coord);
                         } else {
                             bsPointFragment.updateCurrentBSP();
                         }
-                        break;
+
+                        break;*/
                     case FRAMEPOINT:
-                        if(framePointFragment.isAddNew()) {
+                        /*
+                        if (framePointFragment.isAddNew()) {
                             addFramePoint(coord, framePointFragment.getAltitude());
                         } else {
                             framePointFragment.updateCurrentFP();
-                        }
+                        }*/
+                        morphDestory();
                         break;
                     case DANGERPOINT:
-                        if(dangerPointFragment.isAddNew()) {
+                        //if (dangerPointFragment.isAddNew()) {
                             addDangerPoint(dangerPointFragment.getCurrentDPType());
-                        } else {
-                            dangerPointFragment.updateCurrentDP();
-                        }
+                        //} else {
+                        //    dangerPointFragment.updateCurrentDP();
+                        //}
                         break;
                     default:
                         break;
                 }
-
-                /**
-                 * 关闭取点的界面
-                morphDestory();
-                 */
             }
         });
     }
@@ -360,10 +351,10 @@ public class FarmInfoActivity extends AppCompatActivity implements
         final Context c = getApplicationContext();
 
         if (missionProxy.readMissionFromFile(path)) {
-            Toast.makeText(c, R.string.open_mission_success,Toast.LENGTH_SHORT).show();
+            Toast.makeText(c, R.string.open_mission_success, Toast.LENGTH_SHORT).show();
             mapFragment.updateInfoFromMission(missionProxy);
         } else {
-            Toast.makeText(c, R.string.open_mission_failed,Toast.LENGTH_SHORT).show();
+            Toast.makeText(c, R.string.open_mission_failed, Toast.LENGTH_SHORT).show();
         }
 
         mOpenMissionFragment.dismiss();
@@ -393,7 +384,7 @@ public class FarmInfoActivity extends AppCompatActivity implements
                 break;
         }
 
-        if(!onDeleting) {
+        if (!onDeleting) {
             mEditorChooseFragment = EditorChooseFragment.newInstance(this);
             mEditorChooseFragment.show(getSupportFragmentManager(), null);
         } else {
@@ -406,14 +397,15 @@ public class FarmInfoActivity extends AppCompatActivity implements
     }
 
     /**
-     *   点击地图的监听函数
+     * 点击地图的监听函数
+     *
      * @return
      */
     @Override
     public boolean onMapClick(LatLong latLong) {
 
-        if(!onDeleting) {
-             addFramePoint(latLong, 120);
+        if (!onDeleting) {
+            addFramePoint(latLong, 120);
         }
 
         return false;
@@ -436,7 +428,7 @@ public class FarmInfoActivity extends AppCompatActivity implements
     public void onEditor() {
 
         mEditorChooseFragment.dismiss();
-        mPointEditorFragment= PointEditorFragment.newInstance(this);
+        mPointEditorFragment = PointEditorFragment.newInstance(this);
         mPointEditorFragment.show(getSupportFragmentManager(), null);
     }
 
@@ -448,11 +440,10 @@ public class FarmInfoActivity extends AppCompatActivity implements
     }
 
     /**
-     *  修改点高度的监听函数
+     * 修改点高度的监听函数
      */
     @Override
     public void onPConfirm() {
-        //TODO 如何修改点的高度
 
         mPointEditorFragment.dismiss();
     }
@@ -463,12 +454,13 @@ public class FarmInfoActivity extends AppCompatActivity implements
     }
 
     /**
-     *  根据选中与否，改变点的标记状态
+     * 根据选中与否，改变点的标记状态
+     *
      * @param state true 表示选中 false 表示没有选择
      */
     private void changeSelPointMarker(Boolean state) {
 
-        for(PointMarker m : mPointSel) {
+        for (PointMarker m : mPointSel) {
             PointItemType type = m.getPointInfo().getPointType();
             Log.i(TAG, "marker num:" + m.getMarkerNum());
 
@@ -486,13 +478,13 @@ public class FarmInfoActivity extends AppCompatActivity implements
     }
 
     /**
-     *  删除选择的点
+     * 删除选择的点
      */
     private void deleteSelPoint() {
 
         List<MissionItemProxy> f = missionProxy.getBoundaryItemProxies();
 
-        for(PointMarker m : mPointSel) {
+        for (PointMarker m : mPointSel) {
             f.remove(m.getMissionProxy());
         }
 
@@ -533,7 +525,7 @@ public class FarmInfoActivity extends AppCompatActivity implements
     }
 
     /**
-     *  清除所有的标记点信息
+     * 清除所有的标记点信息
      */
     private void newMissionFile() {
         missionProxy.missionClear();
@@ -591,7 +583,12 @@ public class FarmInfoActivity extends AppCompatActivity implements
                 dangerPointFragment.setPointIndex(currnum);
                 dangerPointFragment.setPointType(PointItemType.DANGERPOINT.getLabel());
                 dangerPointFragment.updatePointIND(missionProxy);
-                dangerPointFragment.clearInnerVar();
+                if(currnum == 0) {
+                    dangerPointFragment.setInPointIndex(1);
+                } else {
+                    dangerPointFragment.updateCurrVar(missionProxy.getDangerItemProxies()
+                            .get(currnum));
+                }
                 break;
             case STATIONPOINT:
                 if (bsPointFragment == null) {
@@ -601,6 +598,7 @@ public class FarmInfoActivity extends AppCompatActivity implements
                 }
                 bsPointFragment.setPointType(PointItemType.STATIONPOINT.getLabel());
                 bsPointFragment.updatePointNum(missionProxy);
+                bsPointFragment.setPointIndex(missionProxy.getCurrentBaseNumber());
                 break;
             default:
                 break;
@@ -686,7 +684,7 @@ public class FarmInfoActivity extends AppCompatActivity implements
         mapFragment.updateMarker(pointMarker);
         mapFragment.updateFramePointPath(missionProxy.getBoundaryItemProxies());
 
-        if(framePointFragment != null) {
+        if (framePointFragment != null) {
             framePointFragment.updatePointNum(missionProxy);
         }
 
@@ -697,7 +695,7 @@ public class FarmInfoActivity extends AppCompatActivity implements
 
     private void addBasePoint(LatLong coord) {
 
-        final StationPoint stationPoint = new StationPoint(coord);
+        final StationPoint stationPoint = new StationPoint(coord, 0);
 
         /**
          *   把当前点添加到任务中去
@@ -712,7 +710,7 @@ public class FarmInfoActivity extends AppCompatActivity implements
         pointMarker.setMarkerNum(missionProxy.getOrder(newItem));
         mapFragment.updateMarker(pointMarker);
 
-        if(bsPointFragment != null) {
+        if (bsPointFragment != null) {
             bsPointFragment.updatePointNum(missionProxy);
         }
 
@@ -721,6 +719,7 @@ public class FarmInfoActivity extends AppCompatActivity implements
     }
 
     private void addDangerPoint(DangerPointType dPType) {
+
 
         List<PointInfo> p = new ArrayList<>();
 
@@ -735,7 +734,7 @@ public class FarmInfoActivity extends AppCompatActivity implements
         final int currnum = missionProxy.getCurrentDangerNumber();
         dangerPointFragment.setPointIndex(currnum);
         dangerPointFragment.updatePointIND(missionProxy);
-        dangerPointFragment.clearInnerVar();
+        dangerPointFragment.updateCurrVar(newItem);
 
         /**
          *  在地图上产生当前点的标志
@@ -887,7 +886,7 @@ public class FarmInfoActivity extends AppCompatActivity implements
             changeSelPointMarker(false);
             mPointSel.clear();
 
-        } else if  (mPointInfoLayout.getState() == MorphLayout.State.MORPHED) {
+        } else if (mPointInfoLayout.getState() == MorphLayout.State.MORPHED) {
             mFloatingAct.toggle();
             mPointInfoLayout.revert(true, true);
         } else {

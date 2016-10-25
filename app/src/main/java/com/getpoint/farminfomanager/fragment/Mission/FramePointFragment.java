@@ -18,6 +18,7 @@ import android.widget.TextView;
 import com.baidu.mapapi.map.Text;
 import com.getpoint.farminfomanager.R;
 import com.getpoint.farminfomanager.entity.coordinate.LatLong;
+import com.getpoint.farminfomanager.entity.markers.FramePointMarker;
 import com.getpoint.farminfomanager.entity.points.FramePoint;
 import com.getpoint.farminfomanager.utils.adapters.IndexAdapter;
 import com.getpoint.farminfomanager.utils.proxy.MissionItemProxy;
@@ -39,7 +40,8 @@ public class FramePointFragment extends PointDetailFragment implements
 
     private TextView pointIndex;
     private EditText altitudeEdt;
-    private Button delBSPoint;
+    private Button getFPoint;
+    private Button delFPoint;
 
     private List<String> pointNum = new ArrayList<>();
 
@@ -68,16 +70,50 @@ public class FramePointFragment extends PointDetailFragment implements
 
         altitudeEdt = (EditText) view.findViewById(R.id.altitudePickEdit);
 
-        delBSPoint = (Button) view.findViewById(R.id.delPointBtn);
-        delBSPoint.setOnClickListener(new View.OnClickListener() {
+        getFPoint = (Button) view.findViewById(R.id.getPointBtn);
+        getFPoint.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (isAddNew()) {
+                    FramePoint framePoint = new FramePoint(mapFragment.getCurrentCoord(),
+                            getAltitude());
+
+                    /**
+                     *   把当前点添加到任务中去
+                     */
+                    MissionItemProxy newItem = new MissionItemProxy(missionProxy, framePoint);
+                    missionProxy.addItem(newItem);
+
+                    /**
+                     *  在地图上产生当前点的标志
+                     */
+                    FramePointMarker pointMarker = (FramePointMarker) newItem.getMarker();
+                    pointMarker.setMarkerNum(missionProxy.getOrder(newItem));
+                    mapFragment.updateMarker(pointMarker);
+                    mapFragment.updateFramePointPath(missionProxy.getBoundaryItemProxies());
+                    updatePointNum(missionProxy);
+
+
+                } else {
+                    updateCurrentFP();
+
+                }
+
+                setPointIndex(missionProxy.getCurrentFrameNumber());
+            }
+        });
+
+        delFPoint = (Button) view.findViewById(R.id.delPointBtn);
+        delFPoint.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                if(currFP != null) {
+                if (currFP != null) {
                     missionProxy.getBoundaryItemProxies().remove(currFP);
                     updatePointNum(missionProxy);
                     setPointIndex(missionProxy.getCurrentFrameNumber());
                     mapFragment.updateInfoFromMission(missionProxy);
+                    addNew = true;
                 }
 
             }
@@ -88,9 +124,9 @@ public class FramePointFragment extends PointDetailFragment implements
             @Override
             public void onSpinnerItemSelected(Spinner spinner, int position) {
 
-                setPointIndex(position+1);
+                setPointIndex(position + 1);
 
-                if(position < missionProxy.getBoundaryItemProxies().size()) {
+                if (position < missionProxy.getBoundaryItemProxies().size()) {
                     addNew = false;
                     currFP = missionProxy.getBoundaryItemProxies()
                             .get(position);
@@ -112,7 +148,8 @@ public class FramePointFragment extends PointDetailFragment implements
     }
 
     /**
-     *    更新适配器 list 的信息
+     * 更新适配器 list 的信息
+     *
      * @param m 任务
      */
     public void updatePointNum(MissionProxy m) {
@@ -127,10 +164,10 @@ public class FramePointFragment extends PointDetailFragment implements
     }
 
     /**
-     *  更新当前点的信息
+     * 更新当前点的信息
      */
     public void updateCurrentFP() {
-        int fh =  0;
+        int fh = 0;
 
         currFP.getPointInfo().getPosition().setAltitude(fh);
 

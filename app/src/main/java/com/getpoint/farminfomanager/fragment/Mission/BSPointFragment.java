@@ -13,6 +13,8 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.getpoint.farminfomanager.R;
+import com.getpoint.farminfomanager.entity.markers.StationPointMarker;
+import com.getpoint.farminfomanager.entity.points.StationPoint;
 import com.getpoint.farminfomanager.utils.adapters.IndexAdapter;
 import com.getpoint.farminfomanager.utils.proxy.MissionItemProxy;
 import com.getpoint.farminfomanager.utils.proxy.MissionProxy;
@@ -34,6 +36,7 @@ public class BSPointFragment extends PointDetailFragment implements
 
     private TextView pointIndex;
     private EditText altitudeEdt;
+    private Button getBSPoint;
     private Button delBSPoint;
 
     private List<String> pointNum = new ArrayList<>();
@@ -62,16 +65,48 @@ public class BSPointFragment extends PointDetailFragment implements
 
         altitudeEdt = (EditText) view.findViewById(R.id.altitudePickEdit);
 
+        getBSPoint = (Button) view.findViewById(R.id.getPointBtn);
+        getBSPoint.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (isAddNew()) {
+                    StationPoint stationPoint = new StationPoint(mapFragment
+                            .getCurrentCoord(), 0);
+
+                    /**
+                     *   把当前点添加到任务中去
+                     */
+                    MissionItemProxy newItem = new MissionItemProxy(missionProxy, stationPoint);
+                    missionProxy.addItem(newItem);
+
+                    /**
+                     *  在地图上产生当前点的标志
+                     */
+                    StationPointMarker pointMarker = (StationPointMarker) newItem.getMarker();
+                    pointMarker.setMarkerNum(missionProxy.getOrder(newItem));
+                    mapFragment.updateMarker(pointMarker);
+
+                    updatePointNum(missionProxy);
+
+                    setPointIndex(missionProxy.getCurrentBaseNumber());
+                    updatePointNum(missionProxy);
+                } else {
+                    updateCurrentBSP();
+                }
+            }
+        });
+
         delBSPoint = (Button) view.findViewById(R.id.delPointBtn);
         delBSPoint.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                if(currBSP != null) {
+                if (currBSP != null) {
                     missionProxy.getBaseStationProxies().remove(currBSP);
                     updatePointNum(missionProxy);
                     setPointIndex(missionProxy.getCurrentBaseNumber());
                     mapFragment.updateInfoFromMission(missionProxy);
+                    addNew = true;
                 }
 
             }
@@ -121,10 +156,10 @@ public class BSPointFragment extends PointDetailFragment implements
     }
 
     /**
-     *  更新当前点的信息
+     * 更新当前点的信息
      */
     public void updateCurrentBSP() {
-        int fh =  0;
+        int fh = 0;
 
         currBSP.getPointInfo().getPosition().setAltitude(fh);
 

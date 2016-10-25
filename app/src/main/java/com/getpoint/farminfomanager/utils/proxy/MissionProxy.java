@@ -77,7 +77,12 @@ public class MissionProxy {
     }
 
     public int getCurrentDangerNumber() {
-        return this.dangerItemProxies.size();
+
+        if(dangerItemProxies.isEmpty()) {
+            return 0;
+        }
+
+        return this.dangerItemProxies.size() - 1;
     }
 
     /**

@@ -6,6 +6,7 @@ import com.getpoint.farminfomanager.entity.coordinate.LatLong;
 import com.getpoint.farminfomanager.entity.points.DangerPoint;
 import com.getpoint.farminfomanager.entity.points.FramePoint;
 import com.getpoint.farminfomanager.entity.points.PointInfo;
+import com.getpoint.farminfomanager.entity.points.StationPoint;
 import com.getpoint.farminfomanager.entity.points.enumc.DangerPointType;
 import com.getpoint.farminfomanager.utils.proxy.MissionItemProxy;
 import com.getpoint.farminfomanager.utils.proxy.MissionProxy;
@@ -29,6 +30,7 @@ public class MissionParser {
      */
     enum Mission_states {
         MISSION_PARSER_START,
+        MISSION_GOT_STATION_POINTS,
         MISSION_GOT_FRAME_POINTS,
         MISSION_GOT_SUCCESS
     }
@@ -37,8 +39,11 @@ public class MissionParser {
     static boolean mission_received;
     private MissionProxy m;
 
+    private int mAllStationPoi;
     private int mAllFramePoi;
     private int mAllDangerPoi;
+
+    private int mCurStationPoi;
     private int mCurFramePoi;
     private int mCurDangerPoi;
 
@@ -49,9 +54,44 @@ public class MissionParser {
     public MissionProxy mission_parse_line(String line) {
         mission_received = false;
 
+        //TODO 读取基站点
         switch (state) {
             case MISSION_GOT_SUCCESS:
             case MISSION_PARSER_START:
+                if(line.contains("base station")) {
+
+                    final String[] s = line.split("=");
+                    mAllStationPoi = Integer.parseInt(s[1]);
+
+                    if(mAllStationPoi == 0) {
+                        state = Mission_states.MISSION_GOT_STATION_POINTS;
+                    }
+
+                    mCurStationPoi = 0;
+                    m = new MissionProxy();
+
+                } else {
+                    final String[] s = line.split(" ");
+                    LatLong coord = new LatLong(Double.parseDouble(s[1]),
+                            Double.parseDouble(s[0]));
+                    /**
+                     *   把当前点添加到任务中去
+                     */
+                    final StationPoint stationPoint = new StationPoint(coord, Float.parseFloat(s[2]));
+                    MissionItemProxy newItem = new MissionItemProxy(m, stationPoint);
+                    m.addItem(newItem);
+
+                    mCurStationPoi++;
+
+                    /**
+                     *  成功添加所有边界点
+                     */
+                    if(mCurStationPoi == mAllStationPoi) {
+                        state = Mission_states.MISSION_GOT_STATION_POINTS;
+                    }
+                }
+                break;
+            case MISSION_GOT_STATION_POINTS:
                 if (line.contains("frame points")) {
                     Log.i(TAG, "start parser");
                     final String[] s = line.split("=");
@@ -61,7 +101,6 @@ public class MissionParser {
                         state = Mission_states.MISSION_GOT_FRAME_POINTS;
                     }
                     mCurFramePoi = 0;
-                    m = new MissionProxy();
                 } else {
                     final String[] s = line.split(" ");
                     LatLong coord = new LatLong(Double.parseDouble(s[1]),

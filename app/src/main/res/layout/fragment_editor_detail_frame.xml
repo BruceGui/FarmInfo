@@ -83,6 +83,11 @@
                 android:hint="@string/altitude_label"/>
 
             <Button
+                android:id="@+id/getPointBtn"
+                style="@style/getDelPointBtn"
+                android:text="@string/get_point"/>
+
+            <Button
                 android:id="@+id/delPointBtn"
                 style="@style/getDelPointBtn"
                 android:text="@string/delete_point"/>

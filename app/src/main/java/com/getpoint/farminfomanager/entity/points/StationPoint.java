@@ -10,9 +10,9 @@ import com.getpoint.farminfomanager.entity.points.enumc.PointItemType;
 
 public class StationPoint extends PointInfo{
 
-    public StationPoint(LatLong coord) {
+    public StationPoint(LatLong coord, float height) {
 
-        this.position = new LatLongAlt(coord.getLatitude(), coord.getLongitude(), 0);
+        this.position = new LatLongAlt(coord.getLatitude(), coord.getLongitude(), height);
         this.pointType = PointItemType.STATIONPOINT;
 
     }

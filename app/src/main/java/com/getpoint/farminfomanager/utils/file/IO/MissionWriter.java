@@ -27,6 +27,14 @@ public class MissionWriter {
         return write(mission, filepath, FileStream.getWaypointFilename("waypoints"));
     }
 
+    /**
+     * 保存任务到文件
+     *
+     * @param mission  要保存的任务
+     * @param filepath 保存路径
+     * @param filename 保存的文件名
+     * @return 成功返回 true, 失败返回 false
+     */
     public static boolean write(MissionProxy mission, String filepath, String filename) {
         try {
 
@@ -38,6 +46,7 @@ public class MissionWriter {
             /**
              *  把当前任务点写进文件中
              */
+            final List<MissionItemProxy> stationPoints = mission.getBaseStationProxies();
             final List<MissionItemProxy> boundaryPoints = mission.getBoundaryItemProxies();
             final List<MissionItemProxy> dangerPoints = mission.getDangerItemProxies();
 
@@ -70,14 +79,25 @@ public class MissionWriter {
             newline(out);
 
             /**
+             *  向文件中写入基站点
+             */
+            out.write(("base station=" + stationPoints.size()).getBytes());
+            newline(out);
+
+            for (MissionItemProxy itemProxy : stationPoints) {
+                out.write(itemProxy.getPointInfo().toString().getBytes());
+                newline(out);
+            }
+
+            /**
              *   向文件中写入边界点的信息
              */
-            out.write(("frame points=" + boundaryPoints.size()).getBytes());
+                out.write(("frame points=" + boundaryPoints.size()).getBytes());
             newline(out);
 
             for (MissionItemProxy itemProxy : boundaryPoints) {
                 out.write(itemProxy.getPointInfo().toString().getBytes());
-                out.write("\r\n".getBytes());
+                newline(out);
             }
 
             /**
@@ -87,9 +107,9 @@ public class MissionWriter {
             newline(out);
 
             for (MissionItemProxy itemProxy : dangerPoints) {
-                List<PointInfo> ips = ((DangerPoint)itemProxy.getPointInfo())
-                                    .getInnerPoints();
-                for(PointInfo ip : ips) {
+                List<PointInfo> ips = ((DangerPoint) itemProxy.getPointInfo())
+                        .getInnerPoints();
+                for (PointInfo ip : ips) {
                     out.write(ip.toString().getBytes());
                     out.write(" ".getBytes());
                 }
@@ -105,9 +125,16 @@ public class MissionWriter {
             Log.e(TAG, e.getMessage(), e);
             return false;
         }
+
         return true;
     }
 
+    /**
+     * 从文件读取任务
+     *
+     * @param filepath 文件路径
+     * @return 如果成功，则返回读取的任务。否则返回 null
+     */
     public static MissionProxy read(String filepath) {
 
         Log.i(TAG, "read mission from file:" + filepath);
@@ -129,12 +156,12 @@ public class MissionWriter {
                  *  解析读取的行，成功则返回一个 mission 对象,
                  *  跳过前六行的附属信息
                  */
-                linenum ++;
-                if(linenum == 1 && !line.contains("refedge")) {
+                linenum++;
+                if (linenum == 1 && !line.contains("refedge")) {
                     break;
                 }
 
-                if(linenum > 6) {
+                if (linenum > 6) {
                     missionProxy = parser.mission_parse_line(line);
                 }
             }

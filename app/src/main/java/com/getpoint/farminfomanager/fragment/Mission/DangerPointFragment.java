@@ -89,17 +89,57 @@ public class DangerPointFragment extends PointDetailFragment implements
             @Override
             public void onClick(View v) {
 
-                if (addNew) {
-                    Toast.makeText(getActivity(), getString(R.string.please_add_point_first),
-                            Toast.LENGTH_SHORT).show();
-                } else {
-                    //TODO 添加障碍点 的 内部点
-                    if (addInP) {
+                //if (addNew) {
+                //Toast.makeText(getActivity(), getString(R.string.please_add_point_first),
+                //        Toast.LENGTH_SHORT).show();
+                if (currDP == null) {
 
-                    } else {
-                        addInP = true;
-                    }
+                    List<PointInfo> p = new ArrayList<>();
+
+                    final DangerPoint dangerPoint = new DangerPoint(p);
+                    dangerPoint.setdPType(getCurrentDPType());
+                    /**
+                     *   把当前点添加到任务中去
+                     */
+                    MissionItemProxy newItem = new MissionItemProxy(missionProxy, dangerPoint);
+                    missionProxy.addItem(newItem);
+
+                    currDP = newItem;
+                    currInPlist = p;
+
                 }
+
+                if(addInP) {
+                    PointInfo p = new PointInfo(mapFragment.getCurrentCoord(),
+                            getFlyHeight());
+
+                    switch (getCurrentDPType()) {
+                        case BYPASS:
+                            p.setPointNum((short) 6);
+                            break;
+                        case CLIMB:
+                            p.setPointNum((short) 7);
+                            break;
+                        case FORWARD:
+                            p.setPointNum((short) 8);
+                            break;
+                        default:
+                            break;
+                    }
+
+                    ((DangerPoint)currDP.getPointInfo()).getInnerPoints()
+                            .add(p);
+
+                    updateInnerIndex(currDP);
+                    mapFragment.updateInfoFromMission(missionProxy);
+
+                } else {
+                    updateCurrentInP();
+                }
+
+                //} else {
+
+                //}
             }
         });
 
@@ -113,11 +153,12 @@ public class DangerPointFragment extends PointDetailFragment implements
                  */
                 if (currInPlist != null) {
                     if (!currInPlist.isEmpty()) {
-                        if(currInP != null) {
+                        if (currInP != null) {
                             currInPlist.remove(currInP);
                             //删除后更新一些信息
                             updateInnerIndex(currDP);
                             setInPointIndex(currInPlist.size() + 1);
+                            currInP = null;
                         }
                     } else {
                         missionProxy.getDangerItemProxies().remove(currDP);
@@ -252,7 +293,11 @@ public class DangerPointFragment extends PointDetailFragment implements
     public void updatePointIND(MissionProxy m) {
         pointIND.clear();
 
-        int length = m.getDangerItemProxies().size() + 1;
+        int length = m.getDangerItemProxies().size();
+
+        if (length == 0) {
+            length++;
+        }
 
         for (int i = 0; i < length; i++) {
             pointIND.add(String.valueOf(DangerPointMarker.IND[i]));
@@ -272,6 +317,7 @@ public class DangerPointFragment extends PointDetailFragment implements
         }
 
         setInPointIndex(length);
+        Log.i(TAG, "length " + length);
     }
 
     /**
@@ -292,6 +338,35 @@ public class DangerPointFragment extends PointDetailFragment implements
     public void updateCurrentInP() {
 
         addInP = true;
+    }
+
+    /**
+     *  更新当前 障碍点 及 内部点参数信息
+     */
+    public void updateCurrVar(MissionItemProxy m) {
+
+        Log.i(TAG, "Update current variable");
+
+        currDP = m;
+        currInPlist = ((DangerPoint)m.getPointInfo()).getInnerPoints();
+        //clearInnerVar();
+
+        updateInnerIndex(m);
+        final DangerPoint dp = (DangerPoint) currDP.getPointInfo();
+
+        switch (dp.getdPType()) {
+            case BYPASS:
+                dPointTypeSel.check(R.id.bypass_point_radio);
+                break;
+            case CLIMB:
+                dPointTypeSel.check(R.id.climb_point_radio);
+                break;
+            case FORWARD:
+                dPointTypeSel.check(R.id.forward_point_radio);
+                break;
+            default:
+                break;
+        }
     }
 
     public void clearInnerVar() {
