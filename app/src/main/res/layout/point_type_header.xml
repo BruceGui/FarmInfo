@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- 使用 list view 来显示边界点、障碍点的详细信息 -->
+
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/pointTypeTex"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/base_station_point"
+        android:textSize="20sp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            style="@style/pointdetailheader"
+            android:layout_weight="2"
+            android:text="@string/serial_num" />
+
+        <TextView
+            style="@style/pointdetailheader"
+            android:layout_weight="4"
+            android:text="@string/lon_label" />
+
+        <TextView
+            style="@style/pointdetailheader"
+            android:layout_weight="4"
+            android:text="@string/lat_label" />
+
+        <TextView
+            style="@style/pointdetailheader"
+            android:layout_weight="4"
+            android:text="@string/altitude_label" />
+
+    </LinearLayout>
+
+</LinearLayout>

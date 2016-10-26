@@ -4,6 +4,7 @@ package com.getpoint.farminfomanager.fragment.Mission;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -71,7 +72,7 @@ public class BSPointFragment extends PointDetailFragment implements
             public void onClick(View v) {
                 if (isAddNew()) {
                     StationPoint stationPoint = new StationPoint(mapFragment
-                            .getCurrentCoord(), 0);
+                            .getCurrentCoord(), getAltitude());
 
                     /**
                      *   把当前点添加到任务中去
@@ -168,7 +169,11 @@ public class BSPointFragment extends PointDetailFragment implements
 
     public float getAltitude() {
 
-        float altitude = 0;
+        float altitude = gps.alt;
+
+        if(!TextUtils.isEmpty(altitudeEdt.getText())) {
+            altitude += Float.valueOf(altitudeEdt.getText().toString());
+        }
 
         return altitude;
     }

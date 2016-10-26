@@ -73,6 +73,9 @@ public class MissionParser {
                     final String[] s = line.split(" ");
                     LatLong coord = new LatLong(Double.parseDouble(s[1]),
                             Double.parseDouble(s[0]));
+
+                    Log.i(TAG, "coord: " + coord.getLongitude() + " "
+                            + coord.getLatitude());
                     /**
                      *   把当前点添加到任务中去
                      */
@@ -92,18 +95,23 @@ public class MissionParser {
                 break;
             case MISSION_GOT_STATION_POINTS:
                 if (line.contains("frame points")) {
-                    Log.i(TAG, "start parser");
+
                     final String[] s = line.split("=");
                     mAllFramePoi = Integer.parseInt(s[1]);
                     Log.i(TAG, "frame " + mAllFramePoi);
+
                     if (mAllFramePoi == 0) {
                         state = Mission_states.MISSION_GOT_FRAME_POINTS;
                     }
                     mCurFramePoi = 0;
+
                 } else {
                     final String[] s = line.split(" ");
                     LatLong coord = new LatLong(Double.parseDouble(s[1]),
                             Double.parseDouble(s[0]));
+
+                    Log.i(TAG, "coord: " + coord.getLongitude() + " "
+                            + coord.getLatitude());
                     /**
                      *   把当前点添加到任务中去
                      */
@@ -123,13 +131,16 @@ public class MissionParser {
                 break;
             case MISSION_GOT_FRAME_POINTS:
                 if (line.contains("danger")) {
+
                     final String[] s = line.split("=");
                     mAllDangerPoi = Integer.parseInt(s[1]);
                     Log.i(TAG, "danger num=" + mAllDangerPoi);
+
                     if(mAllDangerPoi == 0) {
                         state = Mission_states.MISSION_PARSER_START;
                         mission_received = true;
                     }
+
                     mCurDangerPoi = 0;
                 } else {
 
@@ -147,6 +158,8 @@ public class MissionParser {
                     for (int i = 0; i < pointnum; i++) {
                         LatLong coord = new LatLong(Double.parseDouble(s[5 * i + 1]),
                                 Double.parseDouble(s[5 * i + 0]));
+                        Log.i(TAG, "coord: " + coord.getLongitude() + " "
+                                + coord.getLatitude());
 
                         final PointInfo dp = new PointInfo(coord,
                                 Float.parseFloat(s[5 * i + 2]));

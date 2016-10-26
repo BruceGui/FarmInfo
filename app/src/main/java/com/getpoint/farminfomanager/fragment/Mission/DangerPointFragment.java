@@ -166,7 +166,7 @@ public class DangerPointFragment extends PointDetailFragment implements
                         missionProxy.getDangerItemProxies().remove(currDP);
                         updatePointIND(missionProxy);
                         setPointIndex(missionProxy.getCurrentDangerNumber());
-                        if(missionProxy.getDangerItemProxies().isEmpty()) {
+                        if (missionProxy.getDangerItemProxies().isEmpty()) {
                             currDP = null;
                         } else {
                             currDP = missionProxy.getDangerItemProxies()
@@ -376,9 +376,11 @@ public class DangerPointFragment extends PointDetailFragment implements
         //markerToAdd.clear();
         currInPlist = null;
         currDP = null;
-        innerInList.clear();
-        innerInList.add(String.valueOf(1));
-        innerIndex.setText(String.valueOf(1));
+        if (innerInList != null) {
+            innerInList.clear();
+            innerInList.add(String.valueOf(1));
+            innerIndex.setText(String.valueOf(1));
+        }
     }
 
     public void setPointIndex(int index) {
@@ -391,7 +393,7 @@ public class DangerPointFragment extends PointDetailFragment implements
 
     public float getFlyHeight() {
 
-        float al = 0;
+        float al = gps.alt;
 
         if (TextUtils.isEmpty(altitudeEdt.getText())) {
 

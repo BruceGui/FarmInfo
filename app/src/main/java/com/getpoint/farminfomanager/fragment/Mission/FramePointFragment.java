@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.Layout;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -177,15 +178,11 @@ public class FramePointFragment extends PointDetailFragment implements
     public float getAltitude() {
 
         float altitude = 0;
-/*
-        if (altitudePickerMeter.getCurrentValue() < 0) {
-            altitude = altitudePickerMeter.getCurrentValue() * 100
-                    - altitudePickerCentimeter.getCurrentValue();
-        } else {
-            altitude = altitudePickerMeter.getCurrentValue() * 100
-                    + altitudePickerCentimeter.getCurrentValue();
+
+        if(!TextUtils.isEmpty(altitudeEdt.getText())) {
+            altitude += Float.valueOf(altitudeEdt.getText().toString());
         }
-*/
+
         return altitude;
     }
 

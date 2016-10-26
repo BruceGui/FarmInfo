@@ -1,30 +1,29 @@
 package com.getpoint.farminfomanager.activity;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.BaseAdapter;
-import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.getpoint.farminfomanager.FarmInfoManagerApp;
 import com.getpoint.farminfomanager.R;
+import com.getpoint.farminfomanager.entity.points.enumc.PointItemType;
 import com.getpoint.farminfomanager.fragment.SaveMissionFragment;
 import com.getpoint.farminfomanager.utils.DirectoryChooserConfig;
+import com.getpoint.farminfomanager.utils.adapters.pointdetailadapter.PointContainer;
+import com.getpoint.farminfomanager.utils.adapters.pointdetailadapter.PointContainerAdapter;
 import com.getpoint.farminfomanager.utils.proxy.MissionItemProxy;
 import com.getpoint.farminfomanager.utils.proxy.MissionProxy;
+import com.getpoint.farminfomanager.weights.expandablerecyclerview.ExpandableRecyclerAdapter;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -45,6 +44,8 @@ public class PointDetailActivity extends AppCompatActivity implements
 
     private MissionProxy missionProxy;
 
+    private PointContainerAdapter mAdapter;
+
     private List<MissionItemProxy> stationItemProxies = new ArrayList<>();
     private List<MissionItemProxy> boundaryItemProxies = new ArrayList<>();
 
@@ -59,19 +60,29 @@ public class PointDetailActivity extends AppCompatActivity implements
         stationItemProxies = missionProxy.getBaseStationProxies();
         boundaryItemProxies = missionProxy.getBoundaryItemProxies();
 
-        /**
-         *  显示 基站点 详细信息
+        PointContainer stationP = new PointContainer(PointItemType.STATIONPOINT
+                .getLabel(), stationItemProxies);
+        PointContainer frameP = new PointContainer(PointItemType.FRAMEPOINT
+                .getLabel(), boundaryItemProxies);
 
-        ListView stationPointList = (ListView) findViewById(R.id.stationPointList);
-        StationPointsAdapter stationPointsAdapter = new StationPointsAdapter(this);
-        stationPointList.setAdapter(stationPointsAdapter);*/
+        final List<PointContainer> containers = Arrays.asList(stationP, frameP);
 
-        /**
-         *  显示 边界点 详细信息
+        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.pointDetailRecView);
+        mAdapter = new PointContainerAdapter(this, containers);
+        mAdapter.setExpandCollapseListener(new ExpandableRecyclerAdapter.ExpandCollapseListener() {
+            @Override
+            public void onParentExpanded(int parentPosition) {
 
-        ListView framePointsList = (ListView) findViewById(R.id.framePointsList);
-        FramePointsAdapter framePointsAdapter = new FramePointsAdapter(this);
-        framePointsList.setAdapter(framePointsAdapter);*/
+            }
+
+            @Override
+            public void onParentCollapsed(int parentPosition) {
+
+            }
+        });
+
+        recyclerView.setAdapter(mAdapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
 
     @Override
@@ -88,9 +99,6 @@ public class PointDetailActivity extends AppCompatActivity implements
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                // Navigate "up" the demo structure to the launchpad activity.
-                // See http://developer.android.com/design/patterns/navigation.html for more.
-                //NavUtils.navigateUpTo(this, new Intent(this, FarmInfoActivity.class));
                 onBackPressed();
                 return true;
             case R.id.id_menu_save_file:
@@ -111,7 +119,7 @@ public class PointDetailActivity extends AppCompatActivity implements
 
         mSaveMissionFragment = SaveMissionFragment.newInstance(config);
 
-        //mMissionPagerFragment.show(getFragmentManager(), null);
+
         mSaveMissionFragment.show(getFragmentManager(), null);
 
     }
@@ -139,171 +147,5 @@ public class PointDetailActivity extends AppCompatActivity implements
         mSaveMissionFragment.dismiss();
     }
 
-    /**
-     * 使用 viewholder 来保持view，以免每次都是用 findviewid
 
-    static class ViewHolder {
-        private TextView serialNum;
-        private TextView longitude;
-        private TextView latitude;
-        private TextView altitude;
-    }
-    */
-    /**
-     * 显示 基站点 信息的 ListView 适配器
-
-
-    public class StationPointsAdapter extends BaseAdapter {
-
-        private LayoutInflater mInflater = null;
-
-        private StationPointsAdapter(Context context) {
-            this.mInflater = LayoutInflater.from(context);
-        }
-
-        @Override
-        public int getCount() {
-
-            if (stationItemProxies != null) {
-                Log.i(TAG, "Size: " + stationItemProxies.size());
-                return stationItemProxies.size();
-            } else {
-                return 0;
-            }
-
-        }
-
-        @Override
-        public Object getItem(int position) {
-            return position;
-        }
-
-        @Override
-        public long getItemId(int position) {
-            return position;
-        }
-
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-
-            ViewHolder holder;
-
-            if (convertView == null) {
-
-                holder = new ViewHolder();
-
-                convertView = mInflater.inflate(R.layout.frame_point_detail_list, null);
-                holder.serialNum = (TextView) convertView.findViewById(R.id.pointSerialNum);
-                holder.longitude = (TextView) convertView.findViewById(R.id.pointLongitude);
-                holder.latitude = (TextView) convertView.findViewById(R.id.pointLatitude);
-                holder.altitude = (TextView) convertView.findViewById(R.id.pointHeight);
-
-                convertView.setTag(holder);
-            } else {
-                holder = (ViewHolder) convertView.getTag();
-            }
-            */
-            /**
-             *  这里要使用 String.valueOf() 否则会产生 ResourceNotFound 异常
-
-            holder.serialNum.setText(String.valueOf(position + 1));
-            holder.longitude.setText(String.valueOf(stationItemProxies.get(position)
-                    .getPointInfo()
-                    .getPosition()
-                    .getLatLong()
-                    .getLongitude()));
-            holder.latitude.setText(String.valueOf(stationItemProxies.get(position)
-                    .getPointInfo()
-                    .getPosition()
-                    .getLatLong()
-                    .getLatitude()));
-            holder.altitude.setText(String.valueOf(stationItemProxies.get(position)
-                    .getPointInfo()
-                    .getPosition()
-                    .getAltitude()));
-
-            return convertView;
-        }
-    }
-            */
-    /**
-     * 显示 边界点 信息的 ListView 适配器
-     */
-
-    /*
-    public class FramePointsAdapter extends BaseAdapter {
-
-        private LayoutInflater mInflater = null;
-
-        private FramePointsAdapter(Context context) {
-            this.mInflater = LayoutInflater.from(context);
-        }
-
-        @Override
-        public int getCount() {
-
-            if (boundaryItemProxies != null) {
-                Log.i(TAG, "Size: " + boundaryItemProxies.size());
-                return boundaryItemProxies.size();
-            } else {
-                return 0;
-            }
-
-        }
-
-        @Override
-        public Object getItem(int position) {
-            return position;
-        }
-
-        @Override
-        public long getItemId(int position) {
-            return position;
-        }
-
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-
-            ViewHolder holder;
-
-            if (convertView == null) {
-
-                holder = new ViewHolder();
-
-                convertView = mInflater.inflate(R.layout.frame_point_detail_list, null);
-                holder.serialNum = (TextView) convertView.findViewById(R.id.pointSerialNum);
-                holder.longitude = (TextView) convertView.findViewById(R.id.pointLongitude);
-                holder.latitude = (TextView) convertView.findViewById(R.id.pointLatitude);
-                holder.altitude = (TextView) convertView.findViewById(R.id.pointHeight);
-
-                convertView.setTag(holder);
-            } else {
-                holder = (ViewHolder) convertView.getTag();
-            }
-
-            /**
-             *  这里要使用 String.valueOf() 否则会产生 ResourceNotFound 异常
-             */
-    /*
-            holder.serialNum.setText(String.valueOf(position + 1));
-            holder.longitude.setText(String.valueOf(boundaryItemProxies.get(position)
-                    .getPointInfo()
-                    .getPosition()
-                    .getLatLong()
-                    .getLongitude()));
-            holder.latitude.setText(String.valueOf(boundaryItemProxies.get(position)
-                    .getPointInfo()
-                    .getPosition()
-                    .getLatLong()
-                    .getLatitude()));
-            holder.altitude.setText(String.valueOf(boundaryItemProxies.get(position)
-                    .getPointInfo()
-                    .getPosition()
-                    .getAltitude()));
-
-            return convertView;
-        }
-    }
-
-    */
 }

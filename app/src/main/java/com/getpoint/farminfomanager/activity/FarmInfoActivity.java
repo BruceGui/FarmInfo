@@ -17,8 +17,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.baidu.mapapi.map.Text;
 import com.getpoint.farminfomanager.FarmInfoAppPref;
 import com.getpoint.farminfomanager.FarmInfoManagerApp;
 import com.getpoint.farminfomanager.GPSDeviceManager;
@@ -110,6 +112,18 @@ public class FarmInfoActivity extends AppCompatActivity implements
     private GPS gps;
 
     /**
+     *  显示 GPS 信息的东西
+     */
+    private TextView mGPSLon;
+    private TextView mGPSLat;
+    private TextView mGPSHei;
+    private TextView mGPSgdop;
+    private TextView mGPSpdop;
+    private TextView mGPShdop;
+    private TextView mGPStarNum;
+    private TextView mGPState;
+
+    /**
      * 初始化广播事件过滤器和广播接收器
      */
     private static final IntentFilter eventFilter = new IntentFilter();
@@ -128,18 +142,17 @@ public class FarmInfoActivity extends AppCompatActivity implements
         public void onReceive(Context context, Intent intent) {
 
             final String action = intent.getAction();
-            final GPS gps = farmApp.getGps();
 
             if (AttributesEvent.GPS_MSG_BESTPOS.equals(action)) {
-
+                updateGPSBestpos();
             }
 
             if (AttributesEvent.GPS_MSG_BESTVEL.equals(action)) {
-
+                updateGPSBestvel();
             }
 
             if (AttributesEvent.GPS_MSG_PSRDOP.equals(action)) {
-
+                updateGPSPsrdop();
             }
 
         }
@@ -178,6 +191,7 @@ public class FarmInfoActivity extends AppCompatActivity implements
         mPointInfoLayout = (MorphLayout) findViewById(R.id.point_info_morph);
         mPointInfoLayout.setMorphListener(this);
         mPointInfoLayout.setFab(mFloatingAct);
+
         /**
           *   根据虚拟键盘 动态调整布局
           */
@@ -195,6 +209,17 @@ public class FarmInfoActivity extends AppCompatActivity implements
 
         setupMapFragment();
         farmApp.setMapFragment(mapFragment);
+
+        mGPSLon = (TextView) findViewById(R.id.lon_value);
+        mGPSLat = (TextView) findViewById(R.id.lat_value);
+        mGPSHei = (TextView) findViewById(R.id.hei_value);
+
+        mGPSgdop = (TextView) findViewById(R.id.gps_gdop_value);
+        mGPShdop = (TextView) findViewById(R.id.gps_hdop_value);
+        mGPSpdop = (TextView) findViewById(R.id.gps_pdop_value);
+
+        mGPStarNum = (TextView) findViewById(R.id.sate_count_value);
+        mGPState = (TextView) findViewById(R.id.posstate_value);
 
         /**
          *  添加所有的fragment,并隐藏所有的fragment
@@ -292,6 +317,32 @@ public class FarmInfoActivity extends AppCompatActivity implements
                 }
             }
         });
+    }
+
+    /**
+     *  更新 接受到的 GPS 信息
+     */
+    private void updateGPSBestpos() {
+
+        mGPSLon.setText(String.valueOf(gps.lon));
+        mGPSLat.setText(String.valueOf(gps.lat));
+        mGPSHei.setText(String.valueOf(gps.alt));
+
+        mGPStarNum.setText(String.valueOf(gps.used));
+        mGPState.setText(String.valueOf(gps.POSState));
+
+    }
+
+    private void updateGPSBestvel() {
+
+    }
+
+    private void updateGPSPsrdop() {
+
+        mGPShdop.setText(String.valueOf(gps.hdop));
+        mGPSgdop.setText(String.valueOf(gps.gdop));
+        mGPSpdop.setText(String.valueOf(gps.pdop));
+
     }
 
     /**
@@ -528,7 +579,9 @@ public class FarmInfoActivity extends AppCompatActivity implements
     private void newMissionFile() {
         missionProxy.missionClear();
         mapFragment.clearAllMarker();
-        dangerPointFragment.clearInnerVar();
+        if(dangerPointFragment != null) {
+            dangerPointFragment.clearInnerVar();
+        }
     }
 
     /**

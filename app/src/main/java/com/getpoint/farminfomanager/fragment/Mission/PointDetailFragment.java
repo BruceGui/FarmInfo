@@ -15,6 +15,7 @@ import com.getpoint.farminfomanager.FarmInfoManagerApp;
 import com.getpoint.farminfomanager.R;
 import com.getpoint.farminfomanager.entity.points.enumc.PointItemType;
 import com.getpoint.farminfomanager.fragment.BaiduMapFragment;
+import com.getpoint.farminfomanager.utils.GPS;
 import com.getpoint.farminfomanager.utils.adapters.AdapterMissionItems;
 import com.getpoint.farminfomanager.utils.proxy.MissionProxy;
 import com.getpoint.farminfomanager.weights.spinners.SpinnerSelfSelect;
@@ -33,6 +34,7 @@ public class PointDetailFragment extends Fragment implements SpinnerSelfSelect.
     private static final String TAG = "PointDetailFragment";
 
     protected boolean addNew = true;
+    protected GPS gps;
 
     public static String getFragmentTag(PointItemType itemType) {
         switch (itemType) {
@@ -120,6 +122,7 @@ public class PointDetailFragment extends Fragment implements SpinnerSelfSelect.
 
         farmApp = (FarmInfoManagerApp) getActivity().getApplication();
         missionProxy = farmApp.getMissionProxy();
+        gps = farmApp.getGps();
 
     }
 
@@ -163,6 +166,7 @@ public class PointDetailFragment extends Fragment implements SpinnerSelfSelect.
     public void setMapFragment(BaiduMapFragment mapFragment) {
         this.mapFragment = mapFragment;
     }
+
 
     @Override
     public void onAttach(Activity activity) {
