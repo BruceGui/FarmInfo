@@ -41,15 +41,17 @@ import java.util.List;
  * Created by Station on 2016/8/2.
  */
 
+//TODO 对代码的结构进行整理，重新设计逻辑
+
 public class DangerPointFragment extends PointDetailFragment implements
         CardWheelHorizontalView.OnCardWheelChangedListener {
 
     private static final String TAG = "DangerPoint";
 
     private TextView pointIndex;
+    private RadioGroup dPointTypeSel;
     protected TextView innerIndex;
     protected List<Marker> markerToAdd;
-    private RadioGroup dPointTypeSel;
 
     private EditText altitudeEdt;
 
@@ -109,7 +111,7 @@ public class DangerPointFragment extends PointDetailFragment implements
 
                 }
 
-                if(addInP) {
+                if (addInP) {
                     PointInfo p = new PointInfo(mapFragment.getCurrentCoord(),
                             getFlyHeight());
 
@@ -127,7 +129,7 @@ public class DangerPointFragment extends PointDetailFragment implements
                             break;
                     }
 
-                    ((DangerPoint)currDP.getPointInfo()).getInnerPoints()
+                    ((DangerPoint) currDP.getPointInfo()).getInnerPoints()
                             .add(p);
 
                     updateInnerIndex(currDP);
@@ -164,8 +166,16 @@ public class DangerPointFragment extends PointDetailFragment implements
                         missionProxy.getDangerItemProxies().remove(currDP);
                         updatePointIND(missionProxy);
                         setPointIndex(missionProxy.getCurrentDangerNumber());
+                        if(missionProxy.getDangerItemProxies().isEmpty()) {
+                            currDP = null;
+                        } else {
+                            currDP = missionProxy.getDangerItemProxies()
+                                    .get(missionProxy.getCurrentDangerNumber());
+                            updateCurrVar(currDP);
+                        }
                     }
 
+                    addInP = true;
                     // 删除点后更新 marker 的信息
                     mapFragment.updateInfoFromMission(missionProxy);
                 }
@@ -187,37 +197,30 @@ public class DangerPointFragment extends PointDetailFragment implements
             @Override
             public void onSpinnerItemSelected(Spinner spinner, int position) {
 
-                if (position < missionProxy.getDangerItemProxies().size()) {
-                    addNew = false;
+                addNew = false;
 
-                    updateInnerIndex(missionProxy.getDangerItemProxies().get(position));
+                updateInnerIndex(missionProxy.getDangerItemProxies().get(position));
 
-                    currDP = missionProxy.getDangerItemProxies()
-                            .get(position);
-                    final DangerPoint dp = (DangerPoint) currDP.getPointInfo();
-                    currInPlist = dp.getInnerPoints();
+                currDP = missionProxy.getDangerItemProxies()
+                        .get(position);
+                final DangerPoint dp = (DangerPoint) currDP.getPointInfo();
+                currInPlist = dp.getInnerPoints();
 
-                    switch (dp.getdPType()) {
-                        case BYPASS:
-                            dPointTypeSel.check(R.id.bypass_point_radio);
-                            break;
-                        case CLIMB:
-                            dPointTypeSel.check(R.id.climb_point_radio);
-                            break;
-                        case FORWARD:
-                            dPointTypeSel.check(R.id.forward_point_radio);
-                            break;
-                        default:
-                            break;
-                    }
-
-                } else {
-                    addNew = true;
-                    clearInnerVar();
+                switch (dp.getdPType()) {
+                    case BYPASS:
+                        dPointTypeSel.check(R.id.bypass_point_radio);
+                        break;
+                    case CLIMB:
+                        dPointTypeSel.check(R.id.climb_point_radio);
+                        break;
+                    case FORWARD:
+                        dPointTypeSel.check(R.id.forward_point_radio);
+                        break;
+                    default:
+                        break;
                 }
 
                 setPointIndex(position);
-
 
             }
         });
@@ -230,7 +233,7 @@ public class DangerPointFragment extends PointDetailFragment implements
         pointInnerSel.setOnSpinnerItemSelectedListener(new SpinnerSelfSelect.OnSpinnerItemSelectedListener() {
             @Override
             public void onSpinnerItemSelected(Spinner spinner, int position) {
-                //TODO
+
                 setInPointIndex(position + 1);
 
                 if (currInPlist != null) {
@@ -326,7 +329,7 @@ public class DangerPointFragment extends PointDetailFragment implements
     public void updateCurrentDP() {
 
         if (addInP) {
-            //TODO 添加障碍点的内部点
+
         } else {
             updateCurrentInP();
         }
@@ -341,14 +344,14 @@ public class DangerPointFragment extends PointDetailFragment implements
     }
 
     /**
-     *  更新当前 障碍点 及 内部点参数信息
+     * 更新当前 障碍点 及 内部点参数信息
      */
     public void updateCurrVar(MissionItemProxy m) {
 
         Log.i(TAG, "Update current variable");
 
         currDP = m;
-        currInPlist = ((DangerPoint)m.getPointInfo()).getInnerPoints();
+        currInPlist = ((DangerPoint) m.getPointInfo()).getInnerPoints();
         //clearInnerVar();
 
         updateInnerIndex(m);

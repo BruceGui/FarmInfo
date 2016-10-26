@@ -113,7 +113,7 @@ public class MissionWriter {
                     out.write(ip.toString().getBytes());
                     out.write(" ".getBytes());
                 }
-                out.write("\r\n".getBytes());
+                newline(out);
             }
 
 

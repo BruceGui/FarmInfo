@@ -22,4 +22,10 @@
         style="@style/pointdetailheader"
         android:text="@string/lat_label" />
 
+    <TextView
+        android:id="@+id/pointHeight"
+        android:layout_weight="4"
+        style="@style/pointdetailheader"
+        android:text="@string/altitude_label"/>
+
 </LinearLayout>

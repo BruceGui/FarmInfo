@@ -135,6 +135,7 @@ public class PointDetailActivity extends AppCompatActivity implements
         private TextView serialNum;
         private TextView longitude;
         private TextView latitude;
+        private TextView altitude;
     }
 
     /**
@@ -184,6 +185,7 @@ public class PointDetailActivity extends AppCompatActivity implements
                 holder.serialNum = (TextView) convertView.findViewById(R.id.pointSerialNum);
                 holder.longitude = (TextView) convertView.findViewById(R.id.pointLongitude);
                 holder.latitude = (TextView) convertView.findViewById(R.id.pointLatitude);
+                holder.altitude = (TextView) convertView.findViewById(R.id.pointHeight);
 
                 convertView.setTag(holder);
             } else {
@@ -204,10 +206,12 @@ public class PointDetailActivity extends AppCompatActivity implements
                     .getPosition()
                     .getLatLong()
                     .getLatitude()));
+            holder.altitude.setText(String.valueOf(boundaryItemProxies.get(position)
+                    .getPointInfo()
+                    .getPosition()
+                    .getAltitude()));
 
             return convertView;
         }
     }
-
-    //TODO 显示危险标记点的信息
 }

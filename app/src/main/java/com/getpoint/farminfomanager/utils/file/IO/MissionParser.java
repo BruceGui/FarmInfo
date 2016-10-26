@@ -54,7 +54,6 @@ public class MissionParser {
     public MissionProxy mission_parse_line(String line) {
         mission_received = false;
 
-        //TODO 读取基站点
         switch (state) {
             case MISSION_GOT_SUCCESS:
             case MISSION_PARSER_START:

@@ -175,8 +175,6 @@ public class FarmInfoActivity extends AppCompatActivity implements
         fragmentManager = getSupportFragmentManager();
         mFloatingAct = (FloatingActionButton) findViewById(R.id.farm_info_fab);
 
-        //TODO 根据有无虚拟键盘动态调整高度布局
-
         mPointInfoLayout = (MorphLayout) findViewById(R.id.point_info_morph);
         mPointInfoLayout.setMorphListener(this);
         mPointInfoLayout.setFab(mFloatingAct);

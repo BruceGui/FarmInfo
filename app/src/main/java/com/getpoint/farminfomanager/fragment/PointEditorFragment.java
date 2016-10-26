@@ -17,8 +17,6 @@ import com.getpoint.farminfomanager.weights.spinnerWheel.adapters.NumericWheelAd
  * Created by Gui Zhou on 2016/10/19.
  */
 
-//TODO 飞行高度修改
-
 public class PointEditorFragment extends DialogFragment {
 
     protected static final int MIN_ALTITUDE = -200;
