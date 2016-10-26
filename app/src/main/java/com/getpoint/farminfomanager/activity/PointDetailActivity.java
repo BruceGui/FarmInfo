@@ -44,6 +44,8 @@ public class PointDetailActivity extends AppCompatActivity implements
     private SaveMissionFragment mSaveMissionFragment;
 
     private MissionProxy missionProxy;
+
+    private List<MissionItemProxy> stationItemProxies = new ArrayList<>();
     private List<MissionItemProxy> boundaryItemProxies = new ArrayList<>();
 
     @Override
@@ -52,15 +54,24 @@ public class PointDetailActivity extends AppCompatActivity implements
         setContentView(R.layout.point_detail_activity);
 
         final FarmInfoManagerApp mFarmInfoApp = (FarmInfoManagerApp) getApplication();
+
         missionProxy = mFarmInfoApp.getMissionProxy();
+        stationItemProxies = missionProxy.getBaseStationProxies();
         boundaryItemProxies = missionProxy.getBoundaryItemProxies();
 
         /**
+         *  显示 基站点 详细信息
+
+        ListView stationPointList = (ListView) findViewById(R.id.stationPointList);
+        StationPointsAdapter stationPointsAdapter = new StationPointsAdapter(this);
+        stationPointList.setAdapter(stationPointsAdapter);*/
+
+        /**
          *  显示 边界点 详细信息
-         */
+
         ListView framePointsList = (ListView) findViewById(R.id.framePointsList);
         FramePointsAdapter framePointsAdapter = new FramePointsAdapter(this);
-        framePointsList.setAdapter(framePointsAdapter);
+        framePointsList.setAdapter(framePointsAdapter);*/
     }
 
     @Override
@@ -130,18 +141,96 @@ public class PointDetailActivity extends AppCompatActivity implements
 
     /**
      * 使用 viewholder 来保持view，以免每次都是用 findviewid
-     */
+
     static class ViewHolder {
         private TextView serialNum;
         private TextView longitude;
         private TextView latitude;
         private TextView altitude;
     }
-
+    */
     /**
-     * 显示边界点信息的 ListView 适配器
+     * 显示 基站点 信息的 ListView 适配器
+
+
+    public class StationPointsAdapter extends BaseAdapter {
+
+        private LayoutInflater mInflater = null;
+
+        private StationPointsAdapter(Context context) {
+            this.mInflater = LayoutInflater.from(context);
+        }
+
+        @Override
+        public int getCount() {
+
+            if (stationItemProxies != null) {
+                Log.i(TAG, "Size: " + stationItemProxies.size());
+                return stationItemProxies.size();
+            } else {
+                return 0;
+            }
+
+        }
+
+        @Override
+        public Object getItem(int position) {
+            return position;
+        }
+
+        @Override
+        public long getItemId(int position) {
+            return position;
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+
+            ViewHolder holder;
+
+            if (convertView == null) {
+
+                holder = new ViewHolder();
+
+                convertView = mInflater.inflate(R.layout.frame_point_detail_list, null);
+                holder.serialNum = (TextView) convertView.findViewById(R.id.pointSerialNum);
+                holder.longitude = (TextView) convertView.findViewById(R.id.pointLongitude);
+                holder.latitude = (TextView) convertView.findViewById(R.id.pointLatitude);
+                holder.altitude = (TextView) convertView.findViewById(R.id.pointHeight);
+
+                convertView.setTag(holder);
+            } else {
+                holder = (ViewHolder) convertView.getTag();
+            }
+            */
+            /**
+             *  这里要使用 String.valueOf() 否则会产生 ResourceNotFound 异常
+
+            holder.serialNum.setText(String.valueOf(position + 1));
+            holder.longitude.setText(String.valueOf(stationItemProxies.get(position)
+                    .getPointInfo()
+                    .getPosition()
+                    .getLatLong()
+                    .getLongitude()));
+            holder.latitude.setText(String.valueOf(stationItemProxies.get(position)
+                    .getPointInfo()
+                    .getPosition()
+                    .getLatLong()
+                    .getLatitude()));
+            holder.altitude.setText(String.valueOf(stationItemProxies.get(position)
+                    .getPointInfo()
+                    .getPosition()
+                    .getAltitude()));
+
+            return convertView;
+        }
+    }
+            */
+    /**
+     * 显示 边界点 信息的 ListView 适配器
      */
 
+    /*
     public class FramePointsAdapter extends BaseAdapter {
 
         private LayoutInflater mInflater = null;
@@ -195,6 +284,7 @@ public class PointDetailActivity extends AppCompatActivity implements
             /**
              *  这里要使用 String.valueOf() 否则会产生 ResourceNotFound 异常
              */
+    /*
             holder.serialNum.setText(String.valueOf(position + 1));
             holder.longitude.setText(String.valueOf(boundaryItemProxies.get(position)
                     .getPointInfo()
@@ -214,4 +304,6 @@ public class PointDetailActivity extends AppCompatActivity implements
             return convertView;
         }
     }
+
+    */
 }

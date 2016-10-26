@@ -6,7 +6,7 @@
 
     <TextView
         android:id="@+id/pointSerialNum"
-        android:layout_weight="1"
+        android:layout_weight="2"
         style="@style/pointdetailheader"
         android:text="@string/serial_num" />
 

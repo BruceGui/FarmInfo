@@ -3,51 +3,98 @@
 <!-- 使用 list view 来显示边界点、障碍点的详细信息 -->
 
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
-    <!-- 显示边界点的详细信息 -->
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/frame_point"
-        android:textSize="20sp" />
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="vertical">
+
+        <!-- 显示基站点的详细信息 -->
 
         <TextView
-            style="@style/pointdetailheader"
-            android:layout_weight="1"
-            android:text="@string/serial_num" />
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/base_station_point"
+            android:textSize="20sp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                style="@style/pointdetailheader"
+                android:layout_weight="2"
+                android:text="@string/serial_num" />
+
+            <TextView
+                style="@style/pointdetailheader"
+                android:layout_weight="4"
+                android:text="@string/lon_label" />
+
+            <TextView
+                style="@style/pointdetailheader"
+                android:layout_weight="4"
+                android:text="@string/lat_label" />
+
+            <TextView
+                style="@style/pointdetailheader"
+                android:layout_weight="4"
+                android:text="@string/altitude_label" />
+
+        </LinearLayout>
+
+        <ListView
+            android:id="@+id/stationPointList"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <!-- 显示边界点的详细信息 -->
 
         <TextView
-            style="@style/pointdetailheader"
-            android:layout_weight="4"
-            android:text="@string/lon_label" />
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/frame_point"
+            android:textSize="20sp" />
 
-        <TextView
-            style="@style/pointdetailheader"
-            android:layout_weight="4"
-            android:text="@string/lat_label" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
 
-        <TextView
-            style="@style/pointdetailheader"
-            android:layout_weight="4"
-            android:text="@string/altitude_label" />
+            <TextView
+                style="@style/pointdetailheader"
+                android:layout_weight="2"
+                android:text="@string/serial_num" />
+
+            <TextView
+                style="@style/pointdetailheader"
+                android:layout_weight="4"
+                android:text="@string/lon_label" />
+
+            <TextView
+                style="@style/pointdetailheader"
+                android:layout_weight="4"
+                android:text="@string/lat_label" />
+
+            <TextView
+                style="@style/pointdetailheader"
+                android:layout_weight="4"
+                android:text="@string/altitude_label" />
+
+        </LinearLayout>
+
+        <!-- 显示 边界点 的 List View -->
+
+        <ListView
+            android:id="@+id/framePointsList"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
 
     </LinearLayout>
 
-    <!-- 显示 边界点 的 List View -->
-
-    <ListView
-        android:id="@+id/framePointsList"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-
-</LinearLayout>
+</ScrollView>

@@ -7,3 +7,5 @@
 
 文件保存时目录选择器参考了[Android-DirChooser](https://github.com/passy/Android-DirectoryChooser)
 
+显示点细节列表使用了[ExpandRecyclerView](https://github.com/bignerdranch/expandable-recycler-view )
+

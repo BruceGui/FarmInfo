@@ -374,6 +374,8 @@ public class DangerPointFragment extends PointDetailFragment implements
 
     public void clearInnerVar() {
         //markerToAdd.clear();
+        currInPlist = null;
+        currDP = null;
         innerInList.clear();
         innerInList.add(String.valueOf(1));
         innerIndex.setText(String.valueOf(1));

@@ -528,6 +528,7 @@ public class FarmInfoActivity extends AppCompatActivity implements
     private void newMissionFile() {
         missionProxy.missionClear();
         mapFragment.clearAllMarker();
+        dangerPointFragment.clearInnerVar();
     }
 
     /**
@@ -581,7 +582,7 @@ public class FarmInfoActivity extends AppCompatActivity implements
                 dangerPointFragment.setPointIndex(currnum);
                 dangerPointFragment.setPointType(PointItemType.DANGERPOINT.getLabel());
                 dangerPointFragment.updatePointIND(missionProxy);
-                if(currnum == 0) {
+                if(currnum == 0 && missionProxy.getDangerItemProxies().isEmpty()) {
                     dangerPointFragment.setInPointIndex(1);
                 } else {
                     dangerPointFragment.updateCurrVar(missionProxy.getDangerItemProxies()
