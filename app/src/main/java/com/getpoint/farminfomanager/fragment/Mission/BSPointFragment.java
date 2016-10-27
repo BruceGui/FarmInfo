@@ -182,6 +182,15 @@ public class BSPointFragment extends PointDetailFragment implements
         pointIndex.setText(String.valueOf(index));
     }
 
+
+    public void clearVar() {
+
+        currBSP = null;
+        pointNum.clear();
+        setPointIndex(1);
+
+    }
+
     @Override
     public void onChanged(CardWheelHorizontalView cardWheel, int oldValue, int newValue) {
 

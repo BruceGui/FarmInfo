@@ -51,7 +51,7 @@ public class PointContainerAdapter extends ExpandableRecyclerAdapter<PointContai
 
     @Override
     public void onBindChildViewHolder(@NonNull PointInfoViewHolder childViewHolder, int parentPosition, int childPosition, @NonNull MissionItemProxy child) {
-        childViewHolder.bind(child.getPointInfo());
+        childViewHolder.bind(childPosition + 1, child.getPointInfo());
     }
 
     @Override

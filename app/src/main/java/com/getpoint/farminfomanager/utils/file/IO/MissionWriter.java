@@ -103,22 +103,26 @@ public class MissionWriter {
             /**
              *  向文件中写入障碍点的信息
              */
-            out.write(("danger points=" + dangerPoints.size()).getBytes());
+            out.write(("danger points=" + mission.getActualDangerNumber()).getBytes());
             newline(out);
 
             for (MissionItemProxy itemProxy : dangerPoints) {
+
                 List<PointInfo> ips = ((DangerPoint) itemProxy.getPointInfo())
                         .getInnerPoints();
-                for (PointInfo ip : ips) {
-                    out.write(ip.toString().getBytes());
-                    out.write(" ".getBytes());
+                //如果 障碍点没有 内部点 则跳过 不写入 文件
+                if(!ips.isEmpty()) {
+                    for (PointInfo ip : ips) {
+                        out.write(ip.toString().getBytes());
+                        out.write(" ".getBytes());
+                    }
+
+                    newline(out);
                 }
-                newline(out);
             }
 
 
             out.write("Method=0".getBytes());
-            newline(out);
             out.close();
 
         } catch (Exception e) {

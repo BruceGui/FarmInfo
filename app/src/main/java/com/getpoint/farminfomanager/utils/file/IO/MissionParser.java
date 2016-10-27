@@ -150,7 +150,7 @@ public class MissionParser {
                     final String[] s = line.split(" ");
                     final int pointnum = s.length / 5;   //获取点的个数
                     final int pointtype = Integer.parseInt(s[3]); //获取点的类型
-
+                    Log.i(TAG, "Point Type: " + pointtype);
                     /**
                      *  首先获取行内的所有点
                      */

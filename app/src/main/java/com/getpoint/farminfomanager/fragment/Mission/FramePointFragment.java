@@ -190,6 +190,12 @@ public class FramePointFragment extends PointDetailFragment implements
         pointIndex.setText(String.valueOf(index));
     }
 
+    public void clearVar() {
+        currFP = null;
+        pointNum.clear();
+        setPointIndex(1);
+    }
+
     @Override
     public void onChanged(CardWheelHorizontalView cardWheel, int oldValue, int newValue) {
 

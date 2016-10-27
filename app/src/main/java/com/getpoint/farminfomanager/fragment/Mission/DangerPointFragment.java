@@ -264,7 +264,7 @@ public class DangerPointFragment extends PointDetailFragment implements
             marker.remove();
         }
 
-        clearInnerVar();
+        clearVar();
     }
 
     /**
@@ -372,15 +372,18 @@ public class DangerPointFragment extends PointDetailFragment implements
         }
     }
 
-    public void clearInnerVar() {
+    public void clearVar() {
         //markerToAdd.clear();
         currInPlist = null;
         currDP = null;
+
         if (innerInList != null) {
             innerInList.clear();
             innerInList.add(String.valueOf(1));
-            innerIndex.setText(String.valueOf(1));
         }
+
+        setInPointIndex(1);
+        setPointIndex(0);
     }
 
     public void setPointIndex(int index) {

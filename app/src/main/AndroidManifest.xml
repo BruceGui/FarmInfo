@@ -42,11 +42,11 @@
         <activity
             android:name=".activity.PointDetailActivity"
             android:label="@string/save_title"
-            android:parentActivityName=".activity.FarmInfoActivity" >
+            android:parentActivityName=".activity.FarmInfoActivity">
 
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".activity.FarmInfoActivity"/>
+                android:value=".activity.FarmInfoActivity" />
         </activity>
 
         <activity

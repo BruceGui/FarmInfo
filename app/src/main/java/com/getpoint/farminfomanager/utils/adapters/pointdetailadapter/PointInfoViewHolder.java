@@ -22,13 +22,15 @@ public class PointInfoViewHolder extends ChildViewHolder {
     public PointInfoViewHolder(@NonNull View itemView) {
         super(itemView);
 
+        pointNum = (TextView) itemView.findViewById(R.id.pointNum);
         pointLongitude = (TextView) itemView.findViewById(R.id.pointLongitude);
         pointLatitude = (TextView) itemView.findViewById(R.id.pointLatitude);
         pointHeight = (TextView) itemView.findViewById(R.id.pointHeight);
     }
 
-    public void bind(@NonNull PointInfo p) {
+    public void bind(int pointnum, @NonNull PointInfo p) {
 
+        pointNum.setText(String.valueOf(pointnum));
         pointLongitude.setText(String.valueOf(p.getPosition().getLatLong().getLongitude()));
         pointLatitude.setText(String.valueOf(p.getPosition().getLatLong().getLatitude()));
         pointHeight.setText(String.valueOf(p.getPosition().getAltitude()));

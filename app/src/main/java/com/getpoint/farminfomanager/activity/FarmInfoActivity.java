@@ -579,8 +579,17 @@ public class FarmInfoActivity extends AppCompatActivity implements
     private void newMissionFile() {
         missionProxy.missionClear();
         mapFragment.clearAllMarker();
+
         if(dangerPointFragment != null) {
-            dangerPointFragment.clearInnerVar();
+            dangerPointFragment.clearVar();
+        }
+
+        if(bsPointFragment != null) {
+            bsPointFragment.clearVar();
+        }
+
+        if(framePointFragment != null) {
+            framePointFragment.clearVar();
         }
     }
 

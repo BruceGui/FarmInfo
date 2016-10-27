@@ -2,6 +2,7 @@ package com.getpoint.farminfomanager.utils.proxy;
 
 import android.util.Log;
 
+import com.getpoint.farminfomanager.entity.points.DangerPoint;
 import com.getpoint.farminfomanager.utils.file.IO.MissionWriter;
 
 import java.util.ArrayList;
@@ -83,6 +84,21 @@ public class MissionProxy {
         }
 
         return this.dangerItemProxies.size() - 1;
+    }
+
+    public int getActualDangerNumber() {
+
+        int actNum = 0;
+
+        for(MissionItemProxy m : dangerItemProxies) {
+
+            if(!((DangerPoint)m.getPointInfo()).getInnerPoints().isEmpty())
+                actNum ++;
+
+        }
+
+        return actNum;
+
     }
 
     /**
