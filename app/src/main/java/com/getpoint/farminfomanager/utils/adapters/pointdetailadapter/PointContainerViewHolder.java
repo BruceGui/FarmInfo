@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.RotateAnimation;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.getpoint.farminfomanager.R;
@@ -21,10 +22,12 @@ public class PointContainerViewHolder extends ParentViewHolder{
     private static final float ROTATED_POSITION = 180f;
 
     private TextView pointType;
+    private final ImageView mArrowExpandImageView;
 
     public PointContainerViewHolder(@NonNull View itemView) {
         super(itemView);
         pointType = (TextView) itemView.findViewById(R.id.pointTypeTex);
+        mArrowExpandImageView = (ImageView) itemView.findViewById(R.id.arrow_expand_imageview);
     }
 
     public void bind(@NonNull String type) {
@@ -36,9 +39,9 @@ public class PointContainerViewHolder extends ParentViewHolder{
         super.setExpanded(expanded);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
             if (expanded) {
-
+                mArrowExpandImageView.setImageResource(R.drawable.ic_expand_less_black_24dp);
             } else {
-
+                mArrowExpandImageView.setImageResource(R.drawable.ic_expand_more_black_24dp);
             }
         }
     }
