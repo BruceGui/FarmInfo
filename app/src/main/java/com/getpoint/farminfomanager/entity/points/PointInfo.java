@@ -16,6 +16,7 @@ public class PointInfo {
     protected PointItemType pointType;
     protected short pointNum;
     protected float flyheight;
+    protected String pointOrd;   // 障碍点的顺序，用来显示点细节时，显示点的顺序
 
     public PointInfo(LatLong coord, float altitude) {
         this.position = new LatLongAlt(coord.getLatitude(), coord.getLongitude(), altitude);
@@ -45,6 +46,14 @@ public class PointInfo {
 
     public void setPointNum(short pointNum) {
         this.pointNum = pointNum;
+    }
+
+    public void setPointOrd(String po) {
+        this.pointOrd = po;
+    }
+
+    public String getPointOrd() {
+        return this.pointOrd;
     }
 
     public String toString() {

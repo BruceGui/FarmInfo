@@ -2,7 +2,11 @@ package com.getpoint.farminfomanager.utils.proxy;
 
 import android.util.Log;
 
+import com.getpoint.farminfomanager.entity.coordinate.LatLong;
+import com.getpoint.farminfomanager.entity.markers.DangerPointMarker;
 import com.getpoint.farminfomanager.entity.points.DangerPoint;
+import com.getpoint.farminfomanager.entity.points.PointInfo;
+import com.getpoint.farminfomanager.entity.points.enumc.PointItemType;
 import com.getpoint.farminfomanager.utils.file.IO.MissionWriter;
 
 import java.util.ArrayList;
@@ -60,6 +64,38 @@ public class MissionProxy {
     public List<MissionItemProxy> getDangerItemProxies() {
         return this.dangerItemProxies;
     }
+
+    /**
+     *   返回每一个小障碍点的集合
+     */
+
+    public List<MissionItemProxy> getAllDangerPoints() {
+
+        List<MissionItemProxy> allDangerNums = new ArrayList<>();
+
+
+        for(int i = 0; i < dangerItemProxies.size(); i ++) {
+            List<PointInfo> ips = ((DangerPoint)dangerItemProxies.get(i)
+                    .getPointInfo()).getInnerPoints();
+
+            for(int j = 0; j < ips.size(); j ++) {
+
+                PointInfo ip = new PointInfo(ips.get(j).getPosition().getLatLong(),
+                        ips.get(j).getPosition().getAltitude());
+                ip.setPointType(PointItemType.DANGERPOINT);
+                ip.setPointOrd(String.valueOf(DangerPointMarker.IND[i])+(j+1));
+
+                allDangerNums.add(new MissionItemProxy(this, ip));
+
+            }
+
+        }
+
+
+        return allDangerNums;
+
+    }
+
 
     public List<MissionItemProxy> getBaseStationProxies() {
         return this.baseStationProxies;

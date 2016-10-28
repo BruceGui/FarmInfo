@@ -96,6 +96,7 @@ public class FramePointFragment extends PointDetailFragment implements
 
 
                 } else {
+
                     updateCurrentFP();
 
                 }
@@ -168,9 +169,8 @@ public class FramePointFragment extends PointDetailFragment implements
      * 更新当前点的信息
      */
     public void updateCurrentFP() {
-        int fh = 0;
 
-        currFP.getPointInfo().getPosition().setAltitude(fh);
+        currFP.getPointInfo().getPosition().setAltitude(getAltitude());
 
         addNew = true;
     }

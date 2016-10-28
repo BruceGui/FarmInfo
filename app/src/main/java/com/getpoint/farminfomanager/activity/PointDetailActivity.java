@@ -48,6 +48,7 @@ public class PointDetailActivity extends AppCompatActivity implements
 
     private List<MissionItemProxy> stationItemProxies = new ArrayList<>();
     private List<MissionItemProxy> boundaryItemProxies = new ArrayList<>();
+    private List<MissionItemProxy> dangerItemProxies = new ArrayList<>();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -59,13 +60,16 @@ public class PointDetailActivity extends AppCompatActivity implements
         missionProxy = mFarmInfoApp.getMissionProxy();
         stationItemProxies = missionProxy.getBaseStationProxies();
         boundaryItemProxies = missionProxy.getBoundaryItemProxies();
+        dangerItemProxies = missionProxy.getAllDangerPoints();
 
         PointContainer stationP = new PointContainer(PointItemType.STATIONPOINT
                 .getLabel(), stationItemProxies);
         PointContainer frameP = new PointContainer(PointItemType.FRAMEPOINT
                 .getLabel(), boundaryItemProxies);
+        PointContainer dangerP = new PointContainer(PointItemType.DANGERPOINT
+                .getLabel(), dangerItemProxies);
 
-        final List<PointContainer> containers = Arrays.asList(stationP, frameP);
+        final List<PointContainer> containers = Arrays.asList(stationP, frameP, dangerP);
 
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.pointDetailRecView);
         mAdapter = new PointContainerAdapter(this, containers);

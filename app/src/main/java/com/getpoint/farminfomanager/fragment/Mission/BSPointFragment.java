@@ -160,9 +160,8 @@ public class BSPointFragment extends PointDetailFragment implements
      * 更新当前点的信息
      */
     public void updateCurrentBSP() {
-        int fh = 0;
 
-        currBSP.getPointInfo().getPosition().setAltitude(fh);
+        currBSP.getPointInfo().getPosition().setAltitude(getAltitude());
 
         addNew = true;
     }

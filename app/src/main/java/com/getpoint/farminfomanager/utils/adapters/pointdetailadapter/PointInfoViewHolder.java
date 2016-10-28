@@ -6,6 +6,7 @@ import android.widget.TextView;
 
 import com.getpoint.farminfomanager.R;
 import com.getpoint.farminfomanager.entity.points.PointInfo;
+import com.getpoint.farminfomanager.entity.points.enumc.PointItemType;
 import com.getpoint.farminfomanager.weights.expandablerecyclerview.ChildViewHolder;
 
 /**
@@ -30,7 +31,12 @@ public class PointInfoViewHolder extends ChildViewHolder {
 
     public void bind(int pointnum, @NonNull PointInfo p) {
 
-        pointNum.setText(String.valueOf(pointnum));
+        if(p.getPointType() == PointItemType.DANGERPOINT) {
+            pointNum.setText(p.getPointOrd());
+        } else {
+            pointNum.setText(String.valueOf(pointnum));
+        }
+
         pointLongitude.setText(String.valueOf(p.getPosition().getLatLong().getLongitude()));
         pointLatitude.setText(String.valueOf(p.getPosition().getLatLong().getLatitude()));
         pointHeight.setText(String.valueOf(p.getPosition().getAltitude()));
