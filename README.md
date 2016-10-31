@@ -3,9 +3,11 @@
 
 一个采集大型农田边界点和障碍点的应用程序,并导出一个文件,用于地面站生成路径文件。
 
-其中通信部分和文件读写部分参考了[droidplanner](https://github.com/gemaizi/droidplanner)
+其中通信部分和文件读写部分参考了，还有UI设计[droidplanner](https://github.com/gemaizi/droidplanner)
 
 文件保存时目录选择器参考了[Android-DirChooser](https://github.com/passy/Android-DirectoryChooser)
 
 显示点细节列表使用了[ExpandRecyclerView](https://github.com/bignerdranch/expandable-recycler-view )
+
+另外UI设计也参考了 [awesome-android-ui](https://github.com/wasabeef/awesome-android-ui)
 

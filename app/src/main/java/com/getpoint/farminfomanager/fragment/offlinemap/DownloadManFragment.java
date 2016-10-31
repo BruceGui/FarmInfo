@@ -44,4 +44,10 @@ public class DownloadManFragment extends Fragment {
     public void setMKOfflineMap(MKOfflineMap m) {
         this.offlineMap = m;
     }
+
+    public interface OnOfflineMapDownloadListener {
+
+        void startDownload(int cityId);
+
+    }
 }

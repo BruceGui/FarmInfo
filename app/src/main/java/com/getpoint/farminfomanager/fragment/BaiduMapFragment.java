@@ -98,7 +98,7 @@ public class BaiduMapFragment extends SupportMapFragment {
         /**
          * 设置地图相关属性
          */
-        getBaiduMap().setMapType(BaiduMap.MAP_TYPE_SATELLITE);
+        getBaiduMap().setMapType(BaiduMap.MAP_TYPE_NORMAL);
         getBaiduMap().setMyLocationEnabled(true);
         mMapView.showZoomControls(false);
         mMapView.showScaleControl(false);

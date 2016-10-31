@@ -1,5 +1,7 @@
 package com.getpoint.farminfomanager.entity.offlinemap;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 
 /**
@@ -9,15 +11,35 @@ import java.util.Locale;
 public class CityDetail {
 
     private int cityId;
+    private int cityType;
     private String cityName;
     private boolean isAdded;
 
     private String filesize;
 
-    public CityDetail(int cityId, String cityName, int filesize) {
+    private List<CityDetail> childCities = new ArrayList<>();
+
+    public CityDetail(int cityId, String cityName, int filesize, int cityType) {
         this.cityId = cityId;
         this.cityName = cityName;
         this.filesize = formatDataSize(filesize);
+        this.cityType = cityType;
+    }
+
+    public int getCityType() {
+        return this.cityType;
+    }
+
+    public void setChildCities(List<CityDetail> c) {
+        this.childCities = c;
+    }
+
+    public List<CityDetail> getChildCities() {
+        return this.childCities;
+    }
+
+    public void addChildCity(CityDetail c) {
+        this.childCities.add(c);
     }
 
     public void setStatus(boolean isAdded) {

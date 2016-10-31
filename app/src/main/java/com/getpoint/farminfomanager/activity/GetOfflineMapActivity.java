@@ -9,16 +9,27 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
+import com.baidu.mapapi.map.offline.MKOLSearchRecord;
+import com.baidu.mapapi.map.offline.MKOLUpdateElement;
 import com.baidu.mapapi.map.offline.MKOfflineMap;
+import com.baidu.mapapi.map.offline.MKOfflineMapListener;
+import com.getpoint.farminfomanager.FarmInfoManagerApp;
 import com.getpoint.farminfomanager.R;
+import com.getpoint.farminfomanager.entity.offlinemap.CityDetail;
 import com.getpoint.farminfomanager.fragment.offlinemap.CityListFragment;
 import com.getpoint.farminfomanager.fragment.offlinemap.DownloadManFragment;
+import com.getpoint.farminfomanager.utils.adapters.offlinemapadapter.CityListAdapter;
+import com.getpoint.farminfomanager.utils.adapters.offlinemapadapter.CityListParent;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Gui Zhou on 2016/10/28.
@@ -31,7 +42,8 @@ import com.getpoint.farminfomanager.fragment.offlinemap.DownloadManFragment;
  * 利用 两个 Fragment 来显示
  */
 
-public class GetOfflineMapActivity extends AppCompatActivity {
+public class GetOfflineMapActivity extends AppCompatActivity implements MKOfflineMapListener,
+        DownloadManFragment.OnOfflineMapDownloadListener {
 
     private static final String TAG = "GetOfflineMap";
 
@@ -43,6 +55,11 @@ public class GetOfflineMapActivity extends AppCompatActivity {
     private Button mCityListBtn;
 
     private ViewPager mViewPager;
+    private CityListAdapter mAdapter;
+    private List<CityListParent> allCities = new ArrayList<>();
+
+    private DownloadManFragment mDownloadFrag;
+    private CityListFragment mCityListFrag;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -75,14 +92,46 @@ public class GetOfflineMapActivity extends AppCompatActivity {
 
         }
 
-        mOfflineMap = new MKOfflineMap();
-        //mOfflineMap.init();
+        /**
+         *  初始化百度离线地图
+         */
+        mOfflineMap = ((FarmInfoManagerApp) getApplication()).getOfflineMap();
+        mOfflineMap.init(this);
 
         mViewPager = (ViewPager) findViewById(R.id.id_offline_map_vp);
         mViewPager.setAdapter(new OfflineMapViewAdapter(getSupportFragmentManager()));
 
         mCityListBtn = (Button) findViewById(R.id.id_city_list_btn);
         mDownManBtn = (Button) findViewById(R.id.id_down_manager_btn);
+
+
+        /**
+         *  显示所有 可下载的离线地图 信息
+         */
+        List<MKOLSearchRecord> records = mOfflineMap.getOfflineCityList();
+        if (records != null) {
+
+            for (MKOLSearchRecord r : records) {
+                Log.i(TAG, r.cityID + " " + r.cityName + " " + r.cityType);
+                CityDetail toAdd = new CityDetail(r.cityID, r.cityName, r.size, r.cityType);
+
+                if (r.cityType == 1) {
+                    for (MKOLSearchRecord cr : r.childCities) {
+                        CityDetail ctoAdd = new CityDetail(cr.cityID, cr.cityName, cr.size, cr.cityType);
+                        toAdd.addChildCity(ctoAdd);
+                    }
+                }
+
+                allCities.add(new CityListParent(toAdd));
+            }
+
+        }
+
+        mDownloadFrag = DownloadManFragment.newInstance();
+        mCityListFrag = CityListFragment.newInstance();
+        mAdapter = new CityListAdapter(getApplicationContext(), allCities, this);
+        mCityListFrag.setAllCities(allCities);
+        mCityListFrag.setmAdapter(mAdapter);
 
     }
 
@@ -127,9 +176,46 @@ public class GetOfflineMapActivity extends AppCompatActivity {
     }
 
     /**
+     * 下载 离线地图的监听信息
+     */
+    @Override
+    public void startDownload(int cityId) {
+        Log.i(TAG, "Start Down " + cityId);
+        mOfflineMap.start(cityId);
+    }
+
+    /**
+     * 百度地图 离线下载的 监听函数，事件通知接口
+     *
+     * @param type
+     * @param state
+     */
+    @Override
+    public void onGetOfflineMapState(int type, int state) {
+
+        switch (type) {
+            case MKOfflineMap.TYPE_DOWNLOAD_UPDATE:
+                MKOLUpdateElement update = mOfflineMap.getUpdateInfo(state);
+                if (update != null) {
+                    Log.i(TAG, "CityName: " + update.cityName + "Ratio " + update.ratio);
+                }
+                break;
+            case MKOfflineMap.TYPE_NEW_OFFLINE:
+                break;
+            case MKOfflineMap.TYPE_VER_UPDATE:
+                break;
+            case MKOfflineMap.TYPE_NETWORK_ERROR:
+                break;
+            default:
+                break;
+        }
+
+    }
+
+    /**
      * view pager 的适配器
      */
-    public static class OfflineMapViewAdapter extends FragmentStatePagerAdapter {
+    public class OfflineMapViewAdapter extends FragmentStatePagerAdapter {
 
 
         public OfflineMapViewAdapter(FragmentManager fm) {
@@ -143,9 +229,11 @@ public class GetOfflineMapActivity extends AppCompatActivity {
 
             switch (position) {
                 case 0:
-                    return DownloadManFragment.newInstance();
+                    if (mDownloadFrag != null)
+                        return mDownloadFrag;
                 case 1:
-                    return CityListFragment.newInstance();
+                    if (mCityListFrag != null)
+                        return mCityListFrag;
                 default:
                     return null;
             }

@@ -28,6 +28,7 @@
 
     <!-- Use Gingerbread-orange -->
     <color name="selection_background_color">#bebebf</color>
+    <color name="white">#ffffff</color>
 
 
 </resources>

@@ -5,6 +5,7 @@ import android.support.v4.content.LocalBroadcastManager;
 
 import com.MUHLink.Connection.MUHLinkConnection;
 import com.baidu.mapapi.SDKInitializer;
+import com.baidu.mapapi.map.offline.MKOfflineMap;
 import com.getpoint.farminfomanager.fragment.BaiduMapFragment;
 import com.getpoint.farminfomanager.utils.FarmInfoUtils;
 import com.getpoint.farminfomanager.utils.GPS;
@@ -18,6 +19,7 @@ public class FarmInfoManagerApp extends Application {
     private BaiduMapFragment mapFragment;
     private MUHLinkConnection muhLinkConnection;
     private FarmInfoAppPref farmInfoAppPref;
+    private MKOfflineMap offlineMap;
     private GPS gps;
 
     @Override
@@ -27,6 +29,7 @@ public class FarmInfoManagerApp extends Application {
         FarmInfoUtils.init(this);
 
         gps = new GPS();
+        offlineMap = new MKOfflineMap();
         localBroadcastManager = LocalBroadcastManager.getInstance(getApplicationContext());
         farmInfoAppPref = new FarmInfoAppPref(getApplicationContext());
         gpsDeviceManager = new GPSDeviceManager(getApplicationContext(),
@@ -45,6 +48,10 @@ public class FarmInfoManagerApp extends Application {
 
     public GPS getGps() {
         return this.gps;
+    }
+
+    public MKOfflineMap getOfflineMap() {
+        return this.offlineMap;
     }
 
     public GPSDeviceManager getGpsDeviceManager() {
