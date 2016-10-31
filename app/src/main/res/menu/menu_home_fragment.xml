@@ -30,6 +30,11 @@
             android:title="@string/connect"
             app:showAsAction="never" />
 
+        <item
+            android:id="@+id/id_offline_map"
+            android:title="@string/offline_map"
+            app:showAsAction="never" />
+
 
         <item
             android:id="@+id/id_setting"

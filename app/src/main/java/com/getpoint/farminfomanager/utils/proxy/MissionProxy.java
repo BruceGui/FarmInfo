@@ -66,9 +66,8 @@ public class MissionProxy {
     }
 
     /**
-     *   返回每一个小障碍点的集合
+     *   返回每一个小障碍点的集合, 用于显示点细节
      */
-
     public List<MissionItemProxy> getAllDangerPoints() {
 
         List<MissionItemProxy> allDangerNums = new ArrayList<>();

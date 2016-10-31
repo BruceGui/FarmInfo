@@ -1,8 +1,6 @@
 apply plugin: 'com.android.application'
 apply plugin: 'com.neenbedankt.android-apt'
 
-println "Hello Groovy"
-
 android {
     signingConfigs {
         config {

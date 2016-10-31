@@ -923,6 +923,9 @@ public class FarmInfoActivity extends AppCompatActivity implements
             case R.id.id_menu_save_file:
                 saveMissionFile();
                 break;
+            case R.id.id_offline_map:
+                startActivity(new Intent(FarmInfoActivity.this, GetOfflineMapActivity.class));
+                break;
             case R.id.id_menu_new_mission:
                 newMissionFile();
                 break;

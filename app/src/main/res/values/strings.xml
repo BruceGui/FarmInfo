@@ -3,6 +3,12 @@
     <string name="connect_type">Content Type: </string>
     <string name="wifi">Wi-Fi</string>
     <string name="bt">BT</string>
+
+    <string name="offline_map">Offline Map</string>
+    <string name="city_search_hint">Input The City Name</string>
+    <string name="city_list">City List</string>
+    <string name="download_manager">Download Manager</string>
+
     <string name="mission_manager">Mission Manager</string>
     <string name="measure">Measure</string>
     <string name="device_settings">Device Settings</string>

@@ -1,0 +1,4 @@
+<android.support.v4.view.ViewPager xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/id_offline_map_vp"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content" />

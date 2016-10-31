@@ -3,6 +3,12 @@
     <string name="connect_type">连接类型: </string>
     <string name="wifi">Wi-Fi</string>
     <string name="bt">蓝牙</string>
+
+    <string name="offline_map">离线地图</string>
+    <string name="city_search_hint">输入城市名字</string>
+    <string name="city_list">城市列表</string>
+    <string name="download_manager">下载管理</string>
+
     <string name="mission_manager">任务管理</string>
     <string name="measure">测量</string>
     <string name="device_settings">设备管理</string>
