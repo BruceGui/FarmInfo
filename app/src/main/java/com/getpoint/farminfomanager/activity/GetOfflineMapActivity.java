@@ -133,6 +133,8 @@ public class GetOfflineMapActivity extends AppCompatActivity implements MKOfflin
         mCityListFrag.setAllCities(allCities);
         mCityListFrag.setmAdapter(mAdapter);
 
+        mCityListFrag.setMKOfflineMap(mOfflineMap);
+
     }
 
     private void initListener() {
@@ -179,9 +181,12 @@ public class GetOfflineMapActivity extends AppCompatActivity implements MKOfflin
      * 下载 离线地图的监听信息
      */
     @Override
-    public void startDownload(int cityId) {
-        Log.i(TAG, "Start Down " + cityId);
-        mOfflineMap.start(cityId);
+    public void startDownload(CityDetail city) {
+        Log.i(TAG, "Start Down " + city.getCityName());
+        mOfflineMap.start(city.getCityId());
+        if (mDownloadFrag != null) {
+            mDownloadFrag.addDownloadCity(city);
+        }
     }
 
     /**
@@ -198,6 +203,10 @@ public class GetOfflineMapActivity extends AppCompatActivity implements MKOfflin
                 MKOLUpdateElement update = mOfflineMap.getUpdateInfo(state);
                 if (update != null) {
                     Log.i(TAG, "CityName: " + update.cityName + "Ratio " + update.ratio);
+
+                    if (mDownloadFrag != null) {
+                        mDownloadFrag.updateProcess(update);
+                    }
                 }
                 break;
             case MKOfflineMap.TYPE_NEW_OFFLINE:
@@ -280,6 +289,7 @@ public class GetOfflineMapActivity extends AppCompatActivity implements MKOfflin
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        mOfflineMap.destroy();
     }
 
     @Override

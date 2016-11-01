@@ -133,7 +133,7 @@
         jumboMode="true"
         optimize="true"
         revision="23.0.3"
-        sha1="2108f421068760efa2ef997b05e4f38c02caec3f">
+        sha1="88ed8cf3cab4c1999308b0a70ccf28002f08a868">
         <dex dex="E:\programming\android\GetPoint\app\build\intermediates\pre-dexed\debug\instant-run_587f94cdc36deee33e156b34d2c04899aef7e258.jar" />
     </item>
     <item
@@ -214,7 +214,7 @@
         jumboMode="true"
         optimize="true"
         revision="23.0.3"
-        sha1="e47843eb25d4e9cff0df96d2369cccebcf4d5865">
+        sha1="96e022418caf0eb949ad5f5e4e00caa579f53846">
         <dex dex="E:\programming\android\GetPoint\app\build\intermediates\pre-dexed\debug\instant-run-bootstrap_418eb7abed6158a00684e16755e81bb729b0ff1f.jar" />
     </item>
 

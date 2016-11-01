@@ -9,25 +9,30 @@
         android:paddingStart="10dp"
         android:paddingTop="12dp"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:textColor="@color/greyText"/>
 
     <LinearLayout
         android:orientation="horizontal"
         android:layout_alignParentEnd="true"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:paddingTop="3dp"
+        android:paddingBottom="3dp"
+        android:paddingEnd="3dp">
 
         <TextView
             android:id="@+id/id_city_map_size"
             android:layout_gravity="center_vertical"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            />
+            android:textColor="@color/greyText"/>
 
         <ImageButton
             android:id="@+id/id_start_download"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:background="@drawable/download_image_button"
             android:src="@drawable/ic_file_download_black_24dp" />
 
     </LinearLayout>

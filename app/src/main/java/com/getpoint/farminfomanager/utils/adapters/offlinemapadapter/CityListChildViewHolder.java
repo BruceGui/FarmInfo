@@ -45,7 +45,7 @@ public class CityListChildViewHolder extends ChildViewHolder {
         mDownload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                listener.startDownload(city.getCityId());
+                listener.startDownload(city);
             }
         });
 

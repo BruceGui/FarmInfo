@@ -12,6 +12,7 @@ public class CityDetail {
 
     private int cityId;
     private int cityType;
+    private int ratio;
     private String cityName;
     private boolean isAdded;
 
@@ -24,6 +25,14 @@ public class CityDetail {
         this.cityName = cityName;
         this.filesize = formatDataSize(filesize);
         this.cityType = cityType;
+    }
+
+    public int getRatio() {
+        return ratio;
+    }
+
+    public void setRatio(int ratio) {
+        this.ratio = ratio;
     }
 
     public int getCityType() {

@@ -2,7 +2,6 @@
 
 <!-- 使用 list view 来显示边界点、障碍点的详细信息 -->
 
-
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"

@@ -5,17 +5,22 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.RecyclerView.ViewHolder;
 import android.support.v7.widget.SearchView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
+import android.widget.TextView;
 
 import com.baidu.mapapi.map.offline.MKOLSearchRecord;
 import com.baidu.mapapi.map.offline.MKOfflineMap;
 import com.getpoint.farminfomanager.R;
 import com.getpoint.farminfomanager.utils.adapters.offlinemapadapter.CityListAdapter;
 import com.getpoint.farminfomanager.utils.adapters.offlinemapadapter.CityListParent;
+
+import static com.getpoint.farminfomanager.entity.offlinemap.CityDetail.formatDataSize;
 
 import java.util.List;
 
@@ -31,8 +36,10 @@ public class CityListFragment extends Fragment {
     private SearchView mCitySearch;
     private RecyclerView cityListrv;
 
+    private List<MKOLSearchRecord> searchRes;
     private List<CityListParent> allCities;
-    CityListAdapter mAdapter;
+    private CityListAdapter mAdapter;
+    private SearchResAdapter searchResAdapter;
 
     public static CityListFragment newInstance() {
 
@@ -60,13 +67,78 @@ public class CityListFragment extends Fragment {
 
         View v = inflater.inflate(R.layout.city_list_fragment, container, false);
 
+        searchResAdapter = new SearchResAdapter();
+
         mCitySearch = (SearchView) v.findViewById(R.id.id_search_city);
         mCitySearch.setIconifiedByDefault(false);
+        mCitySearch.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                if(offlineMap != null) {
+                    searchRes = offlineMap.searchCity(query);
+                    cityListrv.setAdapter(searchResAdapter);
+                }
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+
+                if(newText.equals("")) {
+                    cityListrv.setAdapter(mAdapter);
+                } else {
+                    searchRes = offlineMap.searchCity(newText);
+                    cityListrv.setAdapter(searchResAdapter);
+                }
+                return false;
+            }
+        });
+
 
         cityListrv = (RecyclerView) v.findViewById(R.id.city_list_rv);
         cityListrv.setAdapter(mAdapter);
         cityListrv.setLayoutManager(new LinearLayoutManager(getContext()));
 
         return v;
+    }
+
+    public class SearchResAdapter extends RecyclerView.Adapter<SearchResAdapter.SearchResViewHolder> {
+
+
+        @Override
+        public SearchResViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+            return new SearchResViewHolder(LayoutInflater.from(getContext())
+                .inflate(R.layout.city_list_child_view_holder, parent, false));
+        }
+
+        @Override
+        public void onBindViewHolder(SearchResViewHolder holder, int position) {
+            holder.mCityName.setText(searchRes.get(position).cityName);
+            holder.mCityMapSize.setText(formatDataSize(searchRes.get(position).size));
+        }
+
+        @Override
+        public int getItemCount() {
+            return searchRes.size();
+        }
+
+        class SearchResViewHolder extends ViewHolder {
+
+            private TextView mCityName;
+            private TextView mCityMapSize;
+            private ImageButton mDownload;
+
+            public SearchResViewHolder(View v) {
+                super(v);
+                mCityName = (TextView) v.findViewById(R.id.id_city_name);
+                mCityMapSize = (TextView) v.findViewById(R.id.id_city_map_size);
+                mDownload = (ImageButton) v.findViewById(R.id.id_start_download);
+            }
+        }
+
+    }
+
+    public void setMKOfflineMap(MKOfflineMap m) {
+        this.offlineMap = m;
     }
 }
