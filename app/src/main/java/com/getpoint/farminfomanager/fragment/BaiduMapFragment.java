@@ -59,6 +59,8 @@ public class BaiduMapFragment extends SupportMapFragment {
 
     private static final float GO_TO_MY_LOCATION_ZOOM = 19f;
     public static final int MISSION_PATH_DEFAULT_COLOR = Color.WHITE;
+    public static final int MISSION_PATH_BOUNDARY_COLOR = Color.RED;
+    public static final int MISSION_PATH_DANGER_COLOR = Color.GRAY;
     public static final int MISSION_PATH_DEFAULT_WIDTH = 4;
 
     private Polyline framePointPath;
@@ -318,6 +320,10 @@ public class BaiduMapFragment extends SupportMapFragment {
             final List<PointInfo> ips = ((DangerPoint)itemProxy.getPointInfo())
                     .getInnerPoints();
 
+            if(ips.size() > 1) {
+                drawPolylineFromPointInfo(ips);
+            }
+
             for(PointInfo ip : ips) {
                 ip.setPointType(PointItemType.DANGERPOINT);
                 DangerPointMarker pointMarker = new DangerPointMarker(ip, itemProxy);
@@ -384,7 +390,7 @@ public class BaiduMapFragment extends SupportMapFragment {
         if (framePointPath == null) {
 
             PolylineOptions pathOptions = new PolylineOptions();
-            pathOptions.color(MISSION_PATH_DEFAULT_COLOR).width(
+            pathOptions.color(MISSION_PATH_BOUNDARY_COLOR).width(
                     MISSION_PATH_DEFAULT_WIDTH);
             pathOptions.points(pathPoints);
             framePointPath = (Polyline)getBaiduMap().addOverlay(pathOptions);
@@ -393,6 +399,25 @@ public class BaiduMapFragment extends SupportMapFragment {
 
         framePointPath.setPoints(pathPoints);
 
+    }
+
+    public void drawPolylineFromPointInfo(List<PointInfo> ps) {
+        List<LatLong> pathCoords = new ArrayList<>();
+
+        for(PointInfo p : ps) {
+            pathCoords.add(p.getPosition().getLatLong());
+        }
+
+        final List<LatLng> pathPoints = new ArrayList<>(pathCoords.size());
+        for (LatLong coord : pathCoords) {
+            pathPoints.add(DroneHelper.CoordToBaiduLatLang(coord));
+        }
+
+        PolylineOptions pathOptions = new PolylineOptions();
+        pathOptions.color(MISSION_PATH_DANGER_COLOR).width(
+                MISSION_PATH_DEFAULT_WIDTH);
+        pathOptions.points(pathPoints);
+        getBaiduMap().addOverlay(pathOptions);
     }
 
     /**

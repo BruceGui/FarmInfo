@@ -6,6 +6,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.RecyclerView.ViewHolder;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +14,7 @@ import android.widget.TextView;
 
 import com.baidu.mapapi.map.offline.MKOLUpdateElement;
 import com.baidu.mapapi.map.offline.MKOfflineMap;
+import com.baidu.mapapi.map.offline.MKOfflineMapListener;
 import com.getpoint.farminfomanager.R;
 import com.getpoint.farminfomanager.entity.offlinemap.CityDetail;
 import com.getpoint.farminfomanager.weights.numberprocessbar.NumberProgressBar;
@@ -25,6 +27,8 @@ import java.util.List;
  */
 
 public class DownloadManFragment extends Fragment {
+
+    private static final String TAG = "DownloadMan";
 
     private MKOfflineMap offlineMap = null;
 
@@ -48,9 +52,11 @@ public class DownloadManFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        mOnDownload = new ArrayList<>();
         mDownloaded = new ArrayList<>();
+    }
+
+    public void setOnDowning(List<CityDetail> c) {
+        this.mOnDownload = c;
     }
 
     @Nullable
@@ -73,7 +79,7 @@ public class DownloadManFragment extends Fragment {
     }
 
     /**
-     *  正在下载的任务 适配器
+     * 正在下载的任务 适配器
      */
     public class OfflineMapDownloadAdapter extends RecyclerView.Adapter<OfflineMapDownloadAdapter.DownloadViewHolder> {
 
@@ -109,14 +115,14 @@ public class DownloadManFragment extends Fragment {
     }
 
     /**
-     *  已经下载的 适配器
+     * 已经下载的 适配器
      */
     public class OfflineMapHaveAdapter extends RecyclerView.Adapter<OfflineMapHaveAdapter.HaveViewHolder> {
 
         @Override
         public HaveViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             return new HaveViewHolder(LayoutInflater.from(getContext())
-                .inflate(R.layout.offline_map_downloaded, parent, false));
+                    .inflate(R.layout.offline_map_downloaded, parent, false));
         }
 
         @Override
@@ -148,12 +154,15 @@ public class DownloadManFragment extends Fragment {
     }
 
     public void updateProcess(MKOLUpdateElement u) {
-        mOnDownload.get(0).setRatio(u.ratio);
-        if(u.ratio == 100) {
-           // mDownloaded.add(mOnDownload.get(0));
-            removeDownloadCity();
+
+        if (!mOnDownload.isEmpty()) {
+            mOnDownload.get(0).setRatio(u.ratio);
+            if (u.ratio == 100) {
+                // mDownloaded.add(mOnDownload.get(0));
+                removeDownloadCity();
+            }
+            notifyDatasetChanged();
         }
-        notifyDatasetChanged();
     }
 
     public void notifyDatasetChanged() {
@@ -176,9 +185,4 @@ public class DownloadManFragment extends Fragment {
         this.offlineMap = m;
     }
 
-    public interface OnOfflineMapDownloadListener {
-
-        void startDownload(CityDetail city);
-
-    }
 }

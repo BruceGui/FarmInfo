@@ -4,6 +4,8 @@ import com.getpoint.farminfomanager.entity.coordinate.LatLong;
 import com.getpoint.farminfomanager.entity.coordinate.LatLongAlt;
 import com.getpoint.farminfomanager.entity.points.enumc.PointItemType;
 
+import java.util.Locale;
+
 /**
  * Created by Station on 2016/8/1.
  */
@@ -58,13 +60,13 @@ public class PointInfo {
 
     public String toString() {
         if (pointType.equals(PointItemType.FRAMEPOINT)) {
-            return position.getLongitude() + " "
-                    + position.getLatitude() + " "
-                    + position.getAltitude();
+            return  String.format(Locale.getDefault(), "%.8f", position.getLongitude()) + " "
+                    + String.format(Locale.getDefault(), "%.8f", position.getLatitude()) + " "
+                    + String.format(Locale.getDefault(), "%.2f", position.getAltitude());
         } else {
-            return position.getLongitude() + " "
-                    + position.getLatitude() + " "
-                    + position.getAltitude() + " "
+            return String.format(Locale.getDefault(), "%.8f", position.getLongitude()) + " "
+                    + String.format(Locale.getDefault(), "%.8f", position.getLatitude()) + " "
+                    + String.format(Locale.getDefault(), "%.2f", position.getAltitude()) + " "
                     + pointNum + " "
                     + flyheight;
         }

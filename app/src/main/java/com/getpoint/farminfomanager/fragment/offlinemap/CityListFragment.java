@@ -18,6 +18,7 @@ import com.baidu.mapapi.map.offline.MKOLSearchRecord;
 import com.baidu.mapapi.map.offline.MKOfflineMap;
 import com.getpoint.farminfomanager.R;
 import com.getpoint.farminfomanager.entity.offlinemap.CityDetail;
+import com.getpoint.farminfomanager.utils.MKOfflineMapDownloadListener;
 import com.getpoint.farminfomanager.utils.adapters.offlinemapadapter.CityListAdapter;
 import com.getpoint.farminfomanager.utils.adapters.offlinemapadapter.CityListParent;
 
@@ -42,7 +43,7 @@ public class CityListFragment extends Fragment {
     private CityListAdapter mAdapter;
     private SearchResAdapter searchResAdapter;
 
-    private DownloadManFragment.OnOfflineMapDownloadListener listener;
+    private MKOfflineMapDownloadListener listener;
 
     public static CityListFragment newInstance() {
 
@@ -59,7 +60,7 @@ public class CityListFragment extends Fragment {
         this.mAdapter = a;
     }
 
-    public void setDownloadListener(DownloadManFragment.OnOfflineMapDownloadListener l) {
+    public void setDownloadListener(MKOfflineMapDownloadListener l) {
         this.listener = l;
     }
 

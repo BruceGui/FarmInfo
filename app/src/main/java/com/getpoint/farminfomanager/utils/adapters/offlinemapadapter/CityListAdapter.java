@@ -7,7 +7,7 @@ import android.view.ViewGroup;
 
 import com.getpoint.farminfomanager.R;
 import com.getpoint.farminfomanager.entity.offlinemap.CityDetail;
-import com.getpoint.farminfomanager.fragment.offlinemap.DownloadManFragment;
+import com.getpoint.farminfomanager.utils.MKOfflineMapDownloadListener;
 import com.getpoint.farminfomanager.weights.expandablerecyclerview.ExpandableRecyclerAdapter;
 
 import java.util.List;
@@ -19,10 +19,10 @@ import java.util.List;
 public class CityListAdapter extends ExpandableRecyclerAdapter<CityListParent, CityDetail, CityListParentViewHolder, CityListChildViewHolder> {
 
     private LayoutInflater mLayoutInflater;
-    private DownloadManFragment.OnOfflineMapDownloadListener listener;
+    private MKOfflineMapDownloadListener listener;
 
     public CityListAdapter(@NonNull Context c, List<CityListParent> p,
-                           DownloadManFragment.OnOfflineMapDownloadListener listener) {
+                           MKOfflineMapDownloadListener listener) {
         super(p);
         mLayoutInflater = LayoutInflater.from(c);
         this.listener = listener;

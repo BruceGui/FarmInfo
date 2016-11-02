@@ -131,6 +131,7 @@ public class DangerPointFragment extends PointDetailFragment implements
 
                     ((DangerPoint) currDP.getPointInfo()).getInnerPoints()
                             .add(p);
+                    ((DangerPoint) currDP.getPointInfo()).setdPType(getCurrentDPType());
 
                     updateInnerIndex(currDP);
                     mapFragment.updateInfoFromMission(missionProxy);
@@ -348,11 +349,8 @@ public class DangerPointFragment extends PointDetailFragment implements
      */
     public void updateCurrVar(MissionItemProxy m) {
 
-        Log.i(TAG, "Update current variable");
-
         currDP = m;
         currInPlist = ((DangerPoint) m.getPointInfo()).getInnerPoints();
-        //clearInnerVar();
 
         updateInnerIndex(m);
         final DangerPoint dp = (DangerPoint) currDP.getPointInfo();

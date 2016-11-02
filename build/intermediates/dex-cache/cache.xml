@@ -2,274 +2,229 @@
 <items version="2" >
 
     <item
-        is-multidex="true"
-        jar="E:\programming\android\GetPoint\app\build\intermediates\incremental-runtime-classes\debug\instant-run.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="23.0.3"
-        sha1="ebbee6723ddb988703b29b774af8e72bac6eb0a4">
-        <dex dex="E:\programming\android\GetPoint\app\build\intermediates\transforms\dex\debug\folders\1000\10\instant-run_587f94cdc36deee33e156b34d2c04899aef7e258\classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="E:\programming\android\GetPoint\app\build\intermediates\exploded-aar\com.android.support\support-vector-drawable\25.0.0\jars\classes.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.0"
-        sha1="d29714cc76b38157e3cbd034c66e1ec808eb4c19">
-        <dex dex="E:\programming\android\GetPoint\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.android.support-support-vector-drawable-25.0.0_df1e661bc8eb7b8316398c2d8bb04aaf1f293ff2\classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="E:\programming\android\GetPoint\app\build\intermediates\exploded-aar\com.android.support\support-media-compat\25.0.0\jars\classes.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.0"
-        sha1="76fb65a4b41ea42dab8a1310ed772a2420c96b52">
-        <dex dex="E:\programming\android\GetPoint\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.android.support-support-media-compat-25.0.0_ade118a814af967aa7bd16c7839eb10e80e24e9e\classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
+        is-multidex="false"
         jar="E:\programming\android\GetPoint\app\build\intermediates\exploded-aar\com.android.support\support-core-ui\25.0.0\jars\libs\internal_impl-25.0.0.jar"
         jumboMode="true"
         optimize="true"
         revision="25.0.0"
         sha1="e5343c9d19cb19ff55f6b268c7f3fe8c9d224f6f">
-        <dex dex="E:\programming\android\GetPoint\app\build\intermediates\transforms\dex\debug\folders\1000\10\internal_impl-25.0.0_c6ce41f52b9c041cfb5952fcd0431126d6dc16fc\classes.dex" />
+        <dex dex="E:\programming\android\GetPoint\app\build\intermediates\pre-dexed\debug\internal_impl-25.0.0_c6ce41f52b9c041cfb5952fcd0431126d6dc16fc.jar" />
     </item>
     <item
-        is-multidex="true"
-        jar="E:\programming\android\GetPoint\app\build\intermediates\exploded-aar\com.android.support\recyclerview-v7\25.0.0\jars\classes.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.0"
-        sha1="5e497d60f0cb6ce87c458ac5420a46d0fed49bd0">
-        <dex dex="E:\programming\android\GetPoint\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.android.support-recyclerview-v7-25.0.0_f3584644a0d3a129d2ee0b725210029c573514de\classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="E:\programming\android\GetPoint\app\build\intermediates\incremental-runtime-classes\debug\instant-run.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.0"
-        sha1="60d37ca422a49d73b9ed4e64cb40bc1a0d489ace">
-        <dex dex="E:\programming\android\GetPoint\app\build\intermediates\transforms\dex\debug\folders\1000\10\instant-run_587f94cdc36deee33e156b34d2c04899aef7e258\classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="E:\programming\android\GetPoint\app\libs\BaiduLBS_Android.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="23.0.3"
-        sha1="9925235b0db7c7b963bcdbf2e6fbd082eb1fda44">
-        <dex dex="E:\programming\android\GetPoint\app\build\intermediates\transforms\dex\debug\folders\1000\2\BaiduLBS_Android_2efba7a63f220e090adc5de536b670166467a17a\classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="E:\programming\android\GetPoint\app\build\intermediates\incremental-classes\debug\instant-run-bootstrap.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.0"
-        sha1="28769604b782835e59883b3e5b63404348bc86ca">
-        <dex dex="E:\programming\android\GetPoint\app\build\intermediates\transforms\dex\debug\folders\1000\10\instant-run-bootstrap_418eb7abed6158a00684e16755e81bb729b0ff1f\classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="E:\programming\android\GetPoint\app\build\intermediates\exploded-aar\com.android.support\animated-vector-drawable\25.0.0\jars\classes.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.0"
-        sha1="53a420cd4f49274db6bd43475f8006ba67ef6bbd">
-        <dex dex="E:\programming\android\GetPoint\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.android.support-animated-vector-drawable-25.0.0_31db7d6daff3229e41cbf7d61b8283b60b56595c\classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="E:\programming\android\GetPoint\app\build\intermediates\incremental-classes\debug\instant-run-bootstrap.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="23.0.3"
-        sha1="768712dd5e616327cb6251fe31f10cefe55edb09">
-        <dex dex="E:\programming\android\GetPoint\app\build\intermediates\transforms\dex\debug\folders\1000\10\instant-run-bootstrap_418eb7abed6158a00684e16755e81bb729b0ff1f\classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="E:\programming\android\GetPoint\app\build\intermediates\exploded-aar\com.android.support\support-fragment\25.0.0\jars\libs\internal_impl-25.0.0.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.0"
-        sha1="ee5faf4dee5b6a4364bf51587871047dde7c703a">
-        <dex dex="E:\programming\android\GetPoint\app\build\intermediates\transforms\dex\debug\folders\1000\10\internal_impl-25.0.0_f883c2ce0dc105c3588bd1e46f06ec0bd72be2a9\classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="E:\programming\android\GetPoint\app\build\intermediates\exploded-aar\com.android.support\support-media-compat\25.0.0\jars\libs\internal_impl-25.0.0.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.0"
-        sha1="665d21a8a069c96b4d9e8b434f5096d865b4e261">
-        <dex dex="E:\programming\android\GetPoint\app\build\intermediates\transforms\dex\debug\folders\1000\10\internal_impl-25.0.0_df73de0c3a5df4bcd33d13182b48818c295d0bb7\classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="E:\programming\android\GetPoint\app\libs\BaiduLBS_Android.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.0"
-        sha1="9925235b0db7c7b963bcdbf2e6fbd082eb1fda44">
-        <dex dex="E:\programming\android\GetPoint\app\build\intermediates\transforms\dex\debug\folders\1000\2\BaiduLBS_Android_2efba7a63f220e090adc5de536b670166467a17a\classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="C:\Users\win\.gradle\caches\modules-2\files-2.1\com.github.frankiesardo\auto-parcel\0.3.1\501393158454717fef27cba8d177f32a158b8955\auto-parcel-0.3.1.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.0"
-        sha1="501393158454717fef27cba8d177f32a158b8955">
-        <dex dex="E:\programming\android\GetPoint\app\build\intermediates\transforms\dex\debug\folders\1000\10\auto-parcel-0.3.1_c735573814643df88a0c8470a962449637e17d6e\classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
+        is-multidex="false"
         jar="E:\programming\android\GetPoint\app\build\intermediates\exploded-aar\com.android.support\support-core-utils\25.0.0\jars\classes.jar"
         jumboMode="true"
         optimize="true"
         revision="25.0.0"
         sha1="4ccbcda5c72027c7f7c14be9ff8640d9cb0d8da0">
-        <dex dex="E:\programming\android\GetPoint\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.android.support-support-core-utils-25.0.0_6c1ed2e7fb1f74f1a881a3c280101de610ea25ee\classes.dex" />
+        <dex dex="E:\programming\android\GetPoint\app\build\intermediates\pre-dexed\debug\com.android.support-support-core-utils-25.0.0_6c1ed2e7fb1f74f1a881a3c280101de610ea25ee.jar" />
     </item>
     <item
-        is-multidex="true"
-        jar="E:\programming\android\GetPoint\app\build\intermediates\exploded-aar\com.android.support\design\25.0.0\jars\classes.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.0"
-        sha1="26384be22ddc74cfe197ebda9edbc7d1fd8bd537">
-        <dex dex="E:\programming\android\GetPoint\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.android.support-design-25.0.0_4d4b6935e0181d6c9d560737444bd1fd5153b192\classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="C:\Users\win\.gradle\caches\modules-2\files-2.1\com.github.frankiesardo\auto-parcel\0.3.1\501393158454717fef27cba8d177f32a158b8955\auto-parcel-0.3.1.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="23.0.3"
-        sha1="501393158454717fef27cba8d177f32a158b8955">
-        <dex dex="E:\programming\android\GetPoint\app\build\intermediates\transforms\dex\debug\folders\1000\10\auto-parcel-0.3.1_c735573814643df88a0c8470a962449637e17d6e\classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="E:\programming\android\GetPoint\app\build\intermediates\exploded-aar\com.android.support\support-v13\25.0.0\jars\libs\internal_impl-25.0.0.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.0"
-        sha1="67355078cd30daae43f62ba47a4663ee6edb976e">
-        <dex dex="E:\programming\android\GetPoint\app\build\intermediates\transforms\dex\debug\folders\1000\10\internal_impl-25.0.0_ed135a109202370373e03f780b67a3e358d79e2a\classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="D:\Android\android-sdk\extras\android\m2repository\com\android\support\support-annotations\25.0.0\support-annotations-25.0.0.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.0"
-        sha1="a22d2cc94da87b254451fa8ed28afc30b4653773">
-        <dex dex="E:\programming\android\GetPoint\app\build\intermediates\transforms\dex\debug\folders\1000\10\support-annotations-25.0.0_28652a75d9f2dc0bdab5507efa63c4b2890ce953\classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="C:\Users\win\.gradle\caches\modules-2\files-2.1\com.google.auto.value\auto-value\1.1\f6951c141ea3e89c0f8b01da16834880a1ebf162\auto-value-1.1.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.0"
-        sha1="f6951c141ea3e89c0f8b01da16834880a1ebf162">
-        <dex dex="E:\programming\android\GetPoint\app\build\intermediates\transforms\dex\debug\folders\1000\10\auto-value-1.1_3aded9f42b3f1b150a27be284617972f1e9bfae5\classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="E:\programming\android\GetPoint\app\build\intermediates\exploded-aar\com.android.support\support-compat\25.0.0\jars\libs\internal_impl-25.0.0.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.0"
-        sha1="f2e3b9bc1ec25f652e8007ce7774c991e38f6a00">
-        <dex dex="E:\programming\android\GetPoint\app\build\intermediates\transforms\dex\debug\folders\1000\10\internal_impl-25.0.0_2222fceb157c87e6f0773fc68e96079863939b24\classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="E:\programming\android\GetPoint\app\build\intermediates\exploded-aar\com.android.support\support-core-utils\25.0.0\jars\libs\internal_impl-25.0.0.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.0"
-        sha1="3b61a70884adaf0be3fc06c70c801e3e6df13133">
-        <dex dex="E:\programming\android\GetPoint\app\build\intermediates\transforms\dex\debug\folders\1000\10\internal_impl-25.0.0_290c89ce0d63a81d38da34c853573aec8743b79c\classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="E:\programming\android\GetPoint\app\build\intermediates\exploded-aar\com.android.support\support-fragment\25.0.0\jars\classes.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.0"
-        sha1="07daa0b6e1d455c82a38422ffe287c18823d339a">
-        <dex dex="E:\programming\android\GetPoint\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.android.support-support-fragment-25.0.0_4024b4f71730bb1e9b84ddee3fa76e2fedc04566\classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="E:\programming\android\GetPoint\app\build\intermediates\exploded-aar\com.android.support\transition\25.0.0\jars\classes.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.0"
-        sha1="0c6d948e6cb9ea6f535d175fb61ba2930719c0e9">
-        <dex dex="E:\programming\android\GetPoint\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.android.support-transition-25.0.0_f9467fa1e0068ad00c049696e55fd621acd7acea\classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="E:\programming\android\GetPoint\app\build\intermediates\exploded-aar\com.android.support\support-v13\25.0.0\jars\classes.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.0"
-        sha1="6ac094121e75b4b87432beb9305d70c68ec6dcab">
-        <dex dex="E:\programming\android\GetPoint\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.android.support-support-v13-25.0.0_f1fe9d75a0073e058ba2ec739599bbffcbfa7333\classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="E:\programming\android\GetPoint\app\build\intermediates\exploded-aar\com.android.support\support-compat\25.0.0\jars\classes.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.0"
-        sha1="75b1f366ff0bbc78f8b1f7cf0dc82e7c53afef6a">
-        <dex dex="E:\programming\android\GetPoint\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.android.support-support-compat-25.0.0_822a6e992e7c60eb7ea66cb86ebe2d231d2b187a\classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="E:\programming\android\GetPoint\app\build\intermediates\exploded-aar\com.android.support\appcompat-v7\25.0.0\jars\classes.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.0"
-        sha1="8bc45ce1f63d1a391fd38b32a201be5a42f9c95d">
-        <dex dex="E:\programming\android\GetPoint\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.android.support-appcompat-v7-25.0.0_f7c0c2084505c906537eaf64ae1a4dec519b26ef\classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="E:\programming\android\GetPoint\app\build\intermediates\exploded-aar\com.android.support\support-core-ui\25.0.0\jars\classes.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.0"
-        sha1="26674000177e45447a0326a6ad84612761199a13">
-        <dex dex="E:\programming\android\GetPoint\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.android.support-support-core-ui-25.0.0_67e7fd7e8be7decd8b0800e98d6f01b1908f3225\classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="C:\Users\win\.gradle\caches\modules-2\files-2.1\com.google.auto.value\auto-value\1.1\f6951c141ea3e89c0f8b01da16834880a1ebf162\auto-value-1.1.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="23.0.3"
-        sha1="f6951c141ea3e89c0f8b01da16834880a1ebf162">
-        <dex dex="E:\programming\android\GetPoint\app\build\intermediates\transforms\dex\debug\folders\1000\10\auto-value-1.1_3aded9f42b3f1b150a27be284617972f1e9bfae5\classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
+        is-multidex="false"
         jar="E:\programming\android\GetPoint\app\build\intermediates\exploded-aar\com.android.support\support-v4\25.0.0\jars\classes.jar"
         jumboMode="true"
         optimize="true"
         revision="25.0.0"
         sha1="d7c42c80f6509b9ea4db28ca7859ffae08ec5741">
-        <dex dex="E:\programming\android\GetPoint\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.android.support-support-v4-25.0.0_b7949c90cca4749163bf73bc160d11986ef77bd3\classes.dex" />
+        <dex dex="E:\programming\android\GetPoint\app\build\intermediates\pre-dexed\debug\com.android.support-support-v4-25.0.0_b7949c90cca4749163bf73bc160d11986ef77bd3.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="D:\Android\android-sdk\extras\android\m2repository\com\android\support\support-annotations\25.0.0\support-annotations-25.0.0.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.0"
+        sha1="a22d2cc94da87b254451fa8ed28afc30b4653773">
+        <dex dex="E:\programming\android\GetPoint\app\build\intermediates\pre-dexed\debug\support-annotations-25.0.0_28652a75d9f2dc0bdab5507efa63c4b2890ce953.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="E:\programming\android\GetPoint\app\libs\BaiduLBS_Android.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.0"
+        sha1="9925235b0db7c7b963bcdbf2e6fbd082eb1fda44">
+        <dex dex="E:\programming\android\GetPoint\app\build\intermediates\pre-dexed\debug\BaiduLBS_Android_2efba7a63f220e090adc5de536b670166467a17a.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="E:\programming\android\GetPoint\app\build\intermediates\exploded-aar\com.android.support\animated-vector-drawable\25.0.0\jars\classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.0"
+        sha1="53a420cd4f49274db6bd43475f8006ba67ef6bbd">
+        <dex dex="E:\programming\android\GetPoint\app\build\intermediates\pre-dexed\debug\com.android.support-animated-vector-drawable-25.0.0_31db7d6daff3229e41cbf7d61b8283b60b56595c.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\win\.gradle\caches\modules-2\files-2.1\com.github.frankiesardo\auto-parcel\0.3.1\501393158454717fef27cba8d177f32a158b8955\auto-parcel-0.3.1.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.0"
+        sha1="501393158454717fef27cba8d177f32a158b8955">
+        <dex dex="E:\programming\android\GetPoint\app\build\intermediates\pre-dexed\debug\auto-parcel-0.3.1_c735573814643df88a0c8470a962449637e17d6e.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="E:\programming\android\GetPoint\app\build\intermediates\exploded-aar\com.android.support\support-media-compat\25.0.0\jars\classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.0"
+        sha1="76fb65a4b41ea42dab8a1310ed772a2420c96b52">
+        <dex dex="E:\programming\android\GetPoint\app\build\intermediates\pre-dexed\debug\com.android.support-support-media-compat-25.0.0_ade118a814af967aa7bd16c7839eb10e80e24e9e.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="E:\programming\android\GetPoint\app\build\intermediates\exploded-aar\com.android.support\support-v13\25.0.0\jars\libs\internal_impl-25.0.0.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.0"
+        sha1="67355078cd30daae43f62ba47a4663ee6edb976e">
+        <dex dex="E:\programming\android\GetPoint\app\build\intermediates\pre-dexed\debug\internal_impl-25.0.0_ed135a109202370373e03f780b67a3e358d79e2a.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="E:\programming\android\GetPoint\app\build\intermediates\exploded-aar\com.android.support\support-compat\25.0.0\jars\classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.0"
+        sha1="75b1f366ff0bbc78f8b1f7cf0dc82e7c53afef6a">
+        <dex dex="E:\programming\android\GetPoint\app\build\intermediates\pre-dexed\debug\com.android.support-support-compat-25.0.0_822a6e992e7c60eb7ea66cb86ebe2d231d2b187a.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\win\.gradle\caches\modules-2\files-2.1\com.google.auto.value\auto-value\1.1\f6951c141ea3e89c0f8b01da16834880a1ebf162\auto-value-1.1.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.0"
+        sha1="f6951c141ea3e89c0f8b01da16834880a1ebf162">
+        <dex dex="E:\programming\android\GetPoint\app\build\intermediates\pre-dexed\debug\auto-value-1.1_3aded9f42b3f1b150a27be284617972f1e9bfae5.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="E:\programming\android\GetPoint\app\build\intermediates\exploded-aar\com.android.support\support-core-utils\25.0.0\jars\libs\internal_impl-25.0.0.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.0"
+        sha1="3b61a70884adaf0be3fc06c70c801e3e6df13133">
+        <dex dex="E:\programming\android\GetPoint\app\build\intermediates\pre-dexed\debug\internal_impl-25.0.0_290c89ce0d63a81d38da34c853573aec8743b79c.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="E:\programming\android\GetPoint\app\build\intermediates\exploded-aar\com.android.support\recyclerview-v7\25.0.0\jars\classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.0"
+        sha1="5e497d60f0cb6ce87c458ac5420a46d0fed49bd0">
+        <dex dex="E:\programming\android\GetPoint\app\build\intermediates\pre-dexed\debug\com.android.support-recyclerview-v7-25.0.0_f3584644a0d3a129d2ee0b725210029c573514de.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="E:\programming\android\GetPoint\app\build\intermediates\incremental-classes\debug\instant-run-bootstrap.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.0"
+        sha1="d160fc820e31aee914ef6278cfdcac97d707cc84">
+        <dex dex="E:\programming\android\GetPoint\app\build\intermediates\pre-dexed\debug\instant-run-bootstrap_418eb7abed6158a00684e16755e81bb729b0ff1f.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="E:\programming\android\GetPoint\app\build\intermediates\exploded-aar\com.android.support\support-compat\25.0.0\jars\libs\internal_impl-25.0.0.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.0"
+        sha1="f2e3b9bc1ec25f652e8007ce7774c991e38f6a00">
+        <dex dex="E:\programming\android\GetPoint\app\build\intermediates\pre-dexed\debug\internal_impl-25.0.0_2222fceb157c87e6f0773fc68e96079863939b24.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="E:\programming\android\GetPoint\app\build\intermediates\exploded-aar\com.android.support\transition\25.0.0\jars\classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.0"
+        sha1="0c6d948e6cb9ea6f535d175fb61ba2930719c0e9">
+        <dex dex="E:\programming\android\GetPoint\app\build\intermediates\pre-dexed\debug\com.android.support-transition-25.0.0_f9467fa1e0068ad00c049696e55fd621acd7acea.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="E:\programming\android\GetPoint\app\build\intermediates\exploded-aar\com.android.support\support-fragment\25.0.0\jars\libs\internal_impl-25.0.0.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.0"
+        sha1="ee5faf4dee5b6a4364bf51587871047dde7c703a">
+        <dex dex="E:\programming\android\GetPoint\app\build\intermediates\pre-dexed\debug\internal_impl-25.0.0_f883c2ce0dc105c3588bd1e46f06ec0bd72be2a9.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="E:\programming\android\GetPoint\app\build\intermediates\incremental-runtime-classes\debug\instant-run.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.0"
+        sha1="9592d95cd95eb37baf261b8d10121820f895c129">
+        <dex dex="E:\programming\android\GetPoint\app\build\intermediates\pre-dexed\debug\instant-run_587f94cdc36deee33e156b34d2c04899aef7e258.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="E:\programming\android\GetPoint\app\build\intermediates\exploded-aar\com.android.support\design\25.0.0\jars\classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.0"
+        sha1="26384be22ddc74cfe197ebda9edbc7d1fd8bd537">
+        <dex dex="E:\programming\android\GetPoint\app\build\intermediates\pre-dexed\debug\com.android.support-design-25.0.0_4d4b6935e0181d6c9d560737444bd1fd5153b192.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="E:\programming\android\GetPoint\app\build\intermediates\exploded-aar\com.android.support\support-vector-drawable\25.0.0\jars\classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.0"
+        sha1="d29714cc76b38157e3cbd034c66e1ec808eb4c19">
+        <dex dex="E:\programming\android\GetPoint\app\build\intermediates\pre-dexed\debug\com.android.support-support-vector-drawable-25.0.0_df1e661bc8eb7b8316398c2d8bb04aaf1f293ff2.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="E:\programming\android\GetPoint\app\build\intermediates\exploded-aar\com.android.support\support-v13\25.0.0\jars\classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.0"
+        sha1="6ac094121e75b4b87432beb9305d70c68ec6dcab">
+        <dex dex="E:\programming\android\GetPoint\app\build\intermediates\pre-dexed\debug\com.android.support-support-v13-25.0.0_f1fe9d75a0073e058ba2ec739599bbffcbfa7333.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="E:\programming\android\GetPoint\app\build\intermediates\exploded-aar\com.android.support\appcompat-v7\25.0.0\jars\classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.0"
+        sha1="8bc45ce1f63d1a391fd38b32a201be5a42f9c95d">
+        <dex dex="E:\programming\android\GetPoint\app\build\intermediates\pre-dexed\debug\com.android.support-appcompat-v7-25.0.0_f7c0c2084505c906537eaf64ae1a4dec519b26ef.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="E:\programming\android\GetPoint\app\build\intermediates\exploded-aar\com.android.support\support-media-compat\25.0.0\jars\libs\internal_impl-25.0.0.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.0"
+        sha1="665d21a8a069c96b4d9e8b434f5096d865b4e261">
+        <dex dex="E:\programming\android\GetPoint\app\build\intermediates\pre-dexed\debug\internal_impl-25.0.0_df73de0c3a5df4bcd33d13182b48818c295d0bb7.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="E:\programming\android\GetPoint\app\build\intermediates\exploded-aar\com.android.support\support-core-ui\25.0.0\jars\classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.0"
+        sha1="26674000177e45447a0326a6ad84612761199a13">
+        <dex dex="E:\programming\android\GetPoint\app\build\intermediates\pre-dexed\debug\com.android.support-support-core-ui-25.0.0_67e7fd7e8be7decd8b0800e98d6f01b1908f3225.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="E:\programming\android\GetPoint\app\build\intermediates\exploded-aar\com.android.support\support-fragment\25.0.0\jars\classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.0"
+        sha1="07daa0b6e1d455c82a38422ffe287c18823d339a">
+        <dex dex="E:\programming\android\GetPoint\app\build\intermediates\pre-dexed\debug\com.android.support-support-fragment-25.0.0_4024b4f71730bb1e9b84ddee3fa76e2fedc04566.jar" />
     </item>
 
 </items>

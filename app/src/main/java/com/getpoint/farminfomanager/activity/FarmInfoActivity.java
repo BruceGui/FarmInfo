@@ -20,7 +20,6 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.baidu.mapapi.map.Text;
 import com.getpoint.farminfomanager.FarmInfoAppPref;
 import com.getpoint.farminfomanager.FarmInfoManagerApp;
 import com.getpoint.farminfomanager.GPSDeviceManager;
@@ -55,6 +54,7 @@ import com.getpoint.farminfomanager.fragment.EditorChooseFragment;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import static com.getpoint.farminfomanager.utils.virtualnavbar.VirtualNavBar.getNavigationBarHeight;
 
@@ -285,7 +285,7 @@ public class FarmInfoActivity extends AppCompatActivity implements
                  *   获取当前点的信息，
                  *   在地图上显示
                  */
-                final LatLong coord = mapFragment.getCurrentCoord();
+                //final LatLong coord = mapFragment.getCurrentCoord();
 
                 switch (currentType) {
                     case STATIONPOINT:
@@ -325,9 +325,9 @@ public class FarmInfoActivity extends AppCompatActivity implements
      */
     private void updateGPSBestpos() {
 
-        mGPSLon.setText(String.valueOf(gps.lon));
-        mGPSLat.setText(String.valueOf(gps.lat));
-        mGPSHei.setText(String.valueOf(gps.alt));
+        mGPSLon.setText(String.format(Locale.getDefault(), "%.8f",gps.lon));
+        mGPSLat.setText(String.format(Locale.getDefault(), "%.8f",gps.lat));
+        mGPSHei.setText(String.format(Locale.getDefault(), "%.2f",gps.alt));
 
         mGPStarNum.setText(String.valueOf(gps.used));
         mGPState.setText(String.valueOf(gps.POSState));

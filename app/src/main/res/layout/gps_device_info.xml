@@ -1,107 +1,138 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/gpsInfoBackground">
+    android:background="@color/gpsInfoBackground"
+    android:orientation="vertical">
 
     <!-- 显示位置信息 -->
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
 
-        <TextView
-            style="@style/commonTextGPS"
-            android:text="@string/lon_str"/>
+    <TextView
+        android:id="@+id/id_lon_text"
+        style="@style/commonTextGPS"
+        android:paddingTop="3dp"
+        android:paddingStart="3dp"
+        android:text="@string/lon_str" />
 
-        <TextView
-            android:id="@+id/lon_value"
-            style="@style/commonInfoGPS"/>
+    <TextView
+        android:id="@+id/lon_value"
+        style="@style/commonInfoGPS"
+        android:layout_toEndOf="@id/id_lon_text"
+        android:layout_alignBottom="@id/id_lon_text"
+        android:text="@string/init_coord_value"/>
 
-        <TextView
-            style="@style/commonTextGPS"
-            android:text="@string/lat_str"/>
+    <TextView
+        android:id="@+id/id_lat_text"
+        style="@style/commonTextGPS"
+        android:paddingTop="3dp"
+        android:paddingStart="3dp"
+        android:layout_below="@id/id_lon_text"
+        android:text="@string/lat_str" />
 
-        <TextView
-            android:id="@+id/lat_value"
-            style="@style/commonInfoGPS"/>
+    <TextView
+        android:id="@+id/lat_value"
+        style="@style/commonInfoGPS"
+        android:layout_toEndOf="@id/id_lat_text"
+        android:layout_alignBottom="@id/id_lat_text"
+        android:text="@string/init_coord_value"/>
 
-        <TextView
-            style="@style/commonTextGPS"
-            android:text="@string/hei_str"/>
+    <TextView
+        android:id="@+id/id_hei_text"
+        style="@style/commonTextGPS"
+        android:paddingTop="3dp"
+        android:paddingStart="3dp"
+        android:layout_below="@id/id_lat_text"
+        android:text="@string/hei_str" />
 
-        <TextView
-            android:id="@+id/hei_value"
-            style="@style/commonInfoGPS"/>
-
-    </LinearLayout>
+    <TextView
+        android:id="@+id/hei_value"
+        style="@style/commonInfoGPS"
+        android:layout_alignBottom="@id/id_hei_text"
+        android:layout_toEndOf="@id/id_hei_text"
+        android:text="0.00"/>
 
 
     <!-- 显示精度因子 -->
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
 
+    <TextView
+        android:id="@+id/id_gdop_text"
+        style="@style/commonTextGPS"
+        android:paddingTop="3dp"
+        android:paddingStart="13dp"
+        android:text="@string/gps_gdop"
+        android:layout_toEndOf="@id/lat_value"/>
 
-        <TextView
-            style="@style/commonTextGPS"
-            android:text="@string/gps_gdop"/>
-        <TextView
-            android:id="@+id/gps_gdop_value"
-            style="@style/commonInfoGPS" />
+    <TextView
+        android:id="@+id/gps_gdop_value"
+        android:layout_toEndOf="@id/id_gdop_text"
+        android:layout_alignBottom="@id/id_gdop_text"
+        style="@style/commonInfoGPS"
+        android:text="@string/init_dop_value"/>
 
-        <TextView
-            style="@style/commonTextGPS"
-            android:text="@string/gps_pdop"/>
-        <TextView
-            android:id="@+id/gps_pdop_value"
-            style="@style/commonInfoGPS" />
+    <TextView
+        android:id="@+id/id_pdop_text"
+        android:paddingTop="3dp"
+        android:paddingStart="13dp"
+        style="@style/commonTextGPS"
+        android:layout_below="@id/gps_gdop_value"
+        android:layout_toEndOf="@id/lon_value"
+        android:text="@string/gps_pdop" />
 
-        <TextView
-            style="@style/commonTextGPS"
-            android:text="@string/gps_hdop"/>
-        <TextView
-            android:id="@+id/gps_hdop_value"
-            style="@style/commonInfoGPS" />
+    <TextView
+        android:id="@+id/gps_pdop_value"
+        android:layout_toEndOf="@id/id_pdop_text"
+        android:layout_alignBottom="@id/id_pdop_text"
+        style="@style/commonInfoGPS"
+        android:text="@string/init_dop_value"/>
 
-    </LinearLayout>
+    <TextView
+        android:id="@+id/id_hdop_text"
+        android:paddingTop="3dp"
+        android:paddingStart="13dp"
+        style="@style/commonTextGPS"
+        android:layout_alignStart="@id/id_pdop_text"
+        android:layout_below="@id/id_pdop_text"
+        android:text="@string/gps_hdop" />
+
+    <TextView
+        android:id="@+id/gps_hdop_value"
+        android:layout_toEndOf="@id/id_hdop_text"
+        android:layout_alignBottom="@id/id_hdop_text"
+        style="@style/commonInfoGPS"
+        android:text="@string/init_dop_value"/>
+
 
     <!-- 星数和定位状态 -->
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
 
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:textSize="16sp"
-            android:text="@string/satellite_count"/>
-        <TextView
-            android:id="@+id/sate_count_value"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:textSize="16sp"
-            android:text="@string/init_value_int"/>
+    <TextView
+        android:id="@+id/id_snum_text"
+        android:paddingTop="3dp"
+        android:paddingStart="13dp"
+        android:layout_toEndOf="@id/gps_gdop_value"
+        style="@style/commonInfoGPS"
+        android:text="@string/satellite_count"  />
 
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:textSize="16sp"
-            android:text="@string/posstate"/>
-        <TextView
-            android:id="@+id/posstate_value"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="2"
-            android:textSize="16sp"
-            android:text="@string/init_value_float"/>
+    <TextView
+        android:id="@+id/sate_count_value"
+        android:layout_toEndOf="@id/id_snum_text"
+        android:layout_alignBottom="@id/id_snum_text"
+        style="@style/commonInfoGPS"
+        android:text="@string/init_value_int"  />
 
-    </LinearLayout>
+    <TextView
+        android:id="@+id/id_posstate_text"
+        android:paddingTop="3dp"
+        android:paddingStart="13dp"
+        android:layout_below="@id/id_snum_text"
+        android:layout_toEndOf="@id/gps_pdop_value"
+        style="@style/commonInfoGPS"
+        android:text="@string/posstate" />
 
-</LinearLayout>
+    <TextView
+        android:id="@+id/posstate_value"
+        android:layout_toEndOf="@id/id_posstate_text"
+        android:layout_alignBottom="@id/id_posstate_text"
+        style="@style/commonInfoGPS"
+        android:text="@string/init_value_float" />
+
+</RelativeLayout>

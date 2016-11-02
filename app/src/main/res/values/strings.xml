@@ -18,6 +18,8 @@
     <string name="satellite_count">SNumber:</string>
     <string name="init_value_int">0</string>
     <string name="init_value_float">0.0</string>
+    <string name="init_dop_value">0.000</string>
+    <string name="init_coord_value">0.00000000</string>
     <string name="posstate">POSState:</string>
     <!-- Dilution of Precision -->
     <string name="gps_gdop">gdop:</string>

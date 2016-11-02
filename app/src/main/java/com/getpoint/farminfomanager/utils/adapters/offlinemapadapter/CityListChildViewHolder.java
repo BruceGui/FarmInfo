@@ -8,7 +8,7 @@ import android.widget.TextView;
 
 import com.getpoint.farminfomanager.R;
 import com.getpoint.farminfomanager.entity.offlinemap.CityDetail;
-import com.getpoint.farminfomanager.fragment.offlinemap.DownloadManFragment;
+import com.getpoint.farminfomanager.utils.MKOfflineMapDownloadListener;
 import com.getpoint.farminfomanager.weights.expandablerecyclerview.ChildViewHolder;
 
 /**
@@ -25,10 +25,10 @@ public class CityListChildViewHolder extends ChildViewHolder {
     private TextView mCityMapSize;
     private ImageButton mDownload;
 
-    private DownloadManFragment.OnOfflineMapDownloadListener listener;
+    private MKOfflineMapDownloadListener listener;
 
     public CityListChildViewHolder(@NonNull View itemView,
-                                   final DownloadManFragment.OnOfflineMapDownloadListener listener) {
+                                   final MKOfflineMapDownloadListener listener) {
 
         super(itemView);
 
