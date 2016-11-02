@@ -76,7 +76,7 @@ public class FramePointFragment extends PointDetailFragment implements
             @Override
             public void onClick(View v) {
                 if (isAddNew()) {
-                    FramePoint framePoint = new FramePoint(mapFragment.getCurrentCoord(),
+                    FramePoint framePoint = new FramePoint(getNewCoord(),
                             getAltitude());
 
                     /**
@@ -171,13 +171,15 @@ public class FramePointFragment extends PointDetailFragment implements
     public void updateCurrentFP() {
 
         currFP.getPointInfo().getPosition().setAltitude(getAltitude());
+        currFP.getPointInfo().getPosition().setLatitude(gps.lat);
+        currFP.getPointInfo().getPosition().setLatitude(gps.lon);
 
         addNew = true;
     }
 
     public float getAltitude() {
 
-        float altitude = 0;
+        float altitude = gps.alt;
 
         if(!TextUtils.isEmpty(altitudeEdt.getText())) {
             altitude += Float.valueOf(altitudeEdt.getText().toString());

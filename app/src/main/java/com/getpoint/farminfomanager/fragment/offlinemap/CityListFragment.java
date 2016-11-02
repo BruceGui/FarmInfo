@@ -17,6 +17,7 @@ import android.widget.TextView;
 import com.baidu.mapapi.map.offline.MKOLSearchRecord;
 import com.baidu.mapapi.map.offline.MKOfflineMap;
 import com.getpoint.farminfomanager.R;
+import com.getpoint.farminfomanager.entity.offlinemap.CityDetail;
 import com.getpoint.farminfomanager.utils.adapters.offlinemapadapter.CityListAdapter;
 import com.getpoint.farminfomanager.utils.adapters.offlinemapadapter.CityListParent;
 
@@ -41,6 +42,8 @@ public class CityListFragment extends Fragment {
     private CityListAdapter mAdapter;
     private SearchResAdapter searchResAdapter;
 
+    private DownloadManFragment.OnOfflineMapDownloadListener listener;
+
     public static CityListFragment newInstance() {
 
         CityListFragment instance = new CityListFragment();
@@ -54,6 +57,10 @@ public class CityListFragment extends Fragment {
 
     public void setmAdapter(CityListAdapter a) {
         this.mAdapter = a;
+    }
+
+    public void setDownloadListener(DownloadManFragment.OnOfflineMapDownloadListener l) {
+        this.listener = l;
     }
 
     @Override
@@ -112,9 +119,21 @@ public class CityListFragment extends Fragment {
         }
 
         @Override
-        public void onBindViewHolder(SearchResViewHolder holder, int position) {
-            holder.mCityName.setText(searchRes.get(position).cityName);
-            holder.mCityMapSize.setText(formatDataSize(searchRes.get(position).size));
+        public void onBindViewHolder(SearchResViewHolder holder, final int position) {
+
+            final MKOLSearchRecord r = searchRes.get(position);
+
+            holder.mCityName.setText(r.cityName);
+            holder.mCityMapSize.setText(formatDataSize(r.size));
+            holder.mDownload.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    CityDetail c = new CityDetail(r.cityID,r.cityName,r.size,r.cityType);
+                    if(listener != null) {
+                        listener.startDownload(c);
+                    }
+                }
+            });
         }
 
         @Override

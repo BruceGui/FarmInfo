@@ -129,7 +129,7 @@ public class GPSParser {
             case GPSLINK_PARSE_STATE_GOT_MSGID0:
                 m.msg_ID = c << 8 | m.msg_ID;
                 m.crc.update_checksum(c);
-                //Log.i(TAG, "msg_ID: " + m.msg_ID);
+                Log.i(TAG, "msg_ID: " + m.msg_ID);
                 state = Datalink_states.GPSLINK_PARSE_STATE_GOT_MSGID1;
                 break;
             case GPSLINK_PARSE_STATE_GOT_MSGID1:
@@ -261,7 +261,7 @@ public class GPSParser {
                 m.crc.update_checksum(c);
                 if (m.payloadFilled()) {
                     state = Datalink_states.GPSLINK_PARSE_STATE_GOT_PAYLOAD;
-                    Log.i(TAG, "Payload len:" + m.payload.size());
+                    //Log.i(TAG, "Payload len:" + m.payload.size());
                 }
                 break;
             case GPSLINK_PARSE_STATE_GOT_PAYLOAD:
@@ -276,6 +276,7 @@ public class GPSParser {
                 if (c == m.crc.getLLSB()) {
                     state = Datalink_states.GPSLINK_PARSE_STATE_GOT_CK0;
                 } else {
+                    Log.i(TAG, "GOT FAILURE");
                     msg_received = false;
                     state = Datalink_states.GPSLINK_PARSE_STATE_IDLE;
 
@@ -292,6 +293,7 @@ public class GPSParser {
                 if (c == m.crc.getLMSB()) {
                     state = Datalink_states.GPSLINK_PARSE_STATE_GOT_CK1;
                 } else {
+                    Log.i(TAG, "GOT FAILURE");
                     msg_received = false;
                     state = Datalink_states.GPSLINK_PARSE_STATE_IDLE;
 
@@ -308,6 +310,7 @@ public class GPSParser {
                 if (c == m.crc.getMLSB()) {
                     state = Datalink_states.GPSLINK_PARSE_STATE_GOT_CK2;
                 } else {
+                    Log.i(TAG, "GOT FAILURE");
                     msg_received = false;
                     state = Datalink_states.GPSLINK_PARSE_STATE_IDLE;
 
@@ -325,6 +328,7 @@ public class GPSParser {
                     msg_received = true;
                     state = Datalink_states.GPSLINK_PARSE_STATE_UNINIT;
                 } else {
+                    Log.i(TAG, "GOT FAILURE");
                     msg_received = false;
                     state = Datalink_states.GPSLINK_PARSE_STATE_IDLE;
 

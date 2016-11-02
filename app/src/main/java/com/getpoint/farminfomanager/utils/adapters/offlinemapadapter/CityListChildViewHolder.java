@@ -1,6 +1,7 @@
 package com.getpoint.farminfomanager.utils.adapters.offlinemapadapter;
 
 import android.support.annotation.NonNull;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -17,6 +18,8 @@ import com.getpoint.farminfomanager.weights.expandablerecyclerview.ChildViewHold
 //TODO
 
 public class CityListChildViewHolder extends ChildViewHolder {
+
+    private static final String TAG = "CityList";
 
     private TextView mCityName;
     private TextView mCityMapSize;
@@ -45,6 +48,7 @@ public class CityListChildViewHolder extends ChildViewHolder {
         mDownload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Log.i(TAG, "Listener");
                 listener.startDownload(city);
             }
         });

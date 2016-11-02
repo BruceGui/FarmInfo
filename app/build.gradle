@@ -10,12 +10,12 @@ android {
             storePassword 'getway'
         }
     }
-    compileSdkVersion 24
-    buildToolsVersion "23.0.3"
+    compileSdkVersion 25
+    buildToolsVersion "25.0.0"
     defaultConfig {
         applicationId "com.getpoint"
         minSdkVersion 19
-        targetSdkVersion 24
+        targetSdkVersion 25
         versionCode 3
         versionName '3.8.021101'
     }
@@ -42,13 +42,13 @@ android {
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     testCompile 'junit:junit:4.12'
-    compile 'com.android.support:recyclerview-v7:24.2.1'
-    compile 'com.android.support:appcompat-v7:24.2.1'
-    compile 'com.android.support:design:24.2.1'
-    compile 'com.android.support:support-annotations:24.2.1'
+    compile 'com.android.support:recyclerview-v7:25.0.0'
+    compile 'com.android.support:appcompat-v7:25.0.0'
+    compile 'com.android.support:design:25.0.0'
+    compile 'com.android.support:support-annotations:25.0.0'
     compile 'com.github.frankiesardo:auto-parcel:0.3.1'
     compile 'com.google.auto.value:auto-value:1.1'
-    compile 'com.android.support:support-v13:24.2.1'
+    compile 'com.android.support:support-v13:25.0.0'
     apt 'com.github.frankiesardo:auto-parcel-processor:0.3.1'
 
     compile files('libs/BaiduLBS_Android.jar')

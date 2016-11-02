@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.getpoint.farminfomanager.FarmInfoManagerApp;
 import com.getpoint.farminfomanager.R;
+import com.getpoint.farminfomanager.entity.coordinate.LatLong;
 import com.getpoint.farminfomanager.entity.points.enumc.PointItemType;
 import com.getpoint.farminfomanager.fragment.BaiduMapFragment;
 import com.getpoint.farminfomanager.utils.GPS;
@@ -167,6 +168,9 @@ public class PointDetailFragment extends Fragment implements SpinnerSelfSelect.
         this.mapFragment = mapFragment;
     }
 
+    public LatLong getNewCoord() {
+        return new LatLong(gps.lat, gps.lon);
+    }
 
     @Override
     public void onAttach(Activity activity) {

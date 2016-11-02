@@ -14,7 +14,9 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.baidu.mapapi.map.offline.MKOLSearchRecord;
 import com.baidu.mapapi.map.offline.MKOLUpdateElement;
@@ -113,16 +115,20 @@ public class GetOfflineMapActivity extends AppCompatActivity implements MKOfflin
 
             for (MKOLSearchRecord r : records) {
                 Log.i(TAG, r.cityID + " " + r.cityName + " " + r.cityType);
-                CityDetail toAdd = new CityDetail(r.cityID, r.cityName, r.size, r.cityType);
+
 
                 if (r.cityType == 1) {
+
+                    CityDetail toAdd = new CityDetail(r.cityID, r.cityName, r.size, r.cityType);
                     for (MKOLSearchRecord cr : r.childCities) {
                         CityDetail ctoAdd = new CityDetail(cr.cityID, cr.cityName, cr.size, cr.cityType);
                         toAdd.addChildCity(ctoAdd);
                     }
+
+                    allCities.add(new CityListParent(toAdd));
                 }
 
-                allCities.add(new CityListParent(toAdd));
+
             }
 
         }
@@ -134,6 +140,7 @@ public class GetOfflineMapActivity extends AppCompatActivity implements MKOfflin
         mCityListFrag.setmAdapter(mAdapter);
 
         mCityListFrag.setMKOfflineMap(mOfflineMap);
+        mCityListFrag.setDownloadListener(this);
 
     }
 
@@ -178,15 +185,44 @@ public class GetOfflineMapActivity extends AppCompatActivity implements MKOfflin
     }
 
     /**
+     * 判断是否已经下载 离线地图
+     *
+     * @param cityId 城市 ID
+     * @return 如果已经下载 返回 true 否则 false
+     */
+    public boolean hasOfflineMap(int cityId) {
+
+        ArrayList<MKOLUpdateElement> rs = mOfflineMap.getAllUpdateInfo();
+
+        for (MKOLUpdateElement e : rs) {
+            if (e.cityID == cityId) {
+                return true;
+            }
+        }
+
+        return false;
+
+    }
+
+    /**
      * 下载 离线地图的监听信息
      */
     @Override
     public void startDownload(CityDetail city) {
         Log.i(TAG, "Start Down " + city.getCityName());
-        mOfflineMap.start(city.getCityId());
-        if (mDownloadFrag != null) {
-            mDownloadFrag.addDownloadCity(city);
+
+        /*
+        if (hasOfflineMap(city.getCityId())) {
+            Toast.makeText(getApplication(), "已经下载", Toast.LENGTH_SHORT).show();
+        } else {*/
+            //mOfflineMap.start(city.getCityId());
+        /*
+            if (mDownloadFrag != null) {
+                mDownloadFrag.addDownloadCity(city);
+            }
         }
+        */
+
     }
 
     /**

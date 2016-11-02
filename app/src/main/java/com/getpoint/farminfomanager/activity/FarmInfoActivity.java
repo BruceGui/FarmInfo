@@ -250,7 +250,8 @@ public class FarmInfoActivity extends AppCompatActivity implements
         mGoToMyLocation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mapFragment.goToMyLocation();
+                LatLong coord = new LatLong(gps.lat, gps.lon);
+                mapFragment.goToLocation(coord);
             }
         });
 

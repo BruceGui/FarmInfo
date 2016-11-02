@@ -8,7 +8,9 @@ import android.util.Log;
 import com.MUHLink.Connection.MUHLinkClient;
 import com.MUHLink.Connection.MUHLinkConnection;
 import com.MUHLink.Connection.MUHLinkStream;
+import com.MUHLink.Protocol.GPSHMCPacket;
 import com.MUHLink.Protocol.GPSLinkPacket;
+import com.MUHLink.Protocol.GPSParser;
 import com.MUHLink.Protocol.common.msg_gps_bestpos;
 import com.MUHLink.Protocol.common.msg_gps_bestvel;
 import com.MUHLink.Protocol.common.msg_gps_psrdop;
@@ -23,6 +25,7 @@ public class GPSDeviceManager implements MUHLinkStream.MuhLinkInputStream {
 
     private static final String TAG = "GPSDeviceManager";
 
+    private final GPSParser parser;
     private final LocalBroadcastManager localBroadcastManager;
     private final MUHLinkClient deviceClient;
     private final MUHLinkConnection deviceConnection;
@@ -35,7 +38,7 @@ public class GPSDeviceManager implements MUHLinkStream.MuhLinkInputStream {
         this.deviceConnection = deviceConnection;
         this.deviceClient = new MUHLinkClient(context, this, this.deviceConnection);
         this.localBroadcastManager = localBroadcastManager;
-
+        this.parser = new GPSParser();
     }
 
     public void connect(int connectionType) {
@@ -55,19 +58,7 @@ public class GPSDeviceManager implements MUHLinkStream.MuhLinkInputStream {
         this.localBroadcastManager.sendBroadcast(i);
     }
 
-    @Override
-    public void notifyConnected() {
-
-    }
-
-    @Override
-    public void notifyDisconnected() {
-
-    }
-
-    @Override
-    public void notifyReceivedData(GPSLinkPacket packet) {
-        Log.i(TAG, "Handler Data!");
+    public void handleGPSMessage(GPSLinkPacket packet) {
 
         switch (packet.msg_ID) {
             case MUH_MSG_ID.GPS_BIN_BESTPOS:
@@ -88,5 +79,48 @@ public class GPSDeviceManager implements MUHLinkStream.MuhLinkInputStream {
             default:
                 break;
         }
+
+    }
+
+    @Override
+    public void notifyConnected() {
+
+    }
+
+    @Override
+    public void notifyDisconnected() {
+
+    }
+
+    @Override
+    public void notifyReceivedData(GPSHMCPacket packet) {
+
+        switch (packet.compid) {
+            case MUH_MSG_ID.UAV_COMP_SENSOR_GPS:
+
+                switch (packet.msgid) {
+                    case MUH_MSG_ID.UMH_GPS_RawData:
+
+                        int msglen = packet.len;
+                        packet.payload.resetIndex();
+                        for (int j = 0; j < msglen; j++) {
+                            GPSLinkPacket p = parser.datalink_parser_char(packet.payload.getByte() & 0x00ff);
+                            if (p != null) {
+                                /**
+                                 *  获得 GPS 数据包，并处理
+                                 */
+                                handleGPSMessage(p);
+                            }
+                        }
+                        break;
+                    default:
+                        break;
+                }
+
+                break;
+            default:
+                break;
+        }
+
     }
 }

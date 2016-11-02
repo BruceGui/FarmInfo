@@ -112,7 +112,7 @@ public class DangerPointFragment extends PointDetailFragment implements
                 }
 
                 if (addInP) {
-                    PointInfo p = new PointInfo(mapFragment.getCurrentCoord(),
+                    PointInfo p = new PointInfo(getNewCoord(),
                             getFlyHeight());
 
                     switch (getCurrentDPType()) {

@@ -455,11 +455,22 @@ public class BaiduMapFragment extends SupportMapFragment {
 
     public void goToLocation(LatLong latLng) {
         //updateCamera(DroneHelper.BaiduLatLngToCoord(latLng), GO_TO_MY_LOCATION_ZOOM);
-        updateCamera(latLng);
+
+        LatLng l = DroneHelper.CoordToBaiduLatLang(latLng);
+
+        MyLocationData locData = new MyLocationData.Builder()
+                .accuracy(10)
+                // 此处设置开发者获取到的方向信息，顺时针0-360
+                .direction(0).latitude(l.latitude)
+                .longitude(l.longitude).build();
+        getBaiduMap().setMyLocationData(locData);
+
+        //updateCamera(latLng);
     }
 
     public void updateCamera(final LatLong coord, final float zoomLevel) {
         if (coord != null) {
+
             getBaiduMap().animateMapStatus(MapStatusUpdateFactory.newLatLngZoom(DroneHelper.CoordToBaiduLatLang(coord), zoomLevel));
         }
     }

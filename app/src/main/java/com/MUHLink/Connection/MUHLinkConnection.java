@@ -2,8 +2,11 @@ package com.MUHLink.Connection;
 
 import android.util.Log;
 
+import com.MUHLink.Protocol.GPSHMCPacket;
+import com.MUHLink.Protocol.GPSHMCParser;
 import com.MUHLink.Protocol.GPSLinkPacket;
 import com.MUHLink.Protocol.GPSParser;
+import com.MUHLink.Protocol.enums.MUH_MSG_ID;
 
 import java.io.IOException;
 import java.util.concurrent.ConcurrentHashMap;
@@ -21,24 +24,24 @@ public abstract class MUHLinkConnection {
     * MuhLink connection states.
     * */
     private static final int MUHLINK_DISCONNECTED = 0;
-    private static final int MUHLINK_CONNECTING   = 1;
-    private static final int MUHLINK_CONNECTED    = 2;
+    private static final int MUHLINK_CONNECTING = 1;
+    private static final int MUHLINK_CONNECTED = 2;
 
     private Thread mTaskThread;
 
     private final AtomicInteger mConnectionStatus = new AtomicInteger(MUHLINK_DISCONNECTED);
 
     /**
-     *  多个共享连接端口的进程，用来分发接收到的数据包
+     * 多个共享连接端口的进程，用来分发接收到的数据包
      */
     private final ConcurrentHashMap<String, MUHLinkConnectionListener> mListeners =
             new ConcurrentHashMap<String, MUHLinkConnectionListener>();
 
     /**
-     *  为要发送的数据包排队，如果没有数据发送这个进程将阻塞
+     * 为要发送的数据包排队，如果没有数据发送这个进程将阻塞
      */
     //private final LinkedBlockingQueue<MUHLinkPacket> mPacketsToSend =
-     //       new LinkedBlockingQueue<MUHLinkPacket>();
+    //       new LinkedBlockingQueue<MUHLinkPacket>();
 
     /*
     *  Listen for incoming data on the mavlink connection.
@@ -62,9 +65,8 @@ public abstract class MUHLinkConnection {
                  */
                 sendingThread = new Thread(mSendingTask, "MUHLinkConnection-Sending Thread");
                 sendingThread.start();
-                //Log.i(TAG, "SENDING-THREAD");
 
-                final GPSParser parser = new GPSParser();
+                final GPSHMCParser parser = new GPSHMCParser();
 
                 final byte[] readBuffer = new byte[READ_BUFFER_SIZE];
 
@@ -77,7 +79,7 @@ public abstract class MUHLinkConnection {
             } catch (IOException e) {
                 e.printStackTrace();
             } finally {
-                if(sendingThread != null && sendingThread.isAlive()) {
+                if (sendingThread != null && sendingThread.isAlive()) {
                     sendingThread.interrupt();
                 }
 
@@ -87,20 +89,18 @@ public abstract class MUHLinkConnection {
 
         }
 
-        private void handleData(GPSParser parser, int buffersize, byte[] buffer) {
-            if(buffersize < 1) {
-                return ;
+        private void handleData(GPSHMCParser parser, int buffersize, byte[] buffer) {
+            if (buffersize < 1) {
+                return;
             }
 
-            //Log.i(TAG, "Handler-Data: " + buffersize);
-            for(int i = 0; i < buffersize; i++) {
-                GPSLinkPacket receivedPacket = parser.datalink_parser_char(buffer[i] & 0x00ff);
-                if(receivedPacket != null) {
+            for (int i = 0; i < buffersize; i++) {GPSHMCPacket receivedPacket = parser.gpshmc_parser_char(buffer[i] & 0x00ff);
+                if (receivedPacket != null) {
                     /**
                      *  真正处理数据的地方
                      */
-                    Log.i(TAG, "HANDLE-DATA:---");
                     reportReceivedPack(receivedPacket);
+
                 }
             }
         }
@@ -115,20 +115,20 @@ public abstract class MUHLinkConnection {
             int msgSeqNumer = 0;
 
             try {
-                while(isConnected()) {
+                while (isConnected()) {
                     //final MUHLinkPacket packet = mPacketsToSend.take();
                     //Log.i(TAG, "ERROR");
                     //packet.seq = (byte)msgSeqNumer;
                     //byte[] buffer = packet.encodePacket();
 
                     //try {
-                        //sendBuffer(buffer);
+                    //sendBuffer(buffer);
                     //} catch (IOException e) {
                     //    Log.i(TAG, e.getMessage());
                     //}
 
                 }
-            //} catch (InterruptedException e) {
+                //} catch (InterruptedException e) {
                 //Log.i(TAG, e.getMessage());
             } finally {
                 disconnect();
@@ -140,7 +140,7 @@ public abstract class MUHLinkConnection {
     * Establish a muhlink connection.
     * */
     public void connect() {
-        if(mConnectionStatus.compareAndSet(MUHLINK_DISCONNECTED, MUHLINK_CONNECTING)) {
+        if (mConnectionStatus.compareAndSet(MUHLINK_DISCONNECTED, MUHLINK_CONNECTING)) {
             mTaskThread = new Thread(mConnectingTask, "MuhLinkConnection-Connecting Thread");
             mTaskThread.start();
             Log.i(TAG, "MUHCONN");
@@ -151,13 +151,13 @@ public abstract class MUHLinkConnection {
      * Disconnect a muhlink connection.
      */
     public void disconnect() {
-        if(mConnectionStatus.get() == MUHLINK_DISCONNECTED || mTaskThread == null) {
-            return ;
+        if (mConnectionStatus.get() == MUHLINK_DISCONNECTED || mTaskThread == null) {
+            return;
         }
 
         try {
             mConnectionStatus.set(MUHLINK_DISCONNECTED);
-            if(mTaskThread.isAlive() && !mTaskThread.isInterrupted()) {
+            if (mTaskThread.isAlive() && !mTaskThread.isInterrupted()) {
                 mTaskThread.interrupt();
                 Log.i(TAG, "DISCONN-THREAD");
             }
@@ -171,11 +171,11 @@ public abstract class MUHLinkConnection {
 
     public boolean isConnected() {
 
-        if(mConnectionStatus.get() == MUHLINK_CONNECTED) {
+        if (mConnectionStatus.get() == MUHLINK_CONNECTED) {
             return true;
         }
 
-        if(mConnectionStatus.get() == MUHLINK_DISCONNECTED) {
+        if (mConnectionStatus.get() == MUHLINK_DISCONNECTED) {
             return false;
         }
 
@@ -195,19 +195,21 @@ public abstract class MUHLinkConnection {
     */
 
     /**
-     *  添加一个监听者
+     * 添加一个监听者
+     *
      * @param tag
      * @param listener
      */
     public void addMUHLinkConnectionListener(String tag, MUHLinkConnectionListener listener) {
         mListeners.put(tag, listener);
 
-        if(isConnected())
+        if (isConnected())
             listener.onConnect();
     }
 
     /**
-     *  移除一个监听者
+     * 移除一个监听者
+     *
      * @param tag
      */
     public void removeMUHLinkConnectionListener(String tag) {
@@ -223,34 +225,35 @@ public abstract class MUHLinkConnection {
     protected abstract void sendBuffer(byte[] buffer) throws IOException;
 
     /**
-     *  用来通知接口监听者已经成功连接
+     * 用来通知接口监听者已经成功连接
      */
     private void reportConnect() {
-        for(MUHLinkConnectionListener listener : mListeners.values()) {
+        for (MUHLinkConnectionListener listener : mListeners.values()) {
             listener.onConnect();
         }
     }
 
     /**
-     *  用来通知监听者已经成功断开连接
+     * 用来通知监听者已经成功断开连接
      */
     private void reportDisconnect() {
-        if(mListeners.isEmpty())
+        if (mListeners.isEmpty())
             return;
-        for(MUHLinkConnectionListener listener : mListeners.values()) {
+        for (MUHLinkConnectionListener listener : mListeners.values()) {
             listener.onDisconnect();
         }
     }
 
     /**
-     *  用来通知接口监听者接收到数据包了
+     * 用来通知接口监听者接收到数据包了
+     *
      * @param packet 接收到的数据包
      */
-    private void reportReceivedPack(GPSLinkPacket packet) {
-        if(mListeners.isEmpty())
-            return ;
+    private void reportReceivedPack(GPSHMCPacket packet) {
+        if (mListeners.isEmpty())
+            return;
 
-        for(MUHLinkConnectionListener listener : mListeners.values()) {
+        for (MUHLinkConnectionListener listener : mListeners.values()) {
             listener.onReceivePacket(packet);
         }
     }

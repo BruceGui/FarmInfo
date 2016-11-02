@@ -14,6 +14,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.getpoint.farminfomanager.R;
+import com.getpoint.farminfomanager.entity.coordinate.LatLong;
 import com.getpoint.farminfomanager.entity.markers.StationPointMarker;
 import com.getpoint.farminfomanager.entity.points.StationPoint;
 import com.getpoint.farminfomanager.utils.adapters.IndexAdapter;
@@ -71,8 +72,8 @@ public class BSPointFragment extends PointDetailFragment implements
             @Override
             public void onClick(View v) {
                 if (isAddNew()) {
-                    StationPoint stationPoint = new StationPoint(mapFragment
-                            .getCurrentCoord(), getAltitude());
+                    StationPoint stationPoint = new StationPoint(
+                            getNewCoord(), getAltitude());
 
                     /**
                      *   把当前点添加到任务中去
@@ -162,6 +163,8 @@ public class BSPointFragment extends PointDetailFragment implements
     public void updateCurrentBSP() {
 
         currBSP.getPointInfo().getPosition().setAltitude(getAltitude());
+        currBSP.getPointInfo().getPosition().setLatitude(gps.lat);
+        currBSP.getPointInfo().getPosition().setLongitude(gps.lon);
 
         addNew = true;
     }
@@ -180,7 +183,6 @@ public class BSPointFragment extends PointDetailFragment implements
     public void setPointIndex(int index) {
         pointIndex.setText(String.valueOf(index));
     }
-
 
     public void clearVar() {
 
