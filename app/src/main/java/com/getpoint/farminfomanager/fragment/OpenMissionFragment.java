@@ -56,7 +56,7 @@ import java.util.List;
 public class OpenMissionFragment extends DialogFragment {
     public static final String KEY_CURRENT_DIRECTORY = "CURRENT_DIRECTORY";
     private static final String ARG_CONFIG = "CONFIG";
-    private static final String TAG = SaveMissionFragment.class.getSimpleName();
+    private static final String TAG = OpenMissionFragment.class.getSimpleName();
     private String mNewDirectoryName;
     private String mInitialDirectory;
 
@@ -233,10 +233,10 @@ public class OpenMissionFragment extends DialogFragment {
             initialDir = new File(mInitialDirectory);
         } else {
             initialDir = Environment.getExternalStorageDirectory();
+            //Log.i(TAG, "dir: " + initialDir);
         }
 
         changeDirectory(initialDir);
-
         return view;
     }
 
@@ -420,9 +420,11 @@ public class OpenMissionFragment extends DialogFragment {
             });
         } else {
             final File[] contents = dir.listFiles();
+
             if (contents != null) {
                 int numDirectories = 0;
                 for (final File f : contents) {
+                    Log.i(TAG, "file" + f.getName());
                     if(f.isDirectory()) {
                         if (!f.getName().startsWith(".")) {
                             numDirectories++;
@@ -456,6 +458,7 @@ public class OpenMissionFragment extends DialogFragment {
                 debug("Changed directory to %s", dir.getAbsolutePath());
             } else {
                 debug("Could not change folder: contents of dir were null");
+                Log.i(TAG, "content == null");
             }
         }
         refreshButtonState();
@@ -478,6 +481,7 @@ public class OpenMissionFragment extends DialogFragment {
      */
     private void refreshDirectory() {
         if (mSelectedDir != null) {
+            Log.i(TAG, "mSelectedDir: " + mSelectedDir.getName());
             changeDirectory(mSelectedDir);
         }
     }

@@ -15,8 +15,6 @@ import com.getpoint.farminfomanager.weights.expandablerecyclerview.ChildViewHold
  * Created by Gui Zhou on 2016/10/31.
  */
 
-//TODO
-
 public class CityListChildViewHolder extends ChildViewHolder {
 
     private static final String TAG = "CityList";

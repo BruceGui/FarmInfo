@@ -82,10 +82,8 @@ public abstract class MUHLinkConnection {
                 if (sendingThread != null && sendingThread.isAlive()) {
                     sendingThread.interrupt();
                 }
-
                 disconnect();
             }
-
 
         }
 

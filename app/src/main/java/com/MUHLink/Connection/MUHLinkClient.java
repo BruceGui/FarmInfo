@@ -3,6 +3,7 @@ package com.MUHLink.Connection;
 import android.content.Context;
 import android.util.Log;
 
+import com.MUHLink.Connection.Bluetooth.BTConnection;
 import com.MUHLink.Protocol.GPSHMCPacket;
 import com.MUHLink.Protocol.GPSLinkPacket;
 import com.getpoint.farminfomanager.FarmInfoAppPref;
@@ -69,9 +70,10 @@ public class MUHLinkClient implements MUHLinkStream.MUHLinkOutputStream{
             Log.i(TAG, "CONN_VIA_TCP");
             droneConn = new TCPConnection(farmInfoAppPref.getTcpServerIp(), farmInfoAppPref.getTcpServerPort());
             //droneConn.connect();
-        } else if(connectionType == ConnectionType.TYPE_UDP) {
-            Log.i(TAG, "CONN_VIA_UDP");
+        } else if(connectionType == ConnectionType.TYPE_BT) {
+            Log.i(TAG, "CONN_VIA_BT");
             //droneConn = new UDPConnection(mAppPrefs.getUdpServerPort());
+            droneConn = new BTConnection();
         }
 
         if(!droneConn.isConnected())

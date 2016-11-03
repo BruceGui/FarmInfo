@@ -236,6 +236,7 @@ public class SaveMissionFragment extends DialogFragment {
         }
 
         changeDirectory(initialDir);
+        Log.i(TAG, "" + initialDir);
 
         return view;
     }

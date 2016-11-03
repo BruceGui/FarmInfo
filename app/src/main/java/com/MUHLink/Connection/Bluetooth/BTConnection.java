@@ -28,9 +28,10 @@ public class BTConnection extends MUHLinkConnection {
         Log.i(TAG, "BT Close!");
     }
 
+    //TODO BT 蓝牙获取链接
     @Override
     protected void openConnection() throws IOException {
-
+        Log.i(TAG, "GET-BT-CONN");
     }
 
     @Override
@@ -42,7 +43,10 @@ public class BTConnection extends MUHLinkConnection {
 
     @Override
     protected int readDataBlock(byte[] buffer) throws IOException {
-        return in.read(buffer);
+        if(in != null) {
+            return in.read(buffer);
+        }
+        return 0;
     }
 
     private void resetConnection() throws IOException {

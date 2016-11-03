@@ -87,8 +87,7 @@
     <string name="pref_server">TCP Connection</string>
     <string name="pref_server_ip">Server IP</string>
     <string name="pref_server_port">Server PORT</string>
-    <string name="pref_server_udp">UDP Connection</string>
-    <string name="pref_udp_server_port">UDP Server Port</string>
+    <string name="pref_server_bt">BT Connection</string>
 
     <!-- Point Category String -->
     <string name="frame_point">Boundary Point</string>

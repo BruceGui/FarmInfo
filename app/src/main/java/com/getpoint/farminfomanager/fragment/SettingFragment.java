@@ -96,8 +96,8 @@ public class SettingFragment extends PreferenceFragment implements
             case ConnectionType.TYPE_TCP:
                 connectionName = "TCP";
                 break;
-            case ConnectionType.TYPE_UDP:
-                connectionName = "UDP";
+            case ConnectionType.TYPE_BT:
+                connectionName = "BT";
                 break;
             default:
                 connectionName = null;

@@ -1,13 +1,18 @@
 package com.getpoint.farminfomanager.activity;
 
+import android.Manifest;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -46,6 +51,7 @@ import com.getpoint.farminfomanager.utils.AttributesEvent;
 import com.getpoint.farminfomanager.utils.DirectoryChooserConfig;
 import com.getpoint.farminfomanager.utils.GPS;
 
+import com.getpoint.farminfomanager.utils.file.DirectoryPath;
 import com.getpoint.farminfomanager.utils.proxy.MissionItemProxy;
 import com.getpoint.farminfomanager.utils.proxy.MissionProxy;
 import com.getpoint.farminfomanager.weights.FloatingActionButton;
@@ -73,6 +79,8 @@ public class FarmInfoActivity extends AppCompatActivity implements
         PointEditorFragment.PointEditorListener {
 
     private static final String TAG = "FarmInfoActivity";
+
+    private final int MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE = 0;
 
     private FramePointFragment framePointFragment;
     private DangerPointFragment dangerPointFragment;
@@ -112,7 +120,7 @@ public class FarmInfoActivity extends AppCompatActivity implements
     private GPS gps;
 
     /**
-     *  显示 GPS 信息的东西
+     * 显示 GPS 信息的东西
      */
     private TextView mGPSLon;
     private TextView mGPSLat;
@@ -135,7 +143,7 @@ public class FarmInfoActivity extends AppCompatActivity implements
     }
 
     /**
-     *  接受来自 GPS 设备的信息并更新
+     * 接受来自 GPS 设备的信息并更新
      */
     private final BroadcastReceiver eventReceiver = new BroadcastReceiver() {
         @Override
@@ -193,8 +201,8 @@ public class FarmInfoActivity extends AppCompatActivity implements
         mPointInfoLayout.setFab(mFloatingAct);
 
         /**
-          *   根据虚拟键盘 动态调整布局
-          */
+         *   根据虚拟键盘 动态调整布局
+         */
         ViewGroup.MarginLayoutParams mvm = (ViewGroup.MarginLayoutParams) mPointInfoLayout.getLayoutParams();
 
         mvm.bottomMargin += getNavigationBarHeight(this);
@@ -232,6 +240,16 @@ public class FarmInfoActivity extends AppCompatActivity implements
         Log.i(TAG, Build.VERSION.RELEASE);
         Log.i(TAG, "" + Build.VERSION.SDK_INT);
         Log.i(TAG, Build.BOARD);
+        Log.i(TAG, "" + Environment.getExternalStorageDirectory());
+
+        int permissionCheck = ContextCompat.checkSelfPermission(this,
+                Manifest.permission.READ_EXTERNAL_STORAGE);
+
+        if (permissionCheck == PackageManager.PERMISSION_GRANTED) {
+            Log.i(TAG, "Permission granted");
+        } else {
+            Log.i(TAG, "Request For permission");
+        }
 
     }
 
@@ -308,7 +326,7 @@ public class FarmInfoActivity extends AppCompatActivity implements
                         break;
                     case DANGERPOINT:
                         //if (dangerPointFragment.isAddNew()) {
-                            addDangerPoint(dangerPointFragment.getCurrentDPType());
+                        addDangerPoint(dangerPointFragment.getCurrentDPType());
                         //} else {
                         //    dangerPointFragment.updateCurrentDP();
                         //}
@@ -321,13 +339,13 @@ public class FarmInfoActivity extends AppCompatActivity implements
     }
 
     /**
-     *  更新 接受到的 GPS 信息
+     * 更新 接受到的 GPS 信息
      */
     private void updateGPSBestpos() {
 
-        mGPSLon.setText(String.format(Locale.getDefault(), "%.8f",gps.lon));
-        mGPSLat.setText(String.format(Locale.getDefault(), "%.8f",gps.lat));
-        mGPSHei.setText(String.format(Locale.getDefault(), "%.2f",gps.alt));
+        mGPSLon.setText(String.format(Locale.getDefault(), "%.8f", gps.lon));
+        mGPSLat.setText(String.format(Locale.getDefault(), "%.8f", gps.lat));
+        mGPSHei.setText(String.format(Locale.getDefault(), "%.2f", gps.alt));
 
         mGPStarNum.setText(String.valueOf(gps.used));
         mGPState.setText(String.valueOf(gps.POSState));
@@ -562,6 +580,8 @@ public class FarmInfoActivity extends AppCompatActivity implements
 
     private void openMissionFile() {
 
+        //TODO ruquest READ_EXTERNAL_STORAGE permission at run time
+
         final DirectoryChooserConfig config = DirectoryChooserConfig.builder()
                 .newDirectoryName(getString(R.string.new_folder))
                 .allowNewDirectoryNameModification(true)
@@ -575,21 +595,86 @@ public class FarmInfoActivity extends AppCompatActivity implements
     }
 
     /**
+     * 动态申请 读取权限
+     */
+    private void requestReadPermission() {
+
+        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP) {
+
+
+            if (ContextCompat.checkSelfPermission(this,
+                    Manifest.permission.READ_EXTERNAL_STORAGE)
+                    != PackageManager.PERMISSION_GRANTED) {
+
+                // Should we show an explanation?
+                if (ActivityCompat.shouldShowRequestPermissionRationale(this,
+                        Manifest.permission.READ_EXTERNAL_STORAGE)) {
+
+                    // Show an expanation to the user *asynchronously* -- don't block
+                    // this thread waiting for the user's response! After the user
+                    // sees the explanation, try again to request the permission.
+
+                } else {
+
+                    // No explanation needed, we can request the permission.
+
+                    ActivityCompat.requestPermissions(this,
+                            new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
+                            MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE);
+
+                    // MY_PERMISSIONS_REQUEST_READ_CONTACTS is an
+                    // app-defined int constant. The callback method gets the
+                    // result of the request.
+                }
+            } else {
+                openMissionFile();
+            }
+
+        } else {
+            openMissionFile();
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        switch (requestCode) {
+            case MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+                    // permission was granted, yay! Do the
+                    // contacts-related task you need to do.
+                    openMissionFile();
+                } else {
+
+                    // permission denied, boo! Disable the
+                    // functionality that depends on this permission.
+                }
+                return;
+            }
+
+            // other 'case' lines to check for other
+            // permissions this app might request
+        }
+    }
+
+    /**
      * 清除所有的标记点信息
      */
     private void newMissionFile() {
         missionProxy.missionClear();
         mapFragment.clearAllMarker();
 
-        if(dangerPointFragment != null) {
+        if (dangerPointFragment != null) {
             dangerPointFragment.clearVar();
         }
 
-        if(bsPointFragment != null) {
+        if (bsPointFragment != null) {
             bsPointFragment.clearVar();
         }
 
-        if(framePointFragment != null) {
+        if (framePointFragment != null) {
             framePointFragment.clearVar();
         }
     }
@@ -645,7 +730,7 @@ public class FarmInfoActivity extends AppCompatActivity implements
                 dangerPointFragment.setPointIndex(currnum);
                 dangerPointFragment.setPointType(PointItemType.DANGERPOINT.getLabel());
                 dangerPointFragment.updatePointIND(missionProxy);
-                if(currnum == 0 && missionProxy.getDangerItemProxies().isEmpty()) {
+                if (currnum == 0 && missionProxy.getDangerItemProxies().isEmpty()) {
                     dangerPointFragment.setInPointIndex(1);
                 } else {
                     dangerPointFragment.updateCurrVar(missionProxy.getDangerItemProxies()
@@ -919,7 +1004,8 @@ public class FarmInfoActivity extends AppCompatActivity implements
                 startActivity(intent);
                 break;
             case R.id.id_menu_open_file:
-                openMissionFile();
+                //openMissionFile();
+                requestReadPermission();
                 break;
             case R.id.id_menu_save_file:
                 saveMissionFile();
