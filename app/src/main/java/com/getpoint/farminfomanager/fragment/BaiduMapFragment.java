@@ -408,6 +408,10 @@ public class BaiduMapFragment extends SupportMapFragment {
             pathCoords.add(p.getPosition().getLatLong());
         }
 
+        if(!pathCoords.isEmpty()) {
+            pathCoords.add(pathCoords.get(0));
+        }
+
         final List<LatLng> pathPoints = new ArrayList<>(pathCoords.size());
         for (LatLong coord : pathCoords) {
             pathPoints.add(DroneHelper.CoordToBaiduLatLang(coord));

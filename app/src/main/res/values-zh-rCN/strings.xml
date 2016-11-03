@@ -21,6 +21,7 @@
     <string name="lon_label">经度</string>
     <string name="lat_label">纬度</string>
     <string name="altitude_label">飞行高度</string>
+    <string name="barrier_height">障碍物高度</string>
     <string name="get_point">打点</string>
     <string name="please_add_point_first">请先添加障碍点</string>
     <string name="del_point">删除</string>
@@ -73,6 +74,9 @@
 
     <string name="btn_ok">确定</string>
     <string name="btn_cancel">取消</string>
+
+    <string name="btn_complete">完成</string>
+    <string name="btn_close">关闭</string>
 
     <!-- 偏好设置 字符串 -->
     <string name="pref_connection_type">遥测连接方式</string>

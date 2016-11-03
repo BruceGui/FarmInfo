@@ -160,9 +160,9 @@ public class GetOfflineMapActivity extends AppCompatActivity implements MKOfflin
                 if (update != null) {
                     Log.i(TAG, "CityName: " + update.cityName + "Ratio " + update.ratio);
 
-                    if (mDownloadFrag != null) {
-                        mDownloadFrag.updateProcess(update);
-                    }
+                    //if (mDownloadFrag != null) {
+                    //    mDownloadFrag.updateProcess(update);
+                    //}
 
                 }
                 break;
@@ -252,8 +252,8 @@ public class GetOfflineMapActivity extends AppCompatActivity implements MKOfflin
         } else {
 
             mOfflineMap.start(city.getCityId());
-            onDowning.add(city);
-        }
+            //onDowning.add(city);
+         }
 
     }
 

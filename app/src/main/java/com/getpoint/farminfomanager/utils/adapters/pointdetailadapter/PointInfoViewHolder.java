@@ -9,6 +9,8 @@ import com.getpoint.farminfomanager.entity.points.PointInfo;
 import com.getpoint.farminfomanager.entity.points.enumc.PointItemType;
 import com.getpoint.farminfomanager.weights.expandablerecyclerview.ChildViewHolder;
 
+import java.util.Locale;
+
 /**
  * Created by Gui Zhou on 2016/10/26.
  */
@@ -37,9 +39,9 @@ public class PointInfoViewHolder extends ChildViewHolder {
             pointNum.setText(String.valueOf(pointnum));
         }
 
-        pointLongitude.setText(String.valueOf(p.getPosition().getLatLong().getLongitude()));
-        pointLatitude.setText(String.valueOf(p.getPosition().getLatLong().getLatitude()));
-        pointHeight.setText(String.valueOf(p.getPosition().getAltitude()));
+        pointLongitude.setText(String.format(Locale.getDefault(), "%.8f", p.getPosition().getLongitude()));
+        pointLatitude.setText(String.format(Locale.getDefault(), "%.8f", p.getPosition().getLatitude()));
+        pointHeight.setText(String.format(Locale.getDefault(), "%.2f", p.getPosition().getAltitude()));
 
     }
 

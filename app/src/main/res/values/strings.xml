@@ -43,6 +43,7 @@
     <string name="lon_label">Longitude</string>
     <string name="lat_label">Latitude</string>
     <string name="altitude_label">Fly Altitude</string>
+    <string name="barrier_height">Barrier Height</string>
     <string name="get_point">Get</string>
     <string name="please_add_point_first">Please Add Point First</string>
     <string name="del_point">Delete</string>
@@ -79,6 +80,9 @@
     <string name="btn_add">+</string>
     <string name="btn_ok">OK</string>
     <string name="btn_cancel">Cancel</string>
+
+    <string name="btn_complete">Complete</string>
+    <string name="btn_close">Close</string>
 
     <!-- Preference String -->
     <string name="pref_connection_type">Telemetry Connection Type</string>

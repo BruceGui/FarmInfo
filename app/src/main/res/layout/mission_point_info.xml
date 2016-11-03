@@ -18,13 +18,13 @@
             android:id="@+id/point_cancel_btn"
             style="@style/btnStyle"
             android:background="@drawable/btn_cancel_background"
-            android:text="@string/btn_cancel" />
+            android:text="@string/btn_close" />
 
         <Button
             android:id="@+id/point_ok_btn"
             style="@style/btnStyle"
             android:background="@color/btnOkColor"
-            android:text="@string/btn_ok" />
+            android:text="@string/btn_complete" />
 
     </LinearLayout>
 

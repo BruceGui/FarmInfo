@@ -37,11 +37,6 @@ public class FarmInfoAppPref {
                 pref_connection_type_key), DEFAULT_CONNECTION_TYPE));
     }
 
-    public int getUdpServerPort() {
-        return Integer.parseInt(prefs.getString(context.getString(R.string.pref_udp_server_port_key),
-                DEFAULT_UDP_SERVER_PORT));
-    }
-
     public String getTcpServerIp(){
         return prefs.getString(context.getString(R.string.pref_server_ip_key),
                 DEFAULT_TCP_SERVER_IP);
