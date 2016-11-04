@@ -258,7 +258,7 @@ public class GetOfflineMapActivity extends AppCompatActivity implements MKOfflin
             mOfflineMap.start(city.cityID);
             //onDowning.add(city);
             mDownloadFrag.addDownloadCity(city);
-         }
+        }
 
     }
 
@@ -272,9 +272,11 @@ public class GetOfflineMapActivity extends AppCompatActivity implements MKOfflin
 
         ArrayList<MKOLUpdateElement> rs = mOfflineMap.getAllUpdateInfo();
 
-        for (MKOLUpdateElement e : rs) {
-            if (e.cityID == cityId) {
-                return true;
+        if (rs != null) {
+            for (MKOLUpdateElement e : rs) {
+                if (e.cityID == cityId) {
+                    return true;
+                }
             }
         }
 

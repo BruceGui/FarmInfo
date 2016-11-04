@@ -392,8 +392,10 @@ public class FarmInfoActivity extends AppCompatActivity implements
     @Override
     public void onSuccess(Update update) {
 
-        requestReadPermission();
-        new UpdateManager(this).showNoticeDialog(update.getReleaseNotes());
+        if(Integer.parseInt(update.getLatestVersion()) > getVersionCode(getApplicationContext())) {
+            requestReadPermission();
+            new UpdateManager(this).showNoticeDialog(update.getReleaseNotes());
+        }
     }
 
     @Override
@@ -578,7 +580,6 @@ public class FarmInfoActivity extends AppCompatActivity implements
     private void requestReadPermission() {
 
         if (Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP) {
-
 
             if (ContextCompat.checkSelfPermission(this,
                     Manifest.permission.READ_EXTERNAL_STORAGE)

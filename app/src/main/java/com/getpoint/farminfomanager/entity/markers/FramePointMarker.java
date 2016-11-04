@@ -35,6 +35,6 @@ public class FramePointMarker extends PointMarker {
 
     @Override
     protected int getIconSelected() {
-        return R.drawable.ic_frame_point_sel;
+        return R.drawable.ic_frame_point;
     }
 }

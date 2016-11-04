@@ -143,7 +143,11 @@ public class DownloadManFragment extends Fragment {
 
         @Override
         public int getItemCount() {
-            return mDownloaded.size();
+            if(mDownloaded != null) {
+                return mDownloaded.size();
+            }
+
+            return 0;
         }
 
         class HaveViewHolder extends ViewHolder {
@@ -173,6 +177,7 @@ public class DownloadManFragment extends Fragment {
 
             if (u.ratio == 100) {
                 // mDownloaded.add(mOnDownload.get(0));
+                removeDownloadCity();
                 updateOfflineMapHave(u);
                 mHaveAdapter.notifyDataSetChanged();
             }
@@ -183,7 +188,7 @@ public class DownloadManFragment extends Fragment {
     public void notifyDatasetChanged() {
         mDowningAdapter.notifyDataSetChanged();
         if (this.mOnDownload.isEmpty()) {
-            mDoingText.setVisibility(View.VISIBLE);
+            mDoingText.setVisibility(View.INVISIBLE);
         }
     }
 
@@ -195,7 +200,9 @@ public class DownloadManFragment extends Fragment {
     }
 
     public void updateOfflineMapHave(MKOLUpdateElement c) {
-        mDownloaded.add(c);
+        //if(mDownloaded == null) {
+            mDownloaded = offlineMap.getAllUpdateInfo();
+        //}
         mHaveAdapter.notifyDataSetChanged();
     }
 

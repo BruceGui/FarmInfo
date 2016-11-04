@@ -16,7 +16,7 @@ android {
         applicationId "com.getpoint"
         minSdkVersion 19
         targetSdkVersion 25
-        versionCode 3
+        versionCode 4
         versionName '3.8.011105'
     }
     buildTypes {

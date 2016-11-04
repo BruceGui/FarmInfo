@@ -17,7 +17,7 @@ public class DangerPointMarker extends PointMarker {
      *  标记障碍点的顺序 字母 A B C ....
      */
     public static char[] IND = new char[]{'A', 'B', 'C', 'D',
-                                           'E', 'F', 'G', 'H'};
+                                           'E', 'F', 'G', 'H', 'I', 'J'};
     private int orderNum;
 
     /**
@@ -51,6 +51,6 @@ public class DangerPointMarker extends PointMarker {
 
     @Override
     protected int getIconSelected() {
-        return R.drawable.ic_danger_point_sel;
+        return R.drawable.ic_danger_point;
     }
 }
