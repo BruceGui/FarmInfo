@@ -72,6 +72,7 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
+            <!--
             <EditText
                 android:id="@+id/altitudePickEdit"
                 android:layout_width="0dp"
@@ -81,6 +82,12 @@
                 android:maxLines="1"
                 android:textSize="20sp"
                 android:hint="@string/altitude_label"/>
+                -->
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="20dp"
+                android:layout_weight="2"/>
 
             <Button
                 android:id="@+id/getPointBtn"

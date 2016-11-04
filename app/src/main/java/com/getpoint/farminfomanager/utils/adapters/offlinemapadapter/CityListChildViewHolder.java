@@ -6,6 +6,8 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import com.baidu.mapapi.map.offline.MKOLSearchRecord;
+import com.baidu.mapapi.map.offline.MKOfflineMap;
 import com.getpoint.farminfomanager.R;
 import com.getpoint.farminfomanager.entity.offlinemap.CityDetail;
 import com.getpoint.farminfomanager.utils.MKOfflineMapDownloadListener;
@@ -38,10 +40,10 @@ public class CityListChildViewHolder extends ChildViewHolder {
 
     }
 
-    public void bind(@NonNull final CityDetail city) {
+    public void bind(@NonNull final MKOLSearchRecord city) {
 
-        mCityName.setText(city.getCityName());
-        mCityMapSize.setText(city.getFileSize());
+        mCityName.setText(city.cityName);
+        mCityMapSize.setText(CityDetail.formatDataSize(city.size));
 
         mDownload.setOnClickListener(new View.OnClickListener() {
             @Override

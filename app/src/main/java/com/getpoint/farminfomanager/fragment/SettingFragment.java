@@ -135,7 +135,8 @@ public class SettingFragment extends PreferenceFragment implements
 
         mDefaultSummaryPrefs.add(getString(R.string.pref_server_ip_key));
         mDefaultSummaryPrefs.add(getString(R.string.pref_server_port_key));
-        mDefaultSummaryPrefs.add(getString(R.string.pref_udp_server_port_key));
+        mDefaultSummaryPrefs.add(getString(R.string.pref_mobile_station_height_key));
+        mDefaultSummaryPrefs.add(getString(R.string.pref_base_station_height_key));
     }
 
     @Override

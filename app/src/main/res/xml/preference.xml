@@ -2,44 +2,75 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
     <!-- 设置连接类型 -->
-    <ListPreference
-        android:defaultValue="1"
-        android:entries="@array/TelemetryConnectionTypes"
-        android:entryValues="@array/TelemetryConnectionTypesValues"
-        android:key="@string/pref_connection_type_key"
-        android:summary="@string/pref_connection_type_summary"
-        android:title="@string/pref_connection_type" />
 
-    <!-- 设置连接参数. -->
-    <PreferenceScreen
-        android:key="pref_connection"
-        android:title="@string/pref_connection">
+    <PreferenceCategory
+        android:key="pref_connection_setting_key"
+        android:title="@string/pref_connection_setting">
 
-        <PreferenceCategory
-            android:key="pref_server"
-            android:title="@string/pref_server">
+        <ListPreference
+            android:defaultValue="1"
+            android:entries="@array/TelemetryConnectionTypes"
+            android:entryValues="@array/TelemetryConnectionTypesValues"
+            android:key="@string/pref_connection_type_key"
+            android:summary="@string/pref_connection_type_summary"
+            android:title="@string/pref_connection_type" />
 
-            <EditTextPreference
-                android:defaultValue="192.168.1.10"
-                android:gravity="center"
-                android:key="@string/pref_server_ip_key"
-                android:title="@string/pref_server_ip">
+        <!-- 设置连接参数. -->
+        <PreferenceScreen
+            android:key="pref_connection"
+            android:title="@string/pref_connection">
 
-            </EditTextPreference>
+            <PreferenceCategory
+                android:key="pref_server"
+                android:title="@string/pref_server">
 
-            <EditTextPreference
-                android:defaultValue="9750"
-                android:gravity="center"
-                android:inputType="number"
-                android:key="@string/pref_server_port_key"
-                android:title="@string/pref_server_port">
+                <EditTextPreference
+                    android:defaultValue="192.168.1.10"
+                    android:gravity="center"
+                    android:key="@string/pref_server_ip_key"
+                    android:title="@string/pref_server_ip">
 
-            </EditTextPreference>
+                </EditTextPreference>
 
-        </PreferenceCategory>
+                <EditTextPreference
+                    android:defaultValue="9750"
+                    android:gravity="center"
+                    android:inputType="number"
+                    android:key="@string/pref_server_port_key"
+                    android:title="@string/pref_server_port">
 
-    </PreferenceScreen>
+                </EditTextPreference>
+
+            </PreferenceCategory>
+
+        </PreferenceScreen>
+
+    </PreferenceCategory>
 
     <!-- 移动站 基准站的高度 -->
+
+    <PreferenceCategory
+        android:key="pref_height_setting_key"
+        android:title="@string/pref_height_setting">
+
+        <EditTextPreference
+            android:defaultValue="0"
+            android:gravity="center"
+            android:inputType="numberDecimal"
+            android:key="@string/pref_mobile_station_height_key"
+            android:title="@string/pref_mobile_station_height">
+
+        </EditTextPreference>
+
+        <EditTextPreference
+            android:defaultValue="0"
+            android:gravity="center"
+            android:inputType="numberDecimal"
+            android:key="@string/pref_base_station_height_key"
+            android:title="@string/pref_base_station_height">
+
+        </EditTextPreference>
+
+    </PreferenceCategory>
 
 </PreferenceScreen>

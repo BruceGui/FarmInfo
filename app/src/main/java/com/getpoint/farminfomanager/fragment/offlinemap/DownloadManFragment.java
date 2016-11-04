@@ -12,11 +12,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.baidu.mapapi.map.offline.MKOLSearchRecord;
 import com.baidu.mapapi.map.offline.MKOLUpdateElement;
 import com.baidu.mapapi.map.offline.MKOfflineMap;
 import com.baidu.mapapi.map.offline.MKOfflineMapListener;
 import com.getpoint.farminfomanager.R;
 import com.getpoint.farminfomanager.entity.offlinemap.CityDetail;
+import com.getpoint.farminfomanager.entity.offlinemap.OnDownCity;
 import com.getpoint.farminfomanager.weights.numberprocessbar.NumberProgressBar;
 
 import java.util.ArrayList;
@@ -32,8 +34,10 @@ public class DownloadManFragment extends Fragment {
 
     private MKOfflineMap offlineMap = null;
 
-    private List<CityDetail> mOnDownload;
-    private List<CityDetail> mDownloaded;
+    private List<OnDownCity> mOnDownload;
+    private List<MKOLUpdateElement> mDownloaded;
+
+    private TextView mDoingText;
 
     private RecyclerView mDownloadrv;
     private RecyclerView mDownloadedrv;
@@ -52,10 +56,14 @@ public class DownloadManFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mDownloaded = new ArrayList<>();
+
+        if(offlineMap != null) {
+            mDownloaded = offlineMap.getAllUpdateInfo();
+        }
+        mOnDownload = new ArrayList<>();
     }
 
-    public void setOnDowning(List<CityDetail> c) {
+    public void setOnDowning(List<OnDownCity> c) {
         this.mOnDownload = c;
     }
 
@@ -75,6 +83,9 @@ public class DownloadManFragment extends Fragment {
         mDownloadedrv.setAdapter(mHaveAdapter);
         mDownloadedrv.setLayoutManager(new LinearLayoutManager(getContext()));
 
+        mDoingText = (TextView) v.findViewById(R.id.id_offline_map_doing_text);
+        mDoingText.setVisibility(View.INVISIBLE);
+
         return v;
     }
 
@@ -91,7 +102,7 @@ public class DownloadManFragment extends Fragment {
 
         @Override
         public void onBindViewHolder(DownloadViewHolder holder, int position) {
-            holder.mCityName.setText(mOnDownload.get(position).getCityName());
+            holder.mCityName.setText(mOnDownload.get(position).r.cityName);
             holder.mProgress.setProgress(mOnDownload.get(position).getRatio());
         }
 
@@ -127,7 +138,7 @@ public class DownloadManFragment extends Fragment {
 
         @Override
         public void onBindViewHolder(HaveViewHolder holder, int position) {
-            holder.mCityName.setText(mDownloaded.get(position).getCityName());
+            holder.mCityName.setText(mDownloaded.get(position).cityName);
         }
 
         @Override
@@ -148,18 +159,20 @@ public class DownloadManFragment extends Fragment {
 
     }
 
-    public void addDownloadCity(CityDetail c) {
-        this.mOnDownload.add(c);
+    public void addDownloadCity(MKOLSearchRecord c) {
+        mDoingText.setVisibility(View.VISIBLE);
+        this.mOnDownload.add(new OnDownCity(c));
         notifyDatasetChanged();
     }
 
     public void updateProcess(MKOLUpdateElement u) {
-
         if (!mOnDownload.isEmpty()) {
             mOnDownload.get(0).setRatio(u.ratio);
+
             if (u.ratio == 100) {
                 // mDownloaded.add(mOnDownload.get(0));
                 removeDownloadCity();
+                mHaveAdapter.notifyDataSetChanged();
             }
             notifyDatasetChanged();
         }
@@ -167,6 +180,9 @@ public class DownloadManFragment extends Fragment {
 
     public void notifyDatasetChanged() {
         mDowningAdapter.notifyDataSetChanged();
+        if (this.mOnDownload.isEmpty()) {
+            mDoingText.setVisibility(View.VISIBLE);
+        }
     }
 
     public void removeDownloadCity() {
@@ -176,7 +192,7 @@ public class DownloadManFragment extends Fragment {
         notifyDatasetChanged();
     }
 
-    public void updateOfflineMapHave(CityDetail c) {
+    public void updateOfflineMapHave(MKOLUpdateElement c) {
         mDownloaded.add(c);
         mHaveAdapter.notifyDataSetChanged();
     }

@@ -79,13 +79,17 @@
     <string name="btn_close">关闭</string>
 
     <!-- 偏好设置 字符串 -->
-    <string name="pref_connection_type">遥测连接方式</string>
+    <string name="pref_connection_setting">链接设置</string>
+    <string name="pref_connection_type">连接方式</string>
     <string name="pref_connection_type_summary">选择哪一种连接数传的方式与移动站沟通</string>
     <string name="pref_connection">连接参数</string>
     <string name="pref_server">TCP 连接</string>
     <string name="pref_server_ip">服务器IP</string>
     <string name="pref_server_port">服务器端口</string>
     <string name="pref_server_bt">蓝牙连接</string>
+    <string name="pref_height_setting">高度设置</string>
+    <string name="pref_mobile_station_height">移动站高度</string>
+    <string name="pref_base_station_height">基准站高度</string>
 
     <!-- 航线点 字符串 -->
     <string name="frame_point">边界点</string>
@@ -120,5 +124,8 @@
     <string name="action_previous">上一步</string>
     <string name="action_next">下一步</string>
     <string name="action_finish">完成</string>
+
+    <string name="offline_map_downloading">正在下载</string>
+    <string name="offline_map_downloaded">已经下载</string>
 
 </resources>

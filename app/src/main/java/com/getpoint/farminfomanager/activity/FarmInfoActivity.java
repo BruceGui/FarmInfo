@@ -715,6 +715,7 @@ public class FarmInfoActivity extends AppCompatActivity implements
                     framePointFragment = (FramePointFragment) fragmentManager.findFragmentByTag(PointDetailFragment.getFragmentTag(
                             PointItemType.FRAMEPOINT));
                     framePointFragment.setMapFragment(mapFragment);
+                    framePointFragment.setmSHeight(farmInfoAppPref.getMobileStationHeight());
                 }
                 framePointFragment.setPointIndex(missionProxy.getCurrentFrameNumber());
                 framePointFragment.setPointType(PointItemType.FRAMEPOINT.getLabel());
@@ -725,6 +726,7 @@ public class FarmInfoActivity extends AppCompatActivity implements
                     dangerPointFragment = (DangerPointFragment) fragmentManager.findFragmentByTag(PointDetailFragment.getFragmentTag(
                             PointItemType.DANGERPOINT));
                     dangerPointFragment.setMapFragment(mapFragment);
+                    dangerPointFragment.setmSHeight(farmInfoAppPref.getMobileStationHeight());
                 }
                 final int currnum = missionProxy.getCurrentDangerNumber();
                 dangerPointFragment.setPointIndex(currnum);
@@ -742,6 +744,7 @@ public class FarmInfoActivity extends AppCompatActivity implements
                     bsPointFragment = (BSPointFragment) fragmentManager.findFragmentByTag(PointDetailFragment.getFragmentTag(
                             PointItemType.STATIONPOINT));
                     bsPointFragment.setMapFragment(mapFragment);
+                    bsPointFragment.setbSHeight(farmInfoAppPref.getBaseStationHeight());
                 }
                 bsPointFragment.setPointType(PointItemType.STATIONPOINT.getLabel());
                 bsPointFragment.updatePointNum(missionProxy);

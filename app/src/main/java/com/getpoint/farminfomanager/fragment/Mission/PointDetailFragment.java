@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.getpoint.farminfomanager.FarmInfoAppPref;
 import com.getpoint.farminfomanager.FarmInfoManagerApp;
 import com.getpoint.farminfomanager.R;
 import com.getpoint.farminfomanager.entity.coordinate.LatLong;
@@ -33,6 +34,9 @@ public class PointDetailFragment extends Fragment implements SpinnerSelfSelect.
         OnSpinnerItemSelectedListener {
 
     private static final String TAG = "PointDetailFragment";
+
+    protected float mSHeight;
+    protected float bSHeight;
 
     protected boolean addNew = true;
     protected GPS gps;
@@ -91,6 +95,7 @@ public class PointDetailFragment extends Fragment implements SpinnerSelfSelect.
     protected TextView pointType;
     protected MissionProxy missionProxy;
     protected FarmInfoManagerApp farmApp;
+    protected FarmInfoAppPref appPref;
     protected SpinnerSelfSelect typeSpinner;
     protected OnPointDetailListener mListener;
     protected AdapterMissionItems commandAdapter;
@@ -98,7 +103,6 @@ public class PointDetailFragment extends Fragment implements SpinnerSelfSelect.
     protected BaiduMapFragment mapFragment;
 
     public PointItemType getPointType() {
-
 
         if (pointType != null) {
             final String currentType = pointType.getText().toString();
@@ -124,6 +128,7 @@ public class PointDetailFragment extends Fragment implements SpinnerSelfSelect.
         farmApp = (FarmInfoManagerApp) getActivity().getApplication();
         missionProxy = farmApp.getMissionProxy();
         gps = farmApp.getGps();
+        appPref = new FarmInfoAppPref(getActivity().getApplicationContext());
 
     }
 
@@ -172,6 +177,15 @@ public class PointDetailFragment extends Fragment implements SpinnerSelfSelect.
         return new LatLong(gps.lat, gps.lon);
     }
 
+    public void setmSHeight(float h) {
+        this.mSHeight = h;
+    }
+
+    public void setbSHeight(float h) {
+        this.bSHeight = h;
+    }
+
+    @SuppressWarnings("")
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);

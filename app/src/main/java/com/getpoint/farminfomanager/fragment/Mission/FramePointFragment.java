@@ -179,13 +179,7 @@ public class FramePointFragment extends PointDetailFragment implements
 
     public float getAltitude() {
 
-        float altitude = gps.alt;
-
-        if(!TextUtils.isEmpty(altitudeEdt.getText())) {
-            altitude += Float.valueOf(altitudeEdt.getText().toString());
-        }
-
-        return altitude;
+        return gps.alt - appPref.getMobileStationHeight();
     }
 
     public void setPointIndex(int index) {

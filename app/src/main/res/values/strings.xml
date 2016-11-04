@@ -85,6 +85,7 @@
     <string name="btn_close">Close</string>
 
     <!-- Preference String -->
+    <string name="pref_connection_setting">Connection Setting</string>
     <string name="pref_connection_type">Telemetry Connection Type</string>
     <string name="pref_connection_type_summary">Which link to use to connect to the drone</string>
     <string name="pref_connection">Connection Preferences</string>
@@ -92,6 +93,9 @@
     <string name="pref_server_ip">Server IP</string>
     <string name="pref_server_port">Server PORT</string>
     <string name="pref_server_bt">BT Connection</string>
+    <string name="pref_height_setting">Height Setting</string>
+    <string name="pref_mobile_station_height">Mobile Station Height</string>
+    <string name="pref_base_station_height">Base Station Height</string>
 
     <!-- Point Category String -->
     <string name="frame_point">Boundary Point</string>
@@ -126,5 +130,8 @@
     <string name="action_previous">Previous</string>
     <string name="action_next">Next</string>
     <string name="action_finish">Finish</string>
+
+    <string name="offline_map_downloading">Downloading</string>
+    <string name="offline_map_downloaded">Downloaded</string>
 
 </resources>

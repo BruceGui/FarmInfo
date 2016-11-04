@@ -3,6 +3,11 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <TextView
+        android:id="@+id/id_offline_map_doing_text"
+        style="@style/offlineMapStateText"
+        android:text="@string/offline_map_downloading"/>
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/id_downloading_rv"
         android:layout_width="match_parent"
@@ -10,6 +15,11 @@
         android:paddingTop="4dp">
 
     </android.support.v7.widget.RecyclerView>
+
+    <TextView
+        android:id="@+id/id_offline_map_down_text"
+        style="@style/offlineMapStateText"
+        android:text="@string/offline_map_downloaded"/>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/id_downloaded_rv"

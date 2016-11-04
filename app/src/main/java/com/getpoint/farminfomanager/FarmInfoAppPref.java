@@ -13,9 +13,9 @@ import java.util.List;
 public class FarmInfoAppPref {
 
     private static final String DEFAULT_CONNECTION_TYPE = "1";
-    private static final String DEFAULT_TCP_SERVER_IP = "192.168.1.107";
-    private static final String DEFAULT_TCP_SERVER_PORT = "5763";
-    private static final String DEFAULT_UDP_SERVER_PORT = "12345";
+    private static final String DEFAULT_TCP_SERVER_IP = "192.168.1.10";
+    private static final String DEFAULT_TCP_SERVER_PORT = "9750";
+    private static final String DEFAULT_STATION_HEIGHT = "0";
 
     /*
      * Public for legacy usage
@@ -42,18 +42,18 @@ public class FarmInfoAppPref {
                 DEFAULT_TCP_SERVER_IP);
     }
 
-    public void setTcpServerIp(String serverIp) {
-        prefs.edit().putString(context.getString(R.string.pref_server_ip_key), serverIp).apply();
-    }
-
     public int getTcpServerPort(){
         return Integer.parseInt(prefs.getString(context.getString(R.string.pref_server_port_key),
                 DEFAULT_TCP_SERVER_PORT));
     }
 
-    public void setTcpServerPort(int serverPort) {
-        prefs.edit().putString(context.getString(R.string.pref_server_port_key),
-                String.valueOf(serverPort)).apply();
+    public float getMobileStationHeight() {
+        return Float.parseFloat(prefs.getString(context.getString(R.string.pref_mobile_station_height_key),
+                DEFAULT_STATION_HEIGHT));
     }
 
+    public float getBaseStationHeight() {
+        return Float.parseFloat(prefs.getString(context.getString(R.string.pref_base_station_height_key),
+                DEFAULT_STATION_HEIGHT));
+    }
 }

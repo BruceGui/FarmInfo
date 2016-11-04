@@ -394,7 +394,7 @@ public class DangerPointFragment extends PointDetailFragment implements
 
     public float getFlyHeight() {
 
-        float al = gps.alt;
+        float al = gps.alt - appPref.getMobileStationHeight();
 
         if (TextUtils.isEmpty(altitudeEdt.getText())) {
 

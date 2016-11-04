@@ -9,6 +9,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.baidu.mapapi.map.offline.MKOLSearchRecord;
 import com.getpoint.farminfomanager.R;
 import com.getpoint.farminfomanager.entity.offlinemap.CityDetail;
 import com.getpoint.farminfomanager.weights.expandablerecyclerview.ParentViewHolder;
@@ -35,8 +36,8 @@ public class CityListParentViewHolder extends ParentViewHolder {
         mExpandImgBtn = (ImageView) itemView.findViewById(R.id.id_pro_expand_img_vi);
     }
 
-    public void bind(@NonNull CityDetail c) {
-        mProvince.setText(c.getCityName());
+    public void bind(@NonNull MKOLSearchRecord c) {
+        mProvince.setText(c.cityName);
         //if(c.getCityType() != 1) {
         //    Log.i(TAG, "City Type: " + c.getCityType());
         //    mFileSize.setText(c.getFileSize());

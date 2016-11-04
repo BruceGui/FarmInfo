@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
+import com.baidu.mapapi.map.offline.MKOLSearchRecord;
 import com.getpoint.farminfomanager.R;
 import com.getpoint.farminfomanager.entity.offlinemap.CityDetail;
 import com.getpoint.farminfomanager.utils.MKOfflineMapDownloadListener;
@@ -16,7 +17,7 @@ import java.util.List;
  * Created by Gui Zhou on 2016/10/31.
  */
 
-public class CityListAdapter extends ExpandableRecyclerAdapter<CityListParent, CityDetail, CityListParentViewHolder, CityListChildViewHolder> {
+public class CityListAdapter extends ExpandableRecyclerAdapter<CityListParent, MKOLSearchRecord, CityListParentViewHolder, CityListChildViewHolder> {
 
     private LayoutInflater mLayoutInflater;
     private MKOfflineMapDownloadListener listener;
@@ -48,7 +49,7 @@ public class CityListAdapter extends ExpandableRecyclerAdapter<CityListParent, C
     }
 
     @Override
-    public void onBindChildViewHolder(@NonNull CityListChildViewHolder childViewHolder, int parentPosition, int childPosition, @NonNull CityDetail child) {
+    public void onBindChildViewHolder(@NonNull CityListChildViewHolder childViewHolder, int parentPosition, int childPosition, @NonNull MKOLSearchRecord child) {
         childViewHolder.bind(child);
     }
 

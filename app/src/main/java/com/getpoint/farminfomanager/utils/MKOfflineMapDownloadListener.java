@@ -1,5 +1,6 @@
 package com.getpoint.farminfomanager.utils;
 
+import com.baidu.mapapi.map.offline.MKOLSearchRecord;
 import com.getpoint.farminfomanager.entity.offlinemap.CityDetail;
 
 /**
@@ -8,6 +9,6 @@ import com.getpoint.farminfomanager.entity.offlinemap.CityDetail;
 
 public interface MKOfflineMapDownloadListener {
 
-    void startDownload(CityDetail c);
+    void startDownload(MKOLSearchRecord c);
 
 }

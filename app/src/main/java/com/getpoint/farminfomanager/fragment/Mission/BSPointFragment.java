@@ -171,13 +171,8 @@ public class BSPointFragment extends PointDetailFragment implements
 
     public float getAltitude() {
 
-        float altitude = gps.alt;
+        return gps.alt - appPref.getBaseStationHeight();
 
-        if(!TextUtils.isEmpty(altitudeEdt.getText())) {
-            altitude += Float.valueOf(altitudeEdt.getText().toString());
-        }
-
-        return altitude;
     }
 
     public void setPointIndex(int index) {

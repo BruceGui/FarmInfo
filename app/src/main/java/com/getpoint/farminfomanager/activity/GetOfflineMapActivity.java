@@ -58,8 +58,9 @@ public class GetOfflineMapActivity extends AppCompatActivity implements MKOfflin
 
     private ViewPager mViewPager;
     private CityListAdapter mAdapter;
-    private List<CityListParent> allCities = new ArrayList<>();
-    private List<CityDetail> onDowning = new ArrayList<>();
+    private List<CityListParent> allProvince = new ArrayList<>();
+    private List<MKOLUpdateElement> haveCities = new ArrayList<>();
+    private List<MKOLSearchRecord> onDowning = new ArrayList<>();
 
     private DownloadManFragment mDownloadFrag;
     private CityListFragment mCityListFrag;
@@ -107,8 +108,8 @@ public class GetOfflineMapActivity extends AppCompatActivity implements MKOfflin
         mCityListBtn = (Button) findViewById(R.id.id_city_list_btn);
         mDownManBtn = (Button) findViewById(R.id.id_down_manager_btn);
 
-        //mDownloadFrag = DownloadManFragment.newInstance();
-        //mCityListFrag = CityListFragment.newInstance();
+        mDownloadFrag = DownloadManFragment.newInstance();
+        mCityListFrag = CityListFragment.newInstance();
         //mDownloadFrag.initOfflineMap(mOfflineMap);
 
         /**
@@ -122,13 +123,13 @@ public class GetOfflineMapActivity extends AppCompatActivity implements MKOfflin
 
                 if (r.cityType == 1) {
 
-                    CityDetail toAdd = new CityDetail(r.cityID, r.cityName, r.size, r.cityType);
+                    //CityDetail toAdd = new CityDetail(r.cityID, r.cityName, r.size, r.cityType);
                     for (MKOLSearchRecord cr : r.childCities) {
-                        CityDetail ctoAdd = new CityDetail(cr.cityID, cr.cityName, cr.size, cr.cityType);
-                        toAdd.addChildCity(ctoAdd);
+                        //CityDetail ctoAdd = new CityDetail(cr.cityID, cr.cityName, cr.size, cr.cityType);
+                        //toAdd.addChildCity(ctoAdd);
                     }
 
-                    allCities.add(new CityListParent(toAdd));
+                    allProvince.add(new CityListParent(r));
                 }
 
 
@@ -136,11 +137,17 @@ public class GetOfflineMapActivity extends AppCompatActivity implements MKOfflin
 
         }
 
-        mAdapter = new CityListAdapter(getApplicationContext(), allCities, this);
-        //mCityListFrag.setAllCities(allCities);
-        //mCityListFrag.setmAdapter(mAdapter);
 
-        //mCityListFrag.setMKOfflineMap(mOfflineMap);
+        /**
+         *  获取 已经 下线离线地图的城市
+         */
+
+        mAdapter = new CityListAdapter(getApplicationContext(), allProvince, this);
+        mCityListFrag.setAllCities(allProvince);
+        mCityListFrag.setmAdapter(mAdapter);
+
+        mCityListFrag.setMKOfflineMap(mOfflineMap);
+        mDownloadFrag.setMKOfflineMap(mOfflineMap);
 
         setDownPagerSel();
 
@@ -158,11 +165,11 @@ public class GetOfflineMapActivity extends AppCompatActivity implements MKOfflin
             case MKOfflineMap.TYPE_DOWNLOAD_UPDATE:
                 MKOLUpdateElement update = mOfflineMap.getUpdateInfo(state);
                 if (update != null) {
-                    Log.i(TAG, "CityName: " + update.cityName + "Ratio " + update.ratio);
 
-                    //if (mDownloadFrag != null) {
-                    //    mDownloadFrag.updateProcess(update);
-                    //}
+                    //TODO 数据更新 和 界面显示
+                    if(mViewPager.getCurrentItem() == 0) {
+                        mDownloadFrag.updateProcess(update);
+                    }
 
                 }
                 break;
@@ -209,9 +216,6 @@ public class GetOfflineMapActivity extends AppCompatActivity implements MKOfflin
             public void onPageSelected(int position) {
                 switch (position) {
                     case 0:
-                        if(mDownloadFrag != null) {
-                            mDownloadFrag.setOnDowning(onDowning);
-                        }
                         setDownPagerSel();
                         break;
                     case 1:
@@ -229,7 +233,7 @@ public class GetOfflineMapActivity extends AppCompatActivity implements MKOfflin
     private void setupCityListFrag() {
 
         mCityListFrag = CityListFragment.newInstance();
-        mCityListFrag.setAllCities(allCities);
+        mCityListFrag.setAllCities(allProvince);
         mCityListFrag.setmAdapter(mAdapter);
 
         mCityListFrag.setMKOfflineMap(mOfflineMap);
@@ -239,20 +243,21 @@ public class GetOfflineMapActivity extends AppCompatActivity implements MKOfflin
     private void setupDownFrag() {
 
         mDownloadFrag = DownloadManFragment.newInstance();
-        mDownloadFrag.setOnDowning(onDowning);
+        //mDownloadFrag.setOnDowning(onDowning);
 
     }
 
     @Override
-    public void startDownload(CityDetail city) {
+    public void startDownload(MKOLSearchRecord city) {
 
-        Log.i(TAG, "City Name: " + city.getCityName());
-        if (hasOfflineMap(city.getCityId())) {
+        Log.i(TAG, "City Name: " + city.cityName);
+        if (hasOfflineMap(city.cityID)) {
             Toast.makeText(getApplication(), "已经下载", Toast.LENGTH_SHORT).show();
         } else {
 
-            mOfflineMap.start(city.getCityId());
+            mOfflineMap.start(city.cityID);
             //onDowning.add(city);
+            mDownloadFrag.addDownloadCity(city);
          }
 
     }
@@ -295,10 +300,8 @@ public class GetOfflineMapActivity extends AppCompatActivity implements MKOfflin
 
             switch (position) {
                 case 0:
-                    setupDownFrag();
                     return mDownloadFrag;
                 case 1:
-                    setupCityListFrag();
                     return mCityListFrag;
                 default:
                     return null;

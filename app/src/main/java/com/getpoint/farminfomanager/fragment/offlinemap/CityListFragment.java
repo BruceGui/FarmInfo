@@ -129,9 +129,9 @@ public class CityListFragment extends Fragment {
             holder.mDownload.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    CityDetail c = new CityDetail(r.cityID,r.cityName,r.size,r.cityType);
+                    //CityDetail c = new CityDetail(r.cityID,r.cityName,r.size,r.cityType);
                     if(listener != null) {
-                        listener.startDownload(c);
+                        listener.startDownload(r);
                     }
                 }
             });
