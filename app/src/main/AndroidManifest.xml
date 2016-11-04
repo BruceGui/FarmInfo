@@ -67,6 +67,9 @@
             android:label="@string/app_setting">
 
         </activity>
+
+        <service android:name=".updatemanager.DownLoadService"/>
+
     </application>
 
 </manifest>

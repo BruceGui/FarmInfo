@@ -30,8 +30,6 @@ import com.getpoint.farminfomanager.entity.points.enumc.DangerPointType;
 import com.getpoint.farminfomanager.utils.adapters.IndexAdapter;
 import com.getpoint.farminfomanager.utils.proxy.MissionItemProxy;
 import com.getpoint.farminfomanager.utils.proxy.MissionProxy;
-import com.getpoint.farminfomanager.weights.spinnerWheel.CardWheelHorizontalView;
-import com.getpoint.farminfomanager.weights.spinnerWheel.adapters.NumericWheelAdapter;
 import com.getpoint.farminfomanager.weights.spinners.SpinnerSelfSelect;
 
 import java.util.ArrayList;
@@ -43,8 +41,7 @@ import java.util.List;
 
 //TODO 对代码的结构进行整理，重新设计逻辑
 
-public class DangerPointFragment extends PointDetailFragment implements
-        CardWheelHorizontalView.OnCardWheelChangedListener {
+public class DangerPointFragment extends PointDetailFragment {
 
     private static final String TAG = "DangerPoint";
 
@@ -408,11 +405,6 @@ public class DangerPointFragment extends PointDetailFragment implements
     @Override
     protected int getLayoutResource() {
         return R.layout.fragment_editor_detail_danger;
-    }
-
-    @Override
-    public void onChanged(CardWheelHorizontalView cardWheel, int oldValue, int newValue) {
-
     }
 
 }

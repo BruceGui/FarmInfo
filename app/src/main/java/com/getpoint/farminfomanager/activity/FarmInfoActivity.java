@@ -45,24 +45,25 @@ import com.getpoint.farminfomanager.fragment.Mission.DangerPointFragment;
 import com.getpoint.farminfomanager.fragment.Mission.FramePointFragment;
 import com.getpoint.farminfomanager.fragment.Mission.PointDetailFragment;
 import com.getpoint.farminfomanager.fragment.OpenMissionFragment;
-import com.getpoint.farminfomanager.fragment.PointEditorFragment;
 import com.getpoint.farminfomanager.fragment.SaveMissionFragment;
+import com.getpoint.farminfomanager.updatemanager.Update;
+import com.getpoint.farminfomanager.updatemanager.UpdateManager;
+import com.getpoint.farminfomanager.updatemanager.VersionCheckTask;
 import com.getpoint.farminfomanager.utils.AttributesEvent;
 import com.getpoint.farminfomanager.utils.DirectoryChooserConfig;
 import com.getpoint.farminfomanager.utils.GPS;
-
-import com.getpoint.farminfomanager.utils.file.DirectoryPath;
 import com.getpoint.farminfomanager.utils.proxy.MissionItemProxy;
 import com.getpoint.farminfomanager.utils.proxy.MissionProxy;
 import com.getpoint.farminfomanager.weights.FloatingActionButton;
 import com.getpoint.farminfomanager.weights.MorphLayout;
-import com.getpoint.farminfomanager.fragment.EditorChooseFragment;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
 import static com.getpoint.farminfomanager.utils.virtualnavbar.VirtualNavBar.getNavigationBarHeight;
+import static com.getpoint.farminfomanager.updatemanager.DeviceUtils.getVersionCode;
+import static com.getpoint.farminfomanager.updatemanager.DeviceUtils.isNetworkAvailable;
 
 /**
  * Created by Gui Zhou on 2016-07-05.
@@ -75,12 +76,12 @@ public class FarmInfoActivity extends AppCompatActivity implements
         BaiduMapFragment.OnMapClickedListener,
         SaveMissionFragment.OnFragmentInteractionListener,
         OpenMissionFragment.OnFragmentInteractionListener,
-        EditorChooseFragment.EditorListener,
-        PointEditorFragment.PointEditorListener {
+        UpdateManager.LibraryListener{
 
     private static final String TAG = "FarmInfoActivity";
 
     private final int MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE = 0;
+    private final String xmlUrl = "http://114.215.88.137/androidapp/update.xml";
 
     private FramePointFragment framePointFragment;
     private DangerPointFragment dangerPointFragment;
@@ -90,8 +91,8 @@ public class FarmInfoActivity extends AppCompatActivity implements
     private SaveMissionFragment mSaveMissionFragment;
     private OpenMissionFragment mOpenMissionFragment;
 
-    private EditorChooseFragment mEditorChooseFragment;
-    private PointEditorFragment mPointEditorFragment;
+    //private EditorChooseFragment mEditorChooseFragment;
+    //private PointEditorFragment mPointEditorFragment;
 
     private PointItemType currentType = PointItemType.FRAMEPOINT;
 
@@ -242,15 +243,17 @@ public class FarmInfoActivity extends AppCompatActivity implements
         Log.i(TAG, Build.BOARD);
         Log.i(TAG, "" + Environment.getExternalStorageDirectory());
 
-        int permissionCheck = ContextCompat.checkSelfPermission(this,
-                Manifest.permission.READ_EXTERNAL_STORAGE);
+        Log.i(TAG, "version code: " + getVersionCode(getApplicationContext()));
 
-        if (permissionCheck == PackageManager.PERMISSION_GRANTED) {
-            Log.i(TAG, "Permission granted");
-        } else {
-            Log.i(TAG, "Request For permission");
+        //TODO  检查版本更新信息
+        /**
+         *  首先 检查网络可用性，然后获取 xml 文件并检擦版本号 与 此版本号对比，
+         *  然后下载进行更新
+         */
+        if(isNetworkAvailable(getApplicationContext())) {
+            Log.i(TAG, "network is available");
+            new VersionCheckTask(getApplicationContext(), xmlUrl, this).execute();
         }
-
     }
 
     private void initCompListener() {
@@ -384,6 +387,21 @@ public class FarmInfoActivity extends AppCompatActivity implements
     }
 
     /**
+     *   版本更新请求回调函数
+     */
+    @Override
+    public void onSuccess(Update update) {
+
+        requestReadPermission();
+        new UpdateManager(this).showNoticeDialog(update.getReleaseNotes());
+    }
+
+    @Override
+    public void onFailed() {
+
+    }
+
+    /**
      * 保存和打开任务文件的相关函数
      */
 
@@ -453,8 +471,8 @@ public class FarmInfoActivity extends AppCompatActivity implements
         }
 
         if (!onDeleting) {
-            mEditorChooseFragment = EditorChooseFragment.newInstance(this);
-            mEditorChooseFragment.show(getSupportFragmentManager(), null);
+            //mEditorChooseFragment = EditorChooseFragment.newInstance(this);
+            //mEditorChooseFragment.show(getSupportFragmentManager(), null);
         } else {
             changeSelPointMarker(true);
         }
@@ -477,48 +495,6 @@ public class FarmInfoActivity extends AppCompatActivity implements
         }
 
         return false;
-    }
-
-    /**
-     * 编辑点的监听函数
-     */
-    @Override
-    public void onDelete() {
-
-        onDeleting = true;
-        mEditorChooseFragment.dismiss();
-        setupEditorMenu();
-        changeSelPointMarker(true);
-
-    }
-
-    @Override
-    public void onEditor() {
-
-        mEditorChooseFragment.dismiss();
-        mPointEditorFragment = PointEditorFragment.newInstance(this);
-        mPointEditorFragment.show(getSupportFragmentManager(), null);
-    }
-
-    @Override
-    public void onCancel() {
-
-        mEditorChooseFragment.dismiss();
-
-    }
-
-    /**
-     * 修改点高度的监听函数
-     */
-    @Override
-    public void onPConfirm() {
-
-        mPointEditorFragment.dismiss();
-    }
-
-    @Override
-    public void onPCancel() {
-        mPointEditorFragment.dismiss();
     }
 
     /**
@@ -582,6 +558,8 @@ public class FarmInfoActivity extends AppCompatActivity implements
 
         //TODO ruquest READ_EXTERNAL_STORAGE permission at run time
 
+        requestReadPermission();
+
         final DirectoryChooserConfig config = DirectoryChooserConfig.builder()
                 .newDirectoryName(getString(R.string.new_folder))
                 .allowNewDirectoryNameModification(true)
@@ -626,12 +604,7 @@ public class FarmInfoActivity extends AppCompatActivity implements
                     // app-defined int constant. The callback method gets the
                     // result of the request.
                 }
-            } else {
-                openMissionFile();
             }
-
-        } else {
-            openMissionFile();
         }
     }
 
@@ -645,7 +618,7 @@ public class FarmInfoActivity extends AppCompatActivity implements
 
                     // permission was granted, yay! Do the
                     // contacts-related task you need to do.
-                    openMissionFile();
+                    //openMissionFile();
                 } else {
 
                     // permission denied, boo! Disable the
@@ -1007,8 +980,8 @@ public class FarmInfoActivity extends AppCompatActivity implements
                 startActivity(intent);
                 break;
             case R.id.id_menu_open_file:
-                //openMissionFile();
-                requestReadPermission();
+                openMissionFile();
+                //requestReadPermission();
                 break;
             case R.id.id_menu_save_file:
                 saveMissionFile();

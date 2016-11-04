@@ -57,7 +57,7 @@ public class DownloadManFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if(offlineMap != null) {
+        if (offlineMap != null) {
             mDownloaded = offlineMap.getAllUpdateInfo();
         }
         mOnDownload = new ArrayList<>();
@@ -161,7 +161,9 @@ public class DownloadManFragment extends Fragment {
 
     public void addDownloadCity(MKOLSearchRecord c) {
         mDoingText.setVisibility(View.VISIBLE);
-        this.mOnDownload.add(new OnDownCity(c));
+        if (!mOnDownload.contains(c)) {
+            mOnDownload.add(new OnDownCity(c));
+        }
         notifyDatasetChanged();
     }
 
@@ -171,7 +173,7 @@ public class DownloadManFragment extends Fragment {
 
             if (u.ratio == 100) {
                 // mDownloaded.add(mOnDownload.get(0));
-                removeDownloadCity();
+                updateOfflineMapHave(u);
                 mHaveAdapter.notifyDataSetChanged();
             }
             notifyDatasetChanged();
