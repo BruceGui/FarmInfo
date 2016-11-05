@@ -338,6 +338,8 @@ public class DangerPointFragment extends PointDetailFragment {
 
     public void updateCurrentInP() {
 
+        currInP.setPosition(gps.lat, gps.lon, getFlyHeight());
+        ((DangerPoint)currDP.getPointInfo()).setdPType(getCurrentDPType());
         addInP = true;
     }
 

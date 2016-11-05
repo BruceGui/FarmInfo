@@ -132,7 +132,6 @@ public class GetOfflineMapActivity extends AppCompatActivity implements MKOfflin
                     allProvince.add(new CityListParent(r));
                 }
 
-
             }
 
         }
@@ -145,6 +144,7 @@ public class GetOfflineMapActivity extends AppCompatActivity implements MKOfflin
         mAdapter = new CityListAdapter(getApplicationContext(), allProvince, this);
         mCityListFrag.setAllCities(allProvince);
         mCityListFrag.setmAdapter(mAdapter);
+        mCityListFrag.setDownloadListener(this);
 
         mCityListFrag.setMKOfflineMap(mOfflineMap);
         mDownloadFrag.setMKOfflineMap(mOfflineMap);
@@ -227,23 +227,6 @@ public class GetOfflineMapActivity extends AppCompatActivity implements MKOfflin
                 }
             }
         });
-
-    }
-
-    private void setupCityListFrag() {
-
-        mCityListFrag = CityListFragment.newInstance();
-        mCityListFrag.setAllCities(allProvince);
-        mCityListFrag.setmAdapter(mAdapter);
-
-        mCityListFrag.setMKOfflineMap(mOfflineMap);
-
-    }
-
-    private void setupDownFrag() {
-
-        mDownloadFrag = DownloadManFragment.newInstance();
-        //mDownloadFrag.setOnDowning(onDowning);
 
     }
 

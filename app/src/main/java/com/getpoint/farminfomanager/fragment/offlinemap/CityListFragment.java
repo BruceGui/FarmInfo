@@ -102,7 +102,6 @@ public class CityListFragment extends Fragment {
             }
         });
 
-
         cityListrv = (RecyclerView) v.findViewById(R.id.city_list_rv);
         cityListrv.setAdapter(mAdapter);
         cityListrv.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -139,7 +138,11 @@ public class CityListFragment extends Fragment {
 
         @Override
         public int getItemCount() {
-            return searchRes.size();
+            if(searchRes != null) {
+                return searchRes.size();
+            }
+
+            return 0;
         }
 
         class SearchResViewHolder extends ViewHolder {

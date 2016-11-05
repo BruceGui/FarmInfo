@@ -91,9 +91,6 @@ public class FarmInfoActivity extends AppCompatActivity implements
     private SaveMissionFragment mSaveMissionFragment;
     private OpenMissionFragment mOpenMissionFragment;
 
-    //private EditorChooseFragment mEditorChooseFragment;
-    //private PointEditorFragment mPointEditorFragment;
-
     private PointItemType currentType = PointItemType.FRAMEPOINT;
 
     private BaiduMapFragment mapFragment;
@@ -104,7 +101,6 @@ public class FarmInfoActivity extends AppCompatActivity implements
 
     private List<PointMarker> mPointSel = new ArrayList<>();
 
-    //private Boolean isEditing = false;
     private Boolean onDeleting = false;
 
     private Menu mMenu;
@@ -254,6 +250,8 @@ public class FarmInfoActivity extends AppCompatActivity implements
             Log.i(TAG, "network is available");
             new VersionCheckTask(getApplicationContext(), xmlUrl, this).execute();
         }
+
+        requestReadPermission();
     }
 
     private void initCompListener() {
@@ -560,7 +558,7 @@ public class FarmInfoActivity extends AppCompatActivity implements
 
         //TODO ruquest READ_EXTERNAL_STORAGE permission at run time
 
-        requestReadPermission();
+        //requestReadPermission();
 
         final DirectoryChooserConfig config = DirectoryChooserConfig.builder()
                 .newDirectoryName(getString(R.string.new_folder))
@@ -981,6 +979,7 @@ public class FarmInfoActivity extends AppCompatActivity implements
                 startActivity(intent);
                 break;
             case R.id.id_menu_open_file:
+                requestReadPermission();
                 openMissionFile();
                 //requestReadPermission();
                 break;

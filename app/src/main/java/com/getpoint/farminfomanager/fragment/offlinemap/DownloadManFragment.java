@@ -28,6 +28,13 @@ import java.util.List;
  * Created by Gui Zhou on 2016/10/31.
  */
 
+
+//TODO 增加后台下载功能
+
+/**
+ *   service 后台下载 NotificationManager 后台通知
+ */
+
 public class DownloadManFragment extends Fragment {
 
     private static final String TAG = "DownloadMan";
@@ -125,6 +132,7 @@ public class DownloadManFragment extends Fragment {
         }
     }
 
+    //TODO 增加 删除 功能
     /**
      * 已经下载的 适配器
      */
