@@ -31,6 +31,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import static com.getpoint.farminfomanager.utils.file.DirectoryPath.getFarmInfoPath;
+
 /**
  * Created by Gui Zhou on 2016/10/9.
  */
@@ -124,6 +126,7 @@ public class PointDetailActivity extends AppCompatActivity implements
 
         final DirectoryChooserConfig config = DirectoryChooserConfig.builder()
                 .newDirectoryName(getString(R.string.new_folder))
+                .initialDirectory(getFarmInfoPath())
                 .allowNewDirectoryNameModification(true)
                 .allowReadOnlyDirectory(false)
                 .build();

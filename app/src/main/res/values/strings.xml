@@ -71,6 +71,7 @@
     <string name="save_mission_file">Save Mission File</string>
     <string name="open_mission_file">Open Mission File</string>
     <string name="new_folder">New Folder</string>
+    <string name="no_file">No File</string>
     <string name="label_yes_no_dialog_dont_show">Don\'t show again.</string>
     <string name="label_enter_filename">Enter Filename</string>
     <string name="file_saved_success">File saved</string>

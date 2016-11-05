@@ -69,6 +69,7 @@
     <string name="save_mission_file">保存任务文件</string>
     <string name="open_mission_file">打开任务文件</string>
     <string name="new_folder">新文件夹</string>
+    <string name="no_file">没有文件</string>
     <string name="file_saved_success">保存成功</string>
     <string name="file_saved_error">保存出错</string>
 

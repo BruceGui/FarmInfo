@@ -227,6 +227,7 @@ public class SaveMissionFragment extends DialogFragment {
         mListDirectoriesAdapter = new ArrayAdapter<>(getActivity(),
                 android.R.layout.simple_list_item_1, mFilenames);
         mListDirectories.setAdapter(mListDirectoriesAdapter);
+        mListDirectories.setEmptyView(view.findViewById(R.id.id_file_empty));
 
         final File initialDir;
         if (!TextUtils.isEmpty(mInitialDirectory) && isValidFile(new File(mInitialDirectory))) {

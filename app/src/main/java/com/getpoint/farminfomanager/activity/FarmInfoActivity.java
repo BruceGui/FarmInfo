@@ -45,7 +45,6 @@ import com.getpoint.farminfomanager.fragment.Mission.DangerPointFragment;
 import com.getpoint.farminfomanager.fragment.Mission.FramePointFragment;
 import com.getpoint.farminfomanager.fragment.Mission.PointDetailFragment;
 import com.getpoint.farminfomanager.fragment.OpenMissionFragment;
-import com.getpoint.farminfomanager.fragment.SaveMissionFragment;
 import com.getpoint.farminfomanager.updatemanager.Update;
 import com.getpoint.farminfomanager.updatemanager.UpdateManager;
 import com.getpoint.farminfomanager.updatemanager.VersionCheckTask;
@@ -64,6 +63,8 @@ import java.util.Locale;
 import static com.getpoint.farminfomanager.utils.virtualnavbar.VirtualNavBar.getNavigationBarHeight;
 import static com.getpoint.farminfomanager.updatemanager.DeviceUtils.getVersionCode;
 import static com.getpoint.farminfomanager.updatemanager.DeviceUtils.isNetworkAvailable;
+import static com.getpoint.farminfomanager.utils.file.DirectoryPath.getFarmInfoPath;
+import static com.getpoint.farminfomanager.utils.file.DirectoryPath.initWorkDir;
 
 /**
  * Created by Gui Zhou on 2016-07-05.
@@ -74,7 +75,6 @@ public class FarmInfoActivity extends AppCompatActivity implements
         MorphLayout.OnMorphListener,
         BaiduMapFragment.OnMarkerClickedListener,
         BaiduMapFragment.OnMapClickedListener,
-        SaveMissionFragment.OnFragmentInteractionListener,
         OpenMissionFragment.OnFragmentInteractionListener,
         UpdateManager.LibraryListener{
 
@@ -88,7 +88,6 @@ public class FarmInfoActivity extends AppCompatActivity implements
     private PointDetailFragment pointDetailFragment;
     private BSPointFragment bsPointFragment;
 
-    private SaveMissionFragment mSaveMissionFragment;
     private OpenMissionFragment mOpenMissionFragment;
 
     private PointItemType currentType = PointItemType.FRAMEPOINT;
@@ -172,6 +171,7 @@ public class FarmInfoActivity extends AppCompatActivity implements
         initCompVariable();
         initCompListener();
 
+        initWorkDir();
         farmApp.getLocalBroadcastManager().registerReceiver(eventReceiver, eventFilter);
 
     }
@@ -401,32 +401,6 @@ public class FarmInfoActivity extends AppCompatActivity implements
 
     }
 
-    /**
-     * 保存和打开任务文件的相关函数
-     */
-
-    @Override
-    public void onSaveMission(@NonNull String filepath, @NonNull String filename) {
-
-        Log.i(TAG, filepath + "/" + filename);
-        final Context context = getApplicationContext();
-        mSaveMissionFragment.dismiss();
-
-        if (missionProxy.writeMissionToFile(filepath, filename)) {
-            Toast.makeText(context, R.string.file_saved_success, Toast.LENGTH_SHORT)
-                    .show();
-            return;
-        }
-
-        Toast.makeText(context, R.string.file_saved_error, Toast.LENGTH_SHORT)
-                .show();
-
-    }
-
-    @Override
-    public void onSaveCancelChooser() {
-        mSaveMissionFragment.dismiss();
-    }
 
     @Override
     public void onOpenMission(@NonNull String path, @NonNull String filename) {
@@ -540,14 +514,16 @@ public class FarmInfoActivity extends AppCompatActivity implements
 
     private void saveMissionFile() {
 
+        /*
         final DirectoryChooserConfig config = DirectoryChooserConfig.builder()
                 .newDirectoryName(getString(R.string.new_folder))
+                .initialDirectory(getFarmInfoPath())
                 .allowNewDirectoryNameModification(true)
                 .allowReadOnlyDirectory(false)
                 .build();
 
         mSaveMissionFragment = SaveMissionFragment.newInstance(config);
-
+        */
         //mMissionPagerFragment.show(getFragmentManager(), null);
         startActivity(new Intent(FarmInfoActivity.this, PointDetailActivity.class));
         //mSaveMissionFragment.show(getFragmentManager(), null);
@@ -562,6 +538,7 @@ public class FarmInfoActivity extends AppCompatActivity implements
 
         final DirectoryChooserConfig config = DirectoryChooserConfig.builder()
                 .newDirectoryName(getString(R.string.new_folder))
+                .initialDirectory(getFarmInfoPath())
                 .allowNewDirectoryNameModification(true)
                 .allowReadOnlyDirectory(false)
                 .build();

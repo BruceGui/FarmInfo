@@ -75,4 +75,13 @@
         android:layout_above="@id/footer"
         android:layout_below="@id/directoryInfo" />
 
+    <TextView android:id="@+id/id_file_empty"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:textSize="30sp"
+        android:textColor="@color/dark_grey"
+        android:visibility="gone"
+        android:text="@string/no_file" />
+
 </RelativeLayout>

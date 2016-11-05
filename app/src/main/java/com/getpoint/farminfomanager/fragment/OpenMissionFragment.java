@@ -146,43 +146,10 @@ public class OpenMissionFragment extends DialogFragment {
         assert getActivity() != null;
         final View view = inflater.inflate(getResourceID(), container, false);
 
-        //mBtnConfirm = (Button) view.findViewById(R.id.btnConfirm);
-        //mBtnCancel = (Button) view.findViewById(R.id.btnCancel);
-        //mFileName = (EditText) view.findViewById(R.id.mission_file_name);
         mBtnNavUp = (ImageButton) view.findViewById( R.id.btnNavUp);
-        //mBtnCreateFolder = (ImageButton) view.findViewById(R.id.btnCreateFolder);
         mTxtvSelectedFolder = (TextView) view.findViewById( R.id.txtvSelectedFolder);
         mListDirectories = (ListView) view.findViewById(R.id.directoryList);
 
-        /*
-        mBtnConfirm.setOnClickListener(new OnClickListener() {
-
-            @Override
-            public void onClick(final View v) {
-                if (isValidFile(mSelectedDir)) {
-                    //if(TextUtils.isEmpty(mFileName.getText())) {
-                        //Toast.makeText(getActivity(), getString(R.string.please_input_file_name),
-                         //       Toast.LENGTH_SHORT).show();
-                    //} else {
-                        returnSelectedFolder();
-                    //}
-                }
-            }
-        });
-
-        mBtnCancel.setOnClickListener(new OnClickListener() {
-
-            @Override
-            public void onClick(final View v) {
-                mListener.foreach(new UnitFunction<OnFragmentInteractionListener>() {
-                    @Override
-                    public void apply(final OnFragmentInteractionListener listener) {
-                        listener.onOpenCancelChooser();
-                    }
-                });
-            }
-        });
-        */
         mListDirectories.setOnItemClickListener(new OnItemClickListener() {
 
             @Override
@@ -208,25 +175,13 @@ public class OpenMissionFragment extends DialogFragment {
             }
         });
 
-        /*
-        mBtnCreateFolder.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(final View v) {
-                openNewFolderDialog();
-            }
-        });
-
-        if (!getShowsDialog()) {
-            mBtnCreateFolder.setVisibility(View.GONE);
-        }
-        */
-
         adjustResourceLightness();
 
         mFilenames = new ArrayList<>();
         mListDirectoriesAdapter = new ArrayAdapter<>(getActivity(),
                 android.R.layout.simple_list_item_1, mFilenames);
         mListDirectories.setAdapter(mListDirectoriesAdapter);
+        mListDirectories.setEmptyView(view.findViewById(R.id.id_file_empty));
 
         final File initialDir;
         if (!TextUtils.isEmpty(mInitialDirectory) && isValidFile(new File(mInitialDirectory))) {
