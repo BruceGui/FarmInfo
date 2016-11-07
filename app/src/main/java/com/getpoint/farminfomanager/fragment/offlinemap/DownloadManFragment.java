@@ -6,7 +6,6 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.RecyclerView.ViewHolder;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,21 +14,20 @@ import android.widget.TextView;
 import com.baidu.mapapi.map.offline.MKOLSearchRecord;
 import com.baidu.mapapi.map.offline.MKOLUpdateElement;
 import com.baidu.mapapi.map.offline.MKOfflineMap;
-import com.baidu.mapapi.map.offline.MKOfflineMapListener;
 import com.getpoint.farminfomanager.R;
-import com.getpoint.farminfomanager.entity.offlinemap.CityDetail;
 import com.getpoint.farminfomanager.entity.offlinemap.OnDownCity;
 import com.getpoint.farminfomanager.weights.numberprocessbar.NumberProgressBar;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * Created by Gui Zhou on 2016/10/31.
  */
 
 
-//TODO 增加后台下载功能
+//TODO 增加后台下载功能 notification 和 service
 
 /**
  *   service 后台下载 NotificationManager 后台通知
@@ -91,7 +89,7 @@ public class DownloadManFragment extends Fragment {
         mDownloadedrv.setLayoutManager(new LinearLayoutManager(getContext()));
 
         mDoingText = (TextView) v.findViewById(R.id.id_offline_map_doing_text);
-        mDoingText.setVisibility(View.INVISIBLE);
+        mDoingText.setVisibility(View.GONE);
 
         return v;
     }
@@ -104,12 +102,14 @@ public class DownloadManFragment extends Fragment {
         @Override
         public DownloadViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             return new DownloadViewHolder(LayoutInflater.from(getContext())
-                    .inflate(R.layout.offline_map_on_downloading, parent, false));
+                    .inflate(R.layout.offline_map_down_list, parent, false));
         }
 
         @Override
         public void onBindViewHolder(DownloadViewHolder holder, int position) {
             holder.mCityName.setText(mOnDownload.get(position).r.cityName);
+            holder.mDownRatio.setText(String.format(getResources().getString(R.string.down_ratio),
+                    mOnDownload.get(position).getRatio()));
             holder.mProgress.setProgress(mOnDownload.get(position).getRatio());
         }
 
@@ -121,11 +121,13 @@ public class DownloadManFragment extends Fragment {
         class DownloadViewHolder extends ViewHolder {
 
             private TextView mCityName;
+            private TextView mDownRatio;
             private NumberProgressBar mProgress;
 
             public DownloadViewHolder(View v) {
                 super(v);
                 mCityName = (TextView) v.findViewById(R.id.id_down_city_name);
+                mDownRatio = (TextView) v.findViewById(R.id.id_down_ratio);
                 mProgress = (NumberProgressBar) v.findViewById(R.id.id_down_progress);
             }
 
@@ -141,12 +143,13 @@ public class DownloadManFragment extends Fragment {
         @Override
         public HaveViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             return new HaveViewHolder(LayoutInflater.from(getContext())
-                    .inflate(R.layout.offline_map_downloaded, parent, false));
+                    .inflate(R.layout.offline_map_down_list, parent, false));
         }
 
         @Override
         public void onBindViewHolder(HaveViewHolder holder, int position) {
             holder.mCityName.setText(mDownloaded.get(position).cityName);
+            holder.n.setVisibility(View.INVISIBLE);
         }
 
         @Override
@@ -161,10 +164,12 @@ public class DownloadManFragment extends Fragment {
         class HaveViewHolder extends ViewHolder {
 
             private TextView mCityName;
+            private NumberProgressBar n;
 
             public HaveViewHolder(View v) {
                 super(v);
                 mCityName = (TextView) v.findViewById(R.id.id_down_city_name);
+                n = (NumberProgressBar) v.findViewById(R.id.id_down_progress);
             }
 
         }
@@ -172,32 +177,16 @@ public class DownloadManFragment extends Fragment {
     }
 
     public void addDownloadCity(MKOLSearchRecord c) {
-        mDoingText.setVisibility(View.VISIBLE);
+
+        if(mOnDownload.isEmpty()) {
+            mDoingText.setVisibility(View.VISIBLE);
+        }
+
         if (!mOnDownload.contains(c)) {
             mOnDownload.add(new OnDownCity(c));
         }
+
         notifyDatasetChanged();
-    }
-
-    public void updateProcess(MKOLUpdateElement u) {
-        if (!mOnDownload.isEmpty()) {
-            mOnDownload.get(0).setRatio(u.ratio);
-
-            if (u.ratio == 100) {
-                // mDownloaded.add(mOnDownload.get(0));
-                removeDownloadCity();
-                updateOfflineMapHave(u);
-                mHaveAdapter.notifyDataSetChanged();
-            }
-            notifyDatasetChanged();
-        }
-    }
-
-    public void notifyDatasetChanged() {
-        mDowningAdapter.notifyDataSetChanged();
-        if (this.mOnDownload.isEmpty()) {
-            mDoingText.setVisibility(View.INVISIBLE);
-        }
     }
 
     public void removeDownloadCity() {
@@ -207,11 +196,38 @@ public class DownloadManFragment extends Fragment {
         notifyDatasetChanged();
     }
 
-    public void updateOfflineMapHave(MKOLUpdateElement c) {
-        //if(mDownloaded == null) {
-            mDownloaded = offlineMap.getAllUpdateInfo();
-        //}
+    public void updateProcess(MKOLUpdateElement u) {
+
+        if (!mOnDownload.isEmpty()) {
+            mOnDownload.get(0).setRatio(u.ratio);
+
+            if (u.ratio == 100) {
+
+                removeDownloadCity();
+                updateOfflineMapHave();
+                mHaveAdapter.notifyDataSetChanged();
+            }
+            notifyDatasetChanged();
+        }
+
+    }
+
+    public void notifyDatasetChanged() {
+
+        mDowningAdapter.notifyDataSetChanged();
+        if (this.mOnDownload.isEmpty()) {
+            mDoingText.setVisibility(View.GONE);
+        }
+
+    }
+
+
+
+    public void updateOfflineMapHave() {
+
+        mDownloaded = offlineMap.getAllUpdateInfo();
         mHaveAdapter.notifyDataSetChanged();
+
     }
 
     public void setMKOfflineMap(MKOfflineMap m) {

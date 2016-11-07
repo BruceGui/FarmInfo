@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:custom="http://schemas.android.com/apk/res-auto"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white">
+
+    <TextView
+        android:id="@+id/id_down_city_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingTop="4dp"
+        android:paddingStart="24dp"
+        android:gravity="center"/>
+
+    <TextView
+        android:id="@+id/id_down_ratio"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:paddingEnd="24dp"
+        android:paddingTop="4dp"/>
+
+    <com.getpoint.farminfomanager.weights.numberprocessbar.NumberProgressBar
+        android:id="@+id/id_down_progress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_below="@id/id_down_city_name"
+        android:paddingTop="4dp"
+        android:paddingEnd="24dp"
+        android:paddingStart="24dp"
+        android:paddingBottom="4dp"
+        custom:progress_text_visibility="invisible"
+        custom:progress_reached_bar_height="7dp"
+        custom:progress_unreached_bar_height="7dp"/>
+
+</RelativeLayout>

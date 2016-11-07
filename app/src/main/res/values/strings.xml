@@ -134,5 +134,6 @@
 
     <string name="offline_map_downloading">Downloading</string>
     <string name="offline_map_downloaded">Downloaded</string>
+    <string name="down_ratio">%1$d%%</string>
 
 </resources>
