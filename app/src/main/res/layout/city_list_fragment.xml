@@ -9,7 +9,12 @@
         android:icon="@drawable/ic_search_black_24dp"
         android:queryHint="@string/city_search_hint"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:paddingBottom="3dp"
+        android:paddingTop="3dp"
+        android:paddingStart="3dp"
+        android:paddingEnd="3dp">
 
     </android.support.v7.widget.SearchView>
 

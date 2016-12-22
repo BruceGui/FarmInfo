@@ -36,4 +36,17 @@
         custom:progress_reached_bar_height="7dp"
         custom:progress_unreached_bar_height="7dp"/>
 
+    <Button
+        android:id="@+id/id_delete_off_map"
+        android:layout_width="wrap_content"
+        android:layout_height="30dp"
+        android:text="@string/delete"
+        android:gravity="center"
+        android:background="@drawable/btn_delete_off_map"
+        android:layout_marginEnd="24dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentTop="true"  />
+
 </RelativeLayout>

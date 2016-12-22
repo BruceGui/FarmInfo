@@ -9,6 +9,7 @@ import android.support.v7.widget.RecyclerView.ViewHolder;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.baidu.mapapi.map.offline.MKOLSearchRecord;
@@ -110,6 +111,7 @@ public class DownloadManFragment extends Fragment {
             holder.mCityName.setText(mOnDownload.get(position).r.cityName);
             holder.mDownRatio.setText(String.format(getResources().getString(R.string.down_ratio),
                     mOnDownload.get(position).getRatio()));
+            holder.m.setVisibility(View.GONE);
             holder.mProgress.setProgress(mOnDownload.get(position).getRatio());
         }
 
@@ -122,12 +124,14 @@ public class DownloadManFragment extends Fragment {
 
             private TextView mCityName;
             private TextView mDownRatio;
+            private Button m;
             private NumberProgressBar mProgress;
 
             public DownloadViewHolder(View v) {
                 super(v);
                 mCityName = (TextView) v.findViewById(R.id.id_down_city_name);
                 mDownRatio = (TextView) v.findViewById(R.id.id_down_ratio);
+                m = (Button) v.findViewById(R.id.id_delete_off_map);
                 mProgress = (NumberProgressBar) v.findViewById(R.id.id_down_progress);
             }
 
@@ -147,9 +151,19 @@ public class DownloadManFragment extends Fragment {
         }
 
         @Override
-        public void onBindViewHolder(HaveViewHolder holder, int position) {
+        public void onBindViewHolder(HaveViewHolder holder, final int position) {
             holder.mCityName.setText(mDownloaded.get(position).cityName);
+
+            holder.mDelete.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    offlineMap.remove(mDownloaded.get(position).cityID);
+                    updateOfflineMapHave();
+                }
+            });
+
             holder.n.setVisibility(View.INVISIBLE);
+            holder.m.setVisibility(View.GONE);
         }
 
         @Override
@@ -164,11 +178,15 @@ public class DownloadManFragment extends Fragment {
         class HaveViewHolder extends ViewHolder {
 
             private TextView mCityName;
+            private Button mDelete;
+            private TextView m;
             private NumberProgressBar n;
 
             public HaveViewHolder(View v) {
                 super(v);
                 mCityName = (TextView) v.findViewById(R.id.id_down_city_name);
+                mDelete = (Button) v.findViewById(R.id.id_delete_off_map);
+                m = (TextView) v.findViewById(R.id.id_down_ratio);
                 n = (NumberProgressBar) v.findViewById(R.id.id_down_progress);
             }
 
@@ -221,8 +239,9 @@ public class DownloadManFragment extends Fragment {
 
     }
 
-
-
+    /**
+     *  更新已经下载的离线地图列表
+     */
     public void updateOfflineMapHave() {
 
         mDownloaded = offlineMap.getAllUpdateInfo();

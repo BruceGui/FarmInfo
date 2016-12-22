@@ -1,11 +1,13 @@
 package com.getpoint.farminfomanager.activity;
 
+import android.app.NotificationManager;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentStatePagerAdapter;
+import android.support.v4.app.NotificationCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -48,7 +50,6 @@ public class GetOfflineMapActivity extends AppCompatActivity implements MKOfflin
         MKOfflineMapDownloadListener {
 
     private static final String TAG = "GetOfflineMap";
-
     private static final int PAGER_NUM = 2;
 
     private MKOfflineMap mOfflineMap;
@@ -59,11 +60,13 @@ public class GetOfflineMapActivity extends AppCompatActivity implements MKOfflin
     private ViewPager mViewPager;
     private CityListAdapter mAdapter;
     private List<CityListParent> allProvince = new ArrayList<>();
-    private List<MKOLUpdateElement> haveCities = new ArrayList<>();
-    private List<MKOLSearchRecord> onDowning = new ArrayList<>();
 
     private DownloadManFragment mDownloadFrag;
     private CityListFragment mCityListFrag;
+
+    private  int NOTIFY_ID = 1200;
+    private NotificationCompat.Builder builder;
+    private NotificationManager notificationManager;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -110,7 +113,6 @@ public class GetOfflineMapActivity extends AppCompatActivity implements MKOfflin
 
         mDownloadFrag = DownloadManFragment.newInstance();
         mCityListFrag = CityListFragment.newInstance();
-        //mDownloadFrag.initOfflineMap(mOfflineMap);
 
         /**
          *  显示所有 可下载的离线地图 信息
@@ -267,12 +269,10 @@ public class GetOfflineMapActivity extends AppCompatActivity implements MKOfflin
 
     }
 
-
     /**
      * view pager 的适配器
      */
     public class OfflineMapViewAdapter extends FragmentPagerAdapter {
-
 
         public OfflineMapViewAdapter(FragmentManager fm) {
             super(fm);

@@ -70,6 +70,10 @@
 
         <service android:name=".updatemanager.DownLoadService"/>
 
+        <service
+            android:name=".utils.OfflineMapDownService"
+            android:exported="false"/>
+
     </application>
 
 </manifest>
