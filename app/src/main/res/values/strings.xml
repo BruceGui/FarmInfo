@@ -20,7 +20,18 @@
     <string name="init_value_float">0.0</string>
     <string name="init_dop_value">0.000</string>
     <string name="init_coord_value">0.00000000</string>
+    <string name="init_utc_time">00:00:00</string>
     <string name="posstate">POSState:</string>
+    <string name="no_state">No Loc</string>
+    <string name="fix_position">Position</string>
+    <string name="fix_height">Height</string>
+    <string name="single_point">Single</string>
+    <string name="diff_state">Difference</string>
+    <string name="sbas_state">SBAS</string>
+    <string name="rtkf_state">RTKF</string>
+    <string name="l1_int_state">L1_INT</string>
+    <string name="rtk_state">RTK</string>
+    <string name="utctime">Time:</string>
     <!-- Dilution of Precision -->
     <string name="gps_gdop">gdop:</string>
     <string name="gps_pdop">pdop:</string>

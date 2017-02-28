@@ -70,7 +70,7 @@ public class DownLoadService extends Service {
         if (retrofit == null) {
             retrofit = new Retrofit.Builder();
         }
-        retrofit.baseUrl("http://114.215.88.137/androidapp/apk/")
+        retrofit.baseUrl("http://114.215.88.137/androidapp/farminfo/apk/")
                 .client(initOkHttpClient())
                 .build()
                 .create(IFileLoad.class)

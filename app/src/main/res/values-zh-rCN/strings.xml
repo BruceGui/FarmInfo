@@ -32,6 +32,16 @@
     <string name="not_applicable">N/A</string>
     <string name="satellite_count">星数:</string>
     <string name="posstate">定位状态:</string>
+    <string name="no_state">未定位</string>
+    <string name="fix_position">位置</string>
+    <string name="fix_height">高度</string>
+    <string name="single_point">单点</string>
+    <string name="diff_state">差分</string>
+    <string name="sbas_state">SBAS</string>
+    <string name="rtkf_state">RTKF</string>
+    <string name="l1_int_state">L1_INT</string>
+    <string name="rtk_state">RTK</string>
+    <string name="utctime">时间:</string>
     <!-- 精度因子 -->
     <string name="gps_gdop">gdop:</string>
     <string name="gps_pdop">pdop:</string>

@@ -19,27 +19,6 @@ public class UpdateManager {
     }
 
     /**
-     * 检测软件更新
-     */
-    public void checkUpdate(final boolean isToast) {
-        /**
-         * 在这里请求后台接口，获取更新的内容和最新的版本号
-         */
-        // 版本的更新信息
-        String version_info = "更新内容\n" + "    1. 车位分享异常处理\n" + "    2. 发布车位折扣格式统一\n" + "    ";
-        int mVersion_code = DeviceUtils.getVersionCode(mContext);// 当前的版本号
-        int nVersion_code = 2;
-        if (mVersion_code < nVersion_code) {
-            // 显示提示对话
-            showNoticeDialog(version_info);
-        } else {
-            if (isToast) {
-                Toast.makeText(mContext, "已经是最新版本", Toast.LENGTH_SHORT).show();
-            }
-        }
-    }
-
-    /**
      * 显示更新对话框
      *
      * @param version_info

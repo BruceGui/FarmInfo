@@ -57,6 +57,8 @@ import com.getpoint.farminfomanager.weights.FloatingActionButton;
 import com.getpoint.farminfomanager.weights.MorphLayout;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -81,7 +83,7 @@ public class FarmInfoActivity extends AppCompatActivity implements
     private static final String TAG = "FarmInfoActivity";
 
     private final int MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE = 0;
-    private final String xmlUrl = "http://114.215.88.137/androidapp/update.xml";
+    private final String xmlUrl = "http://114.215.88.137/androidapp/farminfo/update.xml";
 
     private FramePointFragment framePointFragment;
     private DangerPointFragment dangerPointFragment;
@@ -126,6 +128,7 @@ public class FarmInfoActivity extends AppCompatActivity implements
     private TextView mGPShdop;
     private TextView mGPStarNum;
     private TextView mGPState;
+    private TextView mGPStime;
 
     /**
      * 初始化广播事件过滤器和广播接收器
@@ -225,6 +228,7 @@ public class FarmInfoActivity extends AppCompatActivity implements
 
         mGPStarNum = (TextView) findViewById(R.id.sate_count_value);
         mGPState = (TextView) findViewById(R.id.posstate_value);
+        mGPStime = (TextView) findViewById(R.id.time_value);
 
         /**
          *  添加所有的fragment,并隐藏所有的fragment
@@ -349,7 +353,63 @@ public class FarmInfoActivity extends AppCompatActivity implements
         mGPSHei.setText(String.format(Locale.getDefault(), "%.2f", gps.alt));
 
         mGPStarNum.setText(String.valueOf(gps.used));
-        mGPState.setText(String.valueOf(gps.POSState));
+        mGPState.setText(getStateStr((int)gps.POSState));
+        mGPStime.setText(gps.gpsutcTime.getTimeString());
+
+    }
+
+    /**
+     *  获取定位状态信息
+     * @param posstate
+     * @return
+     */
+    private String getStateStr(int posstate) {
+
+        String gpsState;
+
+        gpsState = posstate + ":";
+
+        switch (posstate) {
+
+            case 0:
+                gpsState += getResources().getString(R.string.no_state);
+                break;
+            case 1:
+                gpsState += getResources().getString(R.string.fix_position);
+                break;
+            case 2:
+                gpsState += getResources().getString(R.string.fix_height);
+                break;
+            case 8:
+                gpsState = posstate + "";
+                break;
+            case 16:
+                gpsState += getResources().getString(R.string.single_point);
+                break;
+            case 17:
+                gpsState += getResources().getString(R.string.diff_state);
+                break;
+            case 18:
+                gpsState += getResources().getString(R.string.sbas_state);
+                break;
+            case 32:
+            case 33:
+            case 34:
+                gpsState += getResources().getString(R.string.rtkf_state);
+                break;
+            case 48:
+                gpsState += getResources().getString(R.string.l1_int_state);
+                break;
+            case 50:
+                gpsState += getResources().getString(R.string.rtk_state);
+                break;
+            default:
+                gpsState = posstate + "";
+                break;
+
+        }
+
+        return gpsState;
 
     }
 

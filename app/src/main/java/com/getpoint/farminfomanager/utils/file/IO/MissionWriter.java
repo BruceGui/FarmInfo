@@ -69,7 +69,7 @@ public class MissionWriter {
             out.write("vel=5".getBytes());
             newline(out);
 
-            out.write("alt=-1000".getBytes());
+            out.write("alt=1000".getBytes());
             newline(out);
 
             out.write("safewidth=2".getBytes());
@@ -103,7 +103,7 @@ public class MissionWriter {
             /**
              *  向文件中写入障碍点的信息
              */
-            out.write(("danger points=" + mission.getActualDangerNumber()).getBytes());
+            out.write(("danger num=" + mission.getActualDangerNumber()).getBytes());
             newline(out);
 
             for (MissionItemProxy itemProxy : dangerPoints) {

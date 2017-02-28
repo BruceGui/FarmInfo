@@ -4,10 +4,10 @@ apply plugin: 'com.neenbedankt.android-apt'
 android {
     signingConfigs {
         config {
-            keyAlias 'getway'
-            keyPassword 'getway'
-            storeFile file('E:/.android/getwaypoint.jks')
-            storePassword 'getway'
+            keyAlias 'getpoint'
+            keyPassword 'getpoint'
+            storeFile file('C:/Users/iwin/.android/getpoint.jks')
+            storePassword 'getpoint'
         }
     }
     compileSdkVersion 25
@@ -16,8 +16,8 @@ android {
         applicationId "com.getpoint"
         minSdkVersion 19
         targetSdkVersion 25
-        versionCode 5
-        versionName '4.0.011106'
+        versionCode 6
+        versionName '5.0.010227'
     }
     buildTypes {
         release {
@@ -49,12 +49,10 @@ dependencies {
     compile 'com.android.support:support-v13:25.0.0'
     compile 'com.github.frankiesardo:auto-parcel:0.3.1'
     compile 'com.google.auto.value:auto-value:1.1'
-
     compile 'io.reactivex:rxjava:1.1.5'
     compile 'io.reactivex:rxandroid:1.2.0'
     compile 'com.squareup.okhttp3:okhttp:3.3.0'
     compile 'com.squareup.retrofit2:retrofit:2.0.2'
     apt 'com.github.frankiesardo:auto-parcel-processor:0.3.1'
-
     compile files('libs/BaiduLBS_Android.jar')
 }

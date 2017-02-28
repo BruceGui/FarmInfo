@@ -27,7 +27,7 @@ public class GPSUTCTime {
 
     }
 
-    public double gpsWeekToday(int gpsweek, long day) {
+    private double gpsWeekToday(int gpsweek, long day) {
 
         double calDate1 = 1980;
         double calDate2 = 1;
@@ -91,4 +91,31 @@ public class GPSUTCTime {
         this.month = (short) (f - 1 - 12 * (long) (f / 14));
         this.year = (int)(d - 4715 - (long) ((7 + this.month) / 10));
     }
+
+    public String getTimeString() {
+
+        String timeString = "";
+
+        if (hour < 10) {
+            timeString += "0" + hour;
+        } else {
+            timeString += hour;
+        }
+
+        if (minute < 10) {
+            timeString += ":0" + minute;
+        } else {
+            timeString += ":" + minute;
+        }
+
+        if (second < 10) {
+            timeString += ":0" + second;
+        } else {
+            timeString += ":" + second;
+        }
+
+        return timeString;
+
+    }
+
 }

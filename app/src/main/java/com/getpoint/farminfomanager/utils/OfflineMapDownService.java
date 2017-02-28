@@ -22,6 +22,8 @@ public class OfflineMapDownService extends IntentService {
     private NotificationCompat.Builder mOfflineMapNotify;
     private NotificationManager notificationManager;
 
+    public OfflineMapDownService() {super("OfflineMapDownService");}
+
     public OfflineMapDownService(MKOfflineMap o) {
         super("OfflineMapDownService");
     }
