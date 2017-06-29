@@ -11,7 +11,7 @@ android {
         }
     }
     compileSdkVersion 25
-    buildToolsVersion "25.0.0"
+    buildToolsVersion "25.0.2"
     defaultConfig {
         applicationId "com.getpoint"
         minSdkVersion 19
@@ -24,6 +24,7 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.config
+            pseudoLocalesEnabled true
         }
         debug {
             signingConfig signingConfigs.config
@@ -42,11 +43,11 @@ android {
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     testCompile 'junit:junit:4.12'
-    compile 'com.android.support:recyclerview-v7:25.0.0'
-    compile 'com.android.support:appcompat-v7:25.0.0'
-    compile 'com.android.support:design:25.0.0'
-    compile 'com.android.support:support-annotations:25.0.0'
-    compile 'com.android.support:support-v13:25.0.0'
+    compile 'com.android.support:recyclerview-v7:25.2.0'
+    compile 'com.android.support:appcompat-v7:25.2.0'
+    compile 'com.android.support:design:25.2.0'
+    compile 'com.android.support:support-annotations:25.2.0'
+    compile 'com.android.support:support-v13:25.2.0'
     compile 'com.github.frankiesardo:auto-parcel:0.3.1'
     compile 'com.google.auto.value:auto-value:1.1'
     compile 'io.reactivex:rxjava:1.1.5'

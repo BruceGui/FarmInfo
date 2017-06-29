@@ -40,10 +40,6 @@ public class DangerPoint extends PointInfo  {
         this.innerPoints = innerPoints;
     }
 
-    public void setFlyheight(float flyheight) {
-        this.flyheight = flyheight;
-    }
-
     public void setPointType(PointItemType type) {
         this.pointType = type;
     }

@@ -100,7 +100,10 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="12dp"
                 android:text="@string/frame_point"
-                android:textAllCaps="true" />
+                android:textAllCaps="true"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentLeft="true"
+                android:layout_marginLeft="13dp" />
 
         </RelativeLayout>
 

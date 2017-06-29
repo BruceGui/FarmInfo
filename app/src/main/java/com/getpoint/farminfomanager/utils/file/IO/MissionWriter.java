@@ -52,7 +52,7 @@ public class MissionWriter {
 
             /**
              *  写入文件头部信息
-             *  refedge=6
+             *  refedge=0
              *  spraywidth=5
              *  vel=5
              *  alt=-1000
@@ -60,7 +60,7 @@ public class MissionWriter {
              *  dangerwidth=2
              */
 
-            out.write("refedge=6".getBytes());
+            out.write("refedge=0".getBytes());
             newline(out);
 
             out.write("spraywidth=5".getBytes());

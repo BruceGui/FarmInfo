@@ -11,7 +11,8 @@
         android:id="@+id/id_lon_text"
         style="@style/commonTextGPS"
         android:paddingTop="3dp"
-        android:paddingStart="3dp"
+        android:paddingStart="2dp"
+        android:paddingEnd="1dp"
         android:text="@string/lon_str" />
 
     <TextView
@@ -60,7 +61,7 @@
         android:paddingTop="3dp"
         android:paddingStart="10dp"
         android:text="@string/gps_gdop"
-        android:layout_toEndOf="@id/lat_value"/>
+        android:layout_toEndOf="@id/lon_value"/>
 
     <TextView
         android:id="@+id/gps_gdop_value"
@@ -75,7 +76,7 @@
         android:paddingStart="10dp"
         style="@style/commonTextGPS"
         android:layout_below="@id/gps_gdop_value"
-        android:layout_toEndOf="@id/lon_value"
+        android:layout_alignStart="@id/id_gdop_text"
         android:text="@string/gps_pdop" />
 
     <TextView
@@ -133,7 +134,7 @@
         android:layout_toEndOf="@id/id_posstate_text"
         android:layout_alignBottom="@id/id_posstate_text"
         style="@style/commonInfoGPS"
-        android:text="@string/init_value_float" />
+        android:text="@string/init_value_int" />
 
     <TextView
         android:id="@+id/id_time_text"

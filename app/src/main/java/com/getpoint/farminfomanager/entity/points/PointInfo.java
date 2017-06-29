@@ -54,6 +54,10 @@ public class PointInfo {
         this.pointOrd = po;
     }
 
+    public void setFlyheight(float flyheight) {
+        this.flyheight = flyheight;
+    }
+
     public String getPointOrd() {
         return this.pointOrd;
     }

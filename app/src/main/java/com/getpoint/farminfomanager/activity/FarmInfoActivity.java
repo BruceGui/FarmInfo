@@ -245,7 +245,6 @@ public class FarmInfoActivity extends AppCompatActivity implements
 
         Log.i(TAG, "version code: " + getVersionCode(getApplicationContext()));
 
-        //TODO  检查版本更新信息
         /**
          *  首先 检查网络可用性，然后获取 xml 文件并检擦版本号 与 此版本号对比，
          *  然后下载进行更新
@@ -367,7 +366,7 @@ public class FarmInfoActivity extends AppCompatActivity implements
 
         String gpsState;
 
-        gpsState = posstate + ":";
+        gpsState = "";
 
         switch (posstate) {
 

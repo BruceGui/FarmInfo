@@ -416,17 +416,26 @@ public class SaveMissionFragment extends DialogFragment {
                 for (final File f : contents) {
                     if (f.isDirectory()) {
                         numDirectories++;
+                    } else if(f.getName().endsWith(".txt")) {
+                        numDirectories ++;
                     }
                 }
+
                 mFilesInDir = new File[numDirectories];
                 mFilenames.clear();
+
                 for (int i = 0, counter = 0; i < numDirectories; counter++) {
                     if (contents[counter].isDirectory()) {
                         mFilesInDir[i] = contents[counter];
                         mFilenames.add(contents[counter].getName());
                         i++;
+                    } else if(contents[counter].getName().endsWith(".txt")) {
+                        mFilesInDir[i] = contents[counter];
+                        mFilenames.add(contents[counter].getName());
+                        i++;
                     }
                 }
+
                 Arrays.sort(mFilesInDir);
                 Collections.sort(mFilenames);
                 mSelectedDir = dir;

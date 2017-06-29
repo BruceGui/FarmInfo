@@ -110,7 +110,8 @@ public class DangerPointFragment extends PointDetailFragment {
 
                 if (addInP) {
                     PointInfo p = new PointInfo(getNewCoord(),
-                            getFlyHeight());
+                            getAltitude());
+                    p.setFlyheight(getFlyHeight());
 
                     switch (getCurrentDPType()) {
                         case BYPASS:
@@ -338,7 +339,8 @@ public class DangerPointFragment extends PointDetailFragment {
 
     public void updateCurrentInP() {
 
-        currInP.setPosition(gps.lat, gps.lon, getFlyHeight());
+        currInP.setPosition(gps.lat, gps.lon, getAltitude());
+        currInP.setFlyheight(getFlyHeight());
         ((DangerPoint)currDP.getPointInfo()).setdPType(getCurrentDPType());
         addInP = true;
     }
@@ -391,17 +393,21 @@ public class DangerPointFragment extends PointDetailFragment {
         innerIndex.setText(String.valueOf(index));
     }
 
+    public float getAltitude() {
+
+        return   gps.alt - appPref.getMobileStationHeight();
+
+
+    }
+
     public float getFlyHeight() {
 
-        float al = gps.alt - appPref.getMobileStationHeight();
-
         if (TextUtils.isEmpty(altitudeEdt.getText())) {
-
+            return 0;
         } else {
-            al += Float.valueOf(altitudeEdt.getText().toString());
+            return Float.valueOf(altitudeEdt.getText().toString());
         }
 
-        return al;
     }
 
     @Override

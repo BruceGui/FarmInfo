@@ -104,9 +104,8 @@ public class LatLong implements Parcelable, Serializable, Cloneable{
         LatLong latLong = (LatLong) o;
 
         if (Double.compare(latLong.latitude, latitude) != 0) return false;
-        if (Double.compare(latLong.longitude, longitude) != 0) return false;
+        return Double.compare(latLong.longitude, longitude) == 0;
 
-        return true;
     }
 
     @Override

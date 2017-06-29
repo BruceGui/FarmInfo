@@ -146,6 +146,7 @@ public class GetOfflineMapActivity extends AppCompatActivity implements MKOfflin
         mAdapter = new CityListAdapter(getApplicationContext(), allProvince, this);
         mCityListFrag.setAllCities(allProvince);
         mCityListFrag.setmAdapter(mAdapter);
+
         mCityListFrag.setDownloadListener(this);
 
         mCityListFrag.setMKOfflineMap(mOfflineMap);

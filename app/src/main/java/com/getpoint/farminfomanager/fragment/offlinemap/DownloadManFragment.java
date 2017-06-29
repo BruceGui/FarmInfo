@@ -6,6 +6,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.RecyclerView.ViewHolder;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -66,7 +67,9 @@ public class DownloadManFragment extends Fragment {
         if (offlineMap != null) {
             mDownloaded = offlineMap.getAllUpdateInfo();
         }
+
         mOnDownload = new ArrayList<>();
+        mDownloaded = new ArrayList<>();
     }
 
     public void setOnDowning(List<OnDownCity> c) {
@@ -127,7 +130,7 @@ public class DownloadManFragment extends Fragment {
             private Button m;
             private NumberProgressBar mProgress;
 
-            public DownloadViewHolder(View v) {
+            private DownloadViewHolder(View v) {
                 super(v);
                 mCityName = (TextView) v.findViewById(R.id.id_down_city_name);
                 mDownRatio = (TextView) v.findViewById(R.id.id_down_ratio);
@@ -138,11 +141,10 @@ public class DownloadManFragment extends Fragment {
         }
     }
 
-    //TODO 增加 删除 功能
     /**
      * 已经下载的 适配器
      */
-    public class OfflineMapHaveAdapter extends RecyclerView.Adapter<OfflineMapHaveAdapter.HaveViewHolder> {
+    private class OfflineMapHaveAdapter extends RecyclerView.Adapter<OfflineMapHaveAdapter.HaveViewHolder> {
 
         @Override
         public HaveViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -158,7 +160,8 @@ public class DownloadManFragment extends Fragment {
                 @Override
                 public void onClick(View view) {
                     offlineMap.remove(mDownloaded.get(position).cityID);
-                    updateOfflineMapHave();
+                    mDownloaded.remove(position);
+                    mHaveAdapter.notifyDataSetChanged();
                 }
             });
 
@@ -244,7 +247,23 @@ public class DownloadManFragment extends Fragment {
      */
     public void updateOfflineMapHave() {
 
+        /**
+         *  获取所有 正在下载和已经下载的地图
+         */
         mDownloaded = offlineMap.getAllUpdateInfo();
+
+        /**
+         *  显示下载完全的 地图
+         */
+         for(int i = 0; i < mDownloaded.size();) {
+
+             if(mDownloaded.get(i).ratio != 100)
+                 mDownloaded.remove(i);
+             else
+                 i ++;
+
+         }
+
         mHaveAdapter.notifyDataSetChanged();
 
     }

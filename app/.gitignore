@@ -1,1 +1,7 @@
 /build
+
+*.log
+
+*.apk
+
+app-release.apk

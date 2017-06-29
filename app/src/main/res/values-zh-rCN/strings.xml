@@ -31,7 +31,7 @@
     <string name="h_dop">HDop:</string>
     <string name="not_applicable">N/A</string>
     <string name="satellite_count">星数:</string>
-    <string name="posstate">定位状态:</string>
+    <string name="posstate">状态:</string>
     <string name="no_state">未定位</string>
     <string name="fix_position">位置</string>
     <string name="fix_height">高度</string>

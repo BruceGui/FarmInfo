@@ -21,11 +21,11 @@ public class MUHLinkStream {
 
     public interface MuhLinkInputStream {
 
-        public void notifyConnected();
+        void notifyConnected();
 
-        public void notifyDisconnected();
+        void notifyDisconnected();
 
-        public void notifyReceivedData(GPSHMCPacket packet);
+        void notifyReceivedData(GPSHMCPacket packet);
 
     }
 

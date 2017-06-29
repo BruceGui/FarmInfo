@@ -51,9 +51,8 @@ public class LatLongAlt extends LatLong {
 
         LatLongAlt that = (LatLongAlt) o;
 
-        if (Double.compare(that.mAltitude, mAltitude) != 0) return false;
+        return Double.compare(that.mAltitude, mAltitude) == 0;
 
-        return true;
     }
 
     @Override

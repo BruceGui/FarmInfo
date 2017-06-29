@@ -79,7 +79,7 @@ public abstract class Option<T> implements Iterable<T> {
 
         public void foreach(UnitFunction<T> f) { }
 
-        public List<T> toList() { return Collections.<T>emptyList(); }
+        public List<T> toList() { return Collections.emptyList(); }
 
         public String toString() { return "None"; }
     }

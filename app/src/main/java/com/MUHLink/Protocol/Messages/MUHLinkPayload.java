@@ -47,7 +47,7 @@ public class MUHLinkPayload {
         byte result = 0;
         result |= (payload.get(index + 0) & 0xFF);
         index += 1;
-        return (byte) result;
+        return result;
     }
 
     public short getShort() {
@@ -55,27 +55,27 @@ public class MUHLinkPayload {
         result |= (payload.get(index + 1) & 0xFF) << 8;
         result |= (payload.get(index + 0) & 0xFF);
         index += 2;
-        return (short) result;
+        return result;
     }
 
     public int getInt() {
         int result = 0;
-        result |= (payload.get(index + 3) & (int)0xFF) << 24;
-        result |= (payload.get(index + 2) & (int)0xFF) << 16;
-        result |= (payload.get(index + 1) & (int)0xFF) << 8;
-        result |= (payload.get(index + 0) & (int)0xFF);
+        result |= (payload.get(index + 3) & 0xFF) << 24;
+        result |= (payload.get(index + 2) & 0xFF) << 16;
+        result |= (payload.get(index + 1) & 0xFF) << 8;
+        result |= (payload.get(index + 0) & 0xFF);
         index += 4;
-        return (int) result;
+        return result;
     }
 
     public int getIntReverse() {
         int result = 0;
-        result |= (payload.get(index + 0) & (int)0xFF) << 24;
-        result |= (payload.get(index + 1) & (int)0xFF) << 16;
-        result |= (payload.get(index + 2) & (int)0xFF) << 8;
-        result |= (payload.get(index + 3) & (int)0xFF);
+        result |= (payload.get(index + 0) & 0xFF) << 24;
+        result |= (payload.get(index + 1) & 0xFF) << 16;
+        result |= (payload.get(index + 2) & 0xFF) << 8;
+        result |= (payload.get(index + 3) & 0xFF);
         index += 4;
-        return (int) result;
+        return result;
     }
 
     public long getLong() {
@@ -89,7 +89,7 @@ public class MUHLinkPayload {
         result |= (payload.get(index + 1) & (long)0xFF) << 8;
         result |= (payload.get(index + 0) & (long)0xFF);
         index += 8;
-        return (long) result;
+        return result;
     }
 
 
@@ -104,7 +104,7 @@ public class MUHLinkPayload {
         result |= (payload.get(index + 6) & (long)0xFF) << 8;
         result |= (payload.get(index + 7) & (long)0xFF);
         index += 8;
-        return (long) result;
+        return result;
     }
 
     public float getFloat() {

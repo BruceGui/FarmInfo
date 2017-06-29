@@ -11,18 +11,18 @@ public interface MUHLinkConnectionListener {
     /**
      *  当 MUHLink 建立连接时调用
      */
-    public void onConnect();
+    void onConnect();
 
     /**
      * 当 有数据接收时调用
      * @param packet 接收的数据
      */
-    public void onReceivePacket(GPSHMCPacket packet);
+    void onReceivePacket(GPSHMCPacket packet);
 
     /**
      *  当关闭连接时调用
      */
-    public void onDisconnect();
+    void onDisconnect();
 
 
 
